@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/appicon">
+        <file>app.ico</file>
+        <file>woodbutton.png</file>
+        <file>lmBackground.png</file>
+        <file>lmButton.png</file>
+        <file>woodbackground.png</file>
+    </qresource>
+</RCC>
