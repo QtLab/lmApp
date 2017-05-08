@@ -20,9 +20,5 @@ lmImageDraw::~lmImageDraw()
 QPixmap *lmImageDraw::lmDraw(QImage &iDrawMap)
 {
 	mPixMap = QPixmap::fromImage(iDrawMap);
-	QPainter cPainter(&mPixMap);
-	cPainter.setBrush(Qt::SolidPattern);
-	cPainter.setPen(Qt::blue);
-	cPainter.drawRect(25,25,125,125);
 	return &mPixMap;
 }

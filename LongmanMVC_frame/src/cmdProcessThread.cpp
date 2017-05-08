@@ -3,12 +3,9 @@
 #include <time.h>
 cmdProcessThread::cmdProcessThread(QObject *parent):QThread(parent)
 {
-	//maxQue = 0;
-	//EvtQueFull = false;
-/*	currentimage = new QPixmap;*/
-	//showingImage = nullptr;
+	//被装饰者实例化;
+	mImageDraw = new lmImageDraw;
 }
-
 cmdProcessThread::~cmdProcessThread()
 {
 /*	if (currentimage)*/
@@ -128,15 +125,23 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 	dataModel.setPOC(mpoc, isforcereadfata);
 	dataModel.readPic();
 
-	//图片内容更新，通知图片显示类;
+	
 	//**转换为适合显示的PixMap类**;
-	QPixmap *mpixmap=mImageDraw.lmDraw(mImage);
+	//为装饰者添加绘制功能;
+	//mImageDraw = new lmNormalDraw(mImageDraw);
+	QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
+	//图片内容更新，通知图片显示类;
 	longmanEvt lmgraphview(EvtTYPE1);
  	lmgraphview.setParam("CommandName", "update_image");
 	lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
 	lmgraphview.dispatch();
 	//存储当前POC;
 	lastyuvParam.mcurPOC = mpoc;
+	return true;
+}
+
+bool cmdProcessThread::showyuvData(longmanEvt&)
+{
 	return true;
 }
 

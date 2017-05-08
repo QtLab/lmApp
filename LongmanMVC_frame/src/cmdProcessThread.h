@@ -6,12 +6,12 @@
 #include <QWaitCondition>
 #include <QThread>
 #include<list>
-// #include <QTGui/QPixmap> 
-// #include <QTGui/QImage> 
+#include <memory>
 #include "src/lmTYPE.h"
 #include "src/lmmodel.h"
 #include "..\longmanApp\src\appData\lmData.h"
 #include "..\longmanApp\src\appData\lmImageDraw.h"
+#include "..\longmanApp\src\appData\lmNormalDraw.h"
 typedef std::list<longmanEvt*> EvtQue;
 //（目前）作用:在工作线程中处理EvtTYPE2类型的Event,建立简单的Event缓冲机制;
 //
@@ -24,7 +24,6 @@ struct cyuvParam
 	std::string yuvPath;
 };
 typedef std::function<void(cyuvParam)> normalCallbacfun;
-/*class lmData;*/
 class cmdProcessThread : public QThread
 {
 	Q_OBJECT
@@ -33,13 +32,11 @@ public:
 	cmdProcessThread(QObject *parent = 0);
 	~cmdProcessThread();
 	bool addCommandHandle(const std::string& rpCmdName, CallBackFunc& pcCmdHandle);
-	bool openyuvfile(longmanEvt&);
-	bool changeimagepoc(longmanEvt&);
 	EvtQue &getEvtQue() { return evtue; };
 	QMutex mutex;
 	QWaitCondition condition;
 	normalCallbacfun recoverhandle;
-	const cyuvParam getlastyuvParam() const {return lastyuvParam;};
+	const cyuvParam getlastyuvParam() const { return lastyuvParam; };
 protected:
 	void run() Q_DECL_OVERRIDE;
 private:
@@ -49,6 +46,10 @@ private:
 	lmData dataModel;
 	QImage mImage;
 	cyuvParam lastyuvParam;
-	lmImageDraw mImageDraw;
+	lmImageDrawBase *mImageDraw;
+public:
+	bool openyuvfile(longmanEvt&);
+	bool changeimagepoc(longmanEvt&);
+	bool showyuvData(longmanEvt&);
 };
 #endif // cmdProcessThread_h__
