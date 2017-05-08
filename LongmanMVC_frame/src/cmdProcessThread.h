@@ -9,7 +9,7 @@
 // #include <QTGui/QPixmap> 
 // #include <QTGui/QImage> 
 #include "src/lmTYPE.h"
-#include "src/lmmodelD.h"
+#include "src/lmmodel.h"
 #include "..\longmanApp\src\appData\lmData.h"
 #include "..\longmanApp\src\appData\lmImageDraw.h"
 typedef std::list<longmanEvt*> EvtQue;
