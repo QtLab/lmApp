@@ -9,11 +9,12 @@ public:
 	lmImageDraw();
 	~lmImageDraw();
 	virtual QPixmap *lmDraw(QImage &iDrawMap);
+	void setDrawParam() {};
 private:
 	QPixmap  mPixMap;
-	int mWidth;
-	int mHeight;
-	int mForamt;
+// 	int mWidth;
+// 	int mHeight;
+// 	int mForamt;
 };
 #endif // lmImagmeDraw_h__
 

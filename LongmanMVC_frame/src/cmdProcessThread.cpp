@@ -127,10 +127,8 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 
 	
 	//**转换为适合显示的PixMap类**;
-	//为装饰者添加绘制功能;
-	//mImageDraw = new lmNormalDraw(mImageDraw);
-	QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
 	//图片内容更新，通知图片显示类;
+	QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
 	longmanEvt lmgraphview(EvtTYPE1);
  	lmgraphview.setParam("CommandName", "update_image");
 	lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
@@ -140,8 +138,37 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 	return true;
 }
 
-bool cmdProcessThread::showyuvData(longmanEvt&)
+bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 {
+	static bool enableFlag = false;
+	bool showdataEnable = rEvt.getParam("enabledByButton").toBool();
+	bool fromGraphView = rEvt.getParam("clickedByGraphView").toBool();
+	if (showdataEnable)
+		enableFlag = !enableFlag;
+	if (!enableFlag)
+		{
+			if (fromGraphView)
+				return true;
+			delete mImageDraw;
+			mImageDraw = new lmImageDraw;
+			QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
+			longmanEvt lmgraphview(EvtTYPE1);
+			lmgraphview.setParam("CommandName", "update_image");
+			lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
+			lmgraphview.dispatch();
+			return true;
+		}
+	delete mImageDraw;
+	mImageDraw = new lmImageDraw;
+	int iXmouse = rEvt.getParam("x").toInt();
+	int iYmouse = rEvt.getParam("y").toInt();
+	mImageDraw = new lmNormalDraw(mImageDraw, iXmouse, iYmouse, dataModel.getimageWidth(), dataModel.getimageHeight());
+	//更新图片显示类;
+	QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
+	longmanEvt lmgraphview(EvtTYPE1);
+	lmgraphview.setParam("CommandName", "update_image");
+	lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
+	lmgraphview.dispatch();
 	return true;
 }
 

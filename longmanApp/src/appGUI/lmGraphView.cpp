@@ -57,7 +57,6 @@ bool lmGraphView::setimage(longmanEvt & upimage)
 	imageHeight = upimage.getParam("height").toInt();
 	int formattyp = upimage.getParam("format").toInt();
 	mImage = (QPixmap*)vValue.value<void *>();
-	m_controlMouse = true;
 	return true;
 }
 
@@ -127,7 +126,12 @@ void lmGraphView::mousePressEvent(QMouseEvent * event)
 		m_iMousePressImageY = imagegroup.y();
 		//int iMouseX = mapToScene(event->pos()).x();
 		//int iMouseY = mapToScene(event->pos()).y();
-
+		longmanEvt showdata(EvtTYPE2);
+		showdata.setParam("CommandName", "show_yuvdata");
+		showdata.setParam("clickedByGraphView", true);
+		showdata.setParam("x", m_iMousePressX- m_iMousePressImageX);
+		showdata.setParam("y", m_iMousePressY- m_iMousePressImageY);
+		showdata.dispatch();
 }
 
 void lmGraphView::mouseMoveEvent(QMouseEvent * event)

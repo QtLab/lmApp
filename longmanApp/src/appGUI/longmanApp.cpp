@@ -33,6 +33,7 @@ longmanApp::longmanApp(QWidget *parent)
 	ui.YUVgroupBox->setEnabled(false);
 	ui.stopButton->setEnabled(false);
 	ui.actionSave_as_image->setEnabled(false);
+	ui.f1Button->setEnabled(false);
 	//
 	
 	connect(&timeLine, SIGNAL(frameChanged(int)), this, SLOT(player(int)));;
@@ -56,6 +57,7 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	ui.label_format->setText(tr(formattext[formattype]));
 	ui.actionSave_as_image->setEnabled(true);
 	ui.FrameIdxSlider->setValue(curpoc + 1);//´¥·¢¸üÐÂÃüÁî;
+	ui.f1Button->setEnabled(true);
 	//
 	
 	return true;
@@ -238,5 +240,19 @@ void longmanApp::on_actionSave_as_image_triggered()
 
 void longmanApp::on_f1Button_clicked()
 {
-	m_DataView->show();
+	static bool showdataEnable = false;
+
+	if (!showdataEnable)
+	{
+		m_DataView->show();
+	}
+	else
+	{
+		m_DataView->hide();	
+	}
+	longmanEvt showdata(EvtTYPE2);
+	showdata.setParam("CommandName", "show_yuvdata");
+	showdata.setParam("enabledByButton", true);
+	showdata.dispatch();
+	showdataEnable = !showdataEnable;
 }
