@@ -2,7 +2,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 lmDataView::lmDataView(QWidget *parent)
-	: QWidget(parent),
+	: QWidget(parent, Qt::SubWindow),
 	lmView(nullptr)
 {
 	ui.setupUi(this); 
@@ -11,7 +11,7 @@ lmDataView::lmDataView(QWidget *parent)
 	listenParam("set_dataview", pcsetEvtHandle);
 	CallBackFunc pcupdateEvtHandle = std::bind(&lmDataView::updatedataview, this, std::placeholders::_1);
 	listenParam("update_dataview", pcupdateEvtHandle);
-
+	setMouseTracking(true);
 }
 
 lmDataView::~lmDataView()
@@ -36,6 +36,12 @@ bool lmDataView::updatedataview(longmanEvt & rEvt)
 
 void lmDataView::mouseReleaseEvent(QMouseEvent *event)
 {
-	int x = 0;
-	return;
+
+}
+
+void lmDataView::paintEvent(QPaintEvent * event)
+{
+	//对于widget对象，Qpainter只能在该函数,或该函数调用的函数内使用;
+	QPainter cpainter(this);
+	cpainter.drawRect(0, 0, 128, 128);
 }

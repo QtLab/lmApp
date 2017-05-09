@@ -14,7 +14,7 @@ longmanApp::longmanApp(QWidget *parent)
 	m_imageView(new lmGraphView(this)),
 	msgBox(new lmMessageBox(this)),
 	imageSave(nullptr),
-	m_DataView(new lmDataView(nullptr))
+	m_DataView(new lmDataView)
 {
 	timeLine.stop();
 	ui.setupUi(this);
@@ -34,9 +34,10 @@ longmanApp::longmanApp(QWidget *parent)
 	ui.stopButton->setEnabled(false);
 	ui.actionSave_as_image->setEnabled(false);
 	ui.f1Button->setEnabled(false);
+	ui.dockWidget->setWidget(m_DataView);
 	//
 	
-	connect(&timeLine, SIGNAL(frameChanged(int)), this, SLOT(player(int)));;
+	connect(&timeLine, SIGNAL(frameChanged(int)), this, SLOT(player(int)));
 }
 
 bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
