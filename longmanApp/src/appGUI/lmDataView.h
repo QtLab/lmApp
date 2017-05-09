@@ -1,12 +1,12 @@
 #ifndef lmDataView_h__
 #define lmDataView_h__
 
-#include <QWidget>
+#include <QDialog>
 #include "src\lmView.h"
 #include "ui_lmDataView.h"
 #include "..\lmTypeDef.h"
 
-class lmDataView : public QWidget, public lmView
+class lmDataView : public QDialog, public lmView
 {
 	Q_OBJECT
 		

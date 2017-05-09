@@ -2,7 +2,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 lmDataView::lmDataView(QWidget *parent)
-	: QWidget(parent, Qt::SubWindow),
+	: QDialog(parent, Qt::CustomizeWindowHint|Qt::WindowTitleHint),
 	lmView(nullptr)
 {
 	ui.setupUi(this); 

@@ -14,15 +14,10 @@ longmanApp::longmanApp(QWidget *parent)
 	m_imageView(new lmGraphView(this)),
 	msgBox(new lmMessageBox(this)),
 	imageSave(nullptr),
-	m_DataView(new lmDataView)
+	m_DataView(new lmDataView(this))
 {
 	timeLine.stop();
 	ui.setupUi(this);
-	//QIcon icon;
-	//icon.addFile(QStringLiteral(":/appicon/app.ico"), QSize(), QIcon::Normal, QIcon::Off);
-	//setWindowIcon(icon);
-	//m_DataView->setWindowIcon(icon);
-	
 	setCentralWidget(m_imageView);
 	CallBackFunc pcupdate = std::bind(&longmanApp::updatemainwindow, this, std::placeholders::_1);
 	listenParam("update_mainwindow", pcupdate);
@@ -34,9 +29,6 @@ longmanApp::longmanApp(QWidget *parent)
 	ui.stopButton->setEnabled(false);
 	ui.actionSave_as_image->setEnabled(false);
 	ui.f1Button->setEnabled(false);
-	ui.dockWidget->setWidget(m_DataView);
-	//
-	
 	connect(&timeLine, SIGNAL(frameChanged(int)), this, SLOT(player(int)));
 }
 
