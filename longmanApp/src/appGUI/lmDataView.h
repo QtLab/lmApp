@@ -18,14 +18,22 @@ public:
 private:
 	Ui::lmDataView ui;
 	Pel *yuvDateptr[3] = { nullptr,nullptr,nullptr };
-	int yuvHeight;
-	int yuvWidth;
-	int formatType;
+	int yuvHeight = 0;
+	int yuvWidth = 0;
+	int formatType = 1;
+	int drawAreaRange[2] = { 0,0 };
+	int lastPositionClikedInDrawArea = 0;
+	int mXIn16 = 0;
+	int mYIn16 = 0;
 protected:
 	//void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 	//void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	//void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void paintEvent(QPaintEvent *)Q_DECL_OVERRIDE;
+private:
+	void drawBackGround(QPainter&);
+	void drawclicked(QPainter&);
+	void drawinfomation(QPainter&);
 };
 #endif // lmDataView_h__

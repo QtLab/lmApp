@@ -1,6 +1,8 @@
 #include "cmdProcessThread.h"
 #include <iostream>
 #include <time.h>
+	static bool enableShowYuvData = false;
+	static bool firstrunChangePOC = true;
 cmdProcessThread::cmdProcessThread(QObject *parent):QThread(parent)
 {
 	//被装饰者实例化;
@@ -94,23 +96,12 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	updatemainwin.setParam("yuv_format", dataModel.getformat());
 	updatemainwin.setParam("image", QVariant::fromValue((void*)(&mImage)));
 	updatemainwin.dispatch();
-	//通知yuv数据显示类(lmDataView);
-	Pel *mYptr = nullptr; Pel *mUptr = nullptr; Pel *mVptr = nullptr;
-	dataModel.getyuvPtr(mYptr, mUptr, mVptr);
-	longmanEvt lmdatahview(EvtTYPE1);
-	lmdatahview.setParam("CommandName", "set_dataview");
-	lmdatahview.setParam("y_ptr", QVariant::fromValue((void*)(mYptr)));
-	lmdatahview.setParam("u_ptr", QVariant::fromValue((void*)(mUptr)));
-	lmdatahview.setParam("v_ptr", QVariant::fromValue((void*)(mVptr)));
-	lmdatahview.setParam("width", dataModel.getimageWidth());
-	lmdatahview.setParam("height", dataModel.getimageHeight());
-	lmdatahview.setParam("format", dataModel.getformat());
-	lmdatahview.dispatch();
 	return true;
 }
 
 bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 {
+
 	bool openst = rpevt.getParam("recoverLast").toBool();
 	//打开文件失败的回退处理;
 	if (openst)
@@ -124,8 +115,6 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 		return false;
 	dataModel.setPOC(mpoc, isforcereadfata);
 	dataModel.readPic();
-
-	
 	//**转换为适合显示的PixMap类**;
 	//图片内容更新，通知图片显示类;
 	QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
@@ -135,17 +124,50 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 	lmgraphview.dispatch();
 	//存储当前POC;
 	lastyuvParam.mcurPOC = mpoc;
+
+// 	if (enableShowYuvData|| firstrunChangePOC)
+// 	{
+// 		firstrunChangePOC = !firstrunChangePOC;
+// 		//通知yuv数据显示类(lmDataView);
+// 		Pel *mYptr = nullptr; Pel *mUptr = nullptr; Pel *mVptr = nullptr;
+// 		dataModel.getyuvPtr(mYptr, mUptr, mVptr);
+// 		longmanEvt lmdatahview(EvtTYPE1);
+// 		lmdatahview.setParam("CommandName", "set_dataview");
+// 		lmdatahview.setParam("y_ptr", QVariant::fromValue((void*)(mYptr)));
+// 		lmdatahview.setParam("u_ptr", QVariant::fromValue((void*)(mUptr)));
+// 		lmdatahview.setParam("v_ptr", QVariant::fromValue((void*)(mVptr)));
+// 		lmdatahview.setParam("width", dataModel.getimageWidth());
+// 		lmdatahview.setParam("height", dataModel.getimageHeight());
+// 		lmdatahview.setParam("format", dataModel.getformat());
+// 		lmdatahview.dispatch();
+// 	}
 	return true;
 }
 
 bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 {
-	static bool enableFlag = false;
 	bool showdataEnable = rEvt.getParam("enabledByButton").toBool();
 	bool fromGraphView = rEvt.getParam("clickedByGraphView").toBool();
 	if (showdataEnable)
-		enableFlag = !enableFlag;
-	if (!enableFlag)
+		{
+			//通知yuv数据显示类(lmDataView);
+			if (!enableShowYuvData)
+			{
+				Pel *mYptr = nullptr; Pel *mUptr = nullptr; Pel *mVptr = nullptr;
+				dataModel.getyuvPtr(mYptr, mUptr, mVptr);
+				longmanEvt lmdatahview(EvtTYPE1);
+				lmdatahview.setParam("CommandName", "set_dataview");
+				lmdatahview.setParam("y_ptr", QVariant::fromValue((void*)(mYptr)));
+				lmdatahview.setParam("u_ptr", QVariant::fromValue((void*)(mUptr)));
+				lmdatahview.setParam("v_ptr", QVariant::fromValue((void*)(mVptr)));
+				lmdatahview.setParam("width", dataModel.getimageWidth());
+				lmdatahview.setParam("height", dataModel.getimageHeight());
+				lmdatahview.setParam("format", dataModel.getformat());
+				lmdatahview.dispatch();
+			}
+			enableShowYuvData = !enableShowYuvData;
+		}
+	if (!enableShowYuvData)
 		{
 			if (fromGraphView)
 				return true;
@@ -158,17 +180,24 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 			lmgraphview.dispatch();
 			return true;
 		}
+	//删除上次的绘制结果;
 	delete mImageDraw;
 	mImageDraw = new lmImageDraw;
 	int iXmouse = rEvt.getParam("x").toInt();
 	int iYmouse = rEvt.getParam("y").toInt();
 	mImageDraw = new lmNormalDraw(mImageDraw, iXmouse, iYmouse, dataModel.getimageWidth(), dataModel.getimageHeight());
-	//更新图片显示类;
+	//通知图片显示类;
 	QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
 	longmanEvt lmgraphview(EvtTYPE1);
 	lmgraphview.setParam("CommandName", "update_image");
 	lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
 	lmgraphview.dispatch();
+	//通知dataview模块;
+	longmanEvt dataview(EvtTYPE1);
+	dataview.setParam("CommandName", "update_dataview");
+	dataview.setParam("xIn16", iXmouse);
+	dataview.setParam("yIn16", iYmouse);
+	dataview.dispatch();
 	return true;
 }
 

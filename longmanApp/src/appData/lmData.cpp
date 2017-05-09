@@ -157,7 +157,6 @@ void lmData::xAllocaBuffer()
 	for (size_t i = 0; i < mnumwindows; i++)
 	{
 		mPicYUV[i] = new lmPicYuv;
-
 		mPicYUV[i]->createWithoutCUInfo(mwidth, mheight, formatmap[mformattype],true, mMargin, mMargin);
 	}
 	int stride=mPicYUV[0]->getStride(COMPONENT_Y);
