@@ -52,7 +52,7 @@ bool lmDataView::setdataview(longmanEvt & rEvt)
 	setMinimumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
 	setMaximumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
 	update();
-	std::cout << "inti data view" << std::endl;
+	std::cout << "inti data view\n";
 	return true;
 }
 
@@ -99,7 +99,7 @@ void lmDataView::paintEvent(QPaintEvent * event)
 	if (drawcontain)
 	{
 		drawContain(mcpainter);
-		drawcontain = false;
+		//drawcontain = false;
 	}
 	double dResult = (double)(clock() - lBefore) / CLOCKS_PER_SEC;
 	std::cout << "dataview绘制处理时间：" << dResult << "s" << std::endl;
@@ -162,7 +162,10 @@ void lmDataView::drawinfomation(QPainter& cpainter)
 	int iheightInDrawArea = lastPositionClikedInDrawArea / ViewSize[formatType][1];
 	QString ch;
 	ch = cha[chInfo(iwidthInDrawArea, iheightInDrawArea)];
-	QString V = "(channel:" + ch + ",postionInImage:" + QString::fromStdString(std::to_string(iwidthInDrawArea + mXIn16))+","+ QString::fromStdString(std::to_string(iheightInDrawArea + mYIn16))+")";
+	int iwInImage = 0;
+	int ihInImage = 0;
+	chInfo(iwidthInDrawArea, iheightInDrawArea, iwInImage, ihInImage);
+	QString V = "(channel:" + ch + ",postionInImage:" + QString::fromStdString(std::to_string(iwInImage + mXIn16))+","+ QString::fromStdString(std::to_string(ihInImage + mYIn16))+")";
 	//绘制文字信息;
 	cpainter.drawText(ViewSize[formatType][1] * (sqSize[formatType]>>1) + (sqSize[formatType] / 2) - fontMetrics.width(V) / 2, (ViewSize[formatType][0]+1) *sqSize[formatType] + sqSize[formatType] / 4 + fontMetrics.ascent(), V);
 	//绘制坐标指示线;
@@ -196,18 +199,103 @@ int lmDataView::chInfo(int x, int y)
 		return 3;
 }
 //计算VU通道在图片中的坐标;
+//输入为ix和iy，为某像素在绘制表格中的坐标位置;
+//输出为px和py，为该像素在图片中相对于16大小块的便宜位置;
 void lmDataView::chInfo(int ix, int iy, int &px, int &py)
 {
-	//int chType = chInfo(ix, iy);
-	//if (chType==1)
-	//	//U
-	//{
-
-	//}
+	int chType = chInfo(ix, iy);
+	//非VU通道，直接赋值;
+	if (!chType)
+	{
+		px = ix;
+		py = iy;
+		return;
+	}
+	//UV通道,444格式;
+	if ( formatType == 2)
+		//绘制区域分布方式;
+		//YV
+		//UN
+	{
+		if (chType==1)//U
+		{
+			px = ix;
+			py = iy - lRect;
+			return;
+		}
+		if (chType == 2)//V
+		{
+			px = ix - lRect;
+			py = iy;
+			return;
+		}
+		if (chType == 3)//NULL
+		{
+			px = -1;
+			py = -1;
+			return;
+		}
+	}
+	if (formatType == 1)
+		//绘制区域分布方式;
+		//YU
+		//YV
+	{
+		if (chType == 1)//U
+		{
+			px = 2 * (ix - lRect);
+			py = 2 * iy;
+			return;
+		}
+		if (chType == 2)//V
+		{
+			px = 2 * (ix - lRect);
+			py = 2 * (iy - sRect);
+			return;
+		}
+	}
 }
 
-void lmDataView::drawContain(QPainter&)
+void lmDataView::drawContain(QPainter& cpainter)
 {
+	QFont displayFont;
+	cpainter.setFont(displayFont);
+	QFontMetrics fontMetrics(displayFont);
+	cpainter.setPen(QPen(Qt::black));
 	std::cout << "更新数据内容" << std::endl;
-
+	for (int row = 0; row < ViewSize[formatType][0] + 1; ++row)
+	{
+		for (int column = 0; column < ViewSize[formatType][1] + 1; ++column)
+		{
+			//像素的实际位置;
+			int ixInTable = column - 1;
+			int iyInTable = row - 1;
+			if (!row)
+			{
+				continue;
+			}
+			else if (!column)
+			{
+				continue;
+			}
+			else
+			{
+				int pxInimage = 0;
+				int pyInimage = 0;
+				chInfo(ixInTable, iyInTable, pxInimage, pyInimage);
+				if (pxInimage < 0 || pyInimage < 0)
+					continue;
+				int ch = chInfo(ixInTable, iyInTable);
+				int strideIamge = ch ? yuvWidth >> 1 : yuvWidth;
+				int ix = ch ? pxInimage >> 1 : pxInimage;
+				int iy = ch ? pyInimage >> 1 : pyInimage;
+				int mmyIn16 = ch ? mYIn16 >> 1 : mYIn16;
+				int mmxIn16 = ch ? mXIn16 >> 1 : mXIn16;
+				long long offsetImage= (iy + mmyIn16)*strideIamge+ mmxIn16 + ix;
+				int ipelVlaue = yuvDateptr[ch][offsetImage];
+				QString V = QString::fromStdString(std::to_string(ipelVlaue));
+				cpainter.drawText(column*sqSize[formatType] + (sqSize[formatType] / 2) - fontMetrics.width(V) / 2, row*sqSize[formatType] + sqSize[formatType] / 2 + fontMetrics.ascent()/2, V);
+			}
+		}
+	}
 }

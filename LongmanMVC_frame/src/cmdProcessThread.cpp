@@ -96,6 +96,13 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	updatemainwin.setParam("yuv_format", dataModel.getformat());
 	updatemainwin.setParam("image", QVariant::fromValue((void*)(&mImage)));
 	updatemainwin.dispatch();
+	//通知显示模块
+	longmanEvt lmgraphview(EvtTYPE1);
+	lmgraphview.setParam("CommandName", "set_image");
+	lmgraphview.setParam("width", dataModel.getimageWidth());
+	lmgraphview.setParam("height", dataModel.getimageHeight());
+	lmgraphview.setParam("format", dataModel.getformat());
+	lmgraphview.dispatch();
 	return true;
 }
 
