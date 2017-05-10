@@ -79,9 +79,9 @@ $RECYCLE.BIN/
 *.opensdf
 *.sdf
 *.suo
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
+#.vcxproj
+#.vcxproj.filters
+#.vcxproj.user
 *.cd
 *.log
 *.lastbuildstate
@@ -91,7 +91,7 @@ $RECYCLE.BIN/
 *.pdb
 *.exe.lastcodeanalysissucceeded
 *.obj.enc
-*.sln
+#*.sln
 *.ilk
 /.Archive
 /GeneratedFiles
