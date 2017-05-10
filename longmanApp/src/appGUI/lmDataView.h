@@ -35,5 +35,8 @@ private:
 	void drawBackGround(QPainter&);
 	void drawclicked(QPainter&);
 	void drawinfomation(QPainter&);
+	int chInfo(int x,int y);
+	void chInfo(int x,int y,int &px,int &py);
+	void drawContain(QPainter&);
 };
 #endif // lmDataView_h__

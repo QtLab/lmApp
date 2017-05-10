@@ -239,7 +239,7 @@ void cmdProcessThread::run()
 	handleCmd(*pEvt);
 	dResult = (Double)(clock() - lBefore) / CLOCKS_PER_SEC;
 	if(pEvt->getEvtTYPE()==EvtTYPE2)
-	std::cout << "处理时间："<<dResult <<"s" << std::endl;
+	std::cout << "EXE处理时间："<<dResult <<"s" << std::endl;
 	delete pEvt;
 	}
 }

@@ -3,8 +3,11 @@
 #include <QPainter>
 #include <iostream>
 #include <string>
+#include<time.h>
+//不同格式的表格尺寸;
 const unsigned int sqSize[3] = {32,32,24};
-const unsigned int ViewSize[3][2] = 
+//绘制区域尺寸;
+const unsigned int ViewSize[3][2] =
 {
 	{16,16},
 	{16,24},
@@ -12,6 +15,10 @@ const unsigned int ViewSize[3][2] =
 };
 bool drawclick = false;
 bool drawcontain = false;
+const char *cha[4] = { "Y","U","V","NULL" };
+const QColor color[4] = {Qt::black,QColor(182,64,128),QColor(64,64,180),QColor(64,192,64) };
+const int lRect = 16;
+const int sRect = 8;
 lmDataView::lmDataView(QWidget *parent)
 	: QDialog(parent, Qt::CustomizeWindowHint|Qt::WindowTitleHint),
 	lmView(nullptr)
@@ -56,6 +63,8 @@ bool lmDataView::updatedataview(longmanEvt & rEvt)
 	int ymouseclick = rEvt.getParam("yIn16").toInt();
 	mXIn16 = (int)(xmouseclick / 16.0) * 16;
 	mYIn16 = (int)(ymouseclick / 16.0) * 16;
+	drawcontain = true;
+	update();
 	return true;
 }
 
@@ -79,6 +88,7 @@ void lmDataView::mousePressEvent(QMouseEvent *event)
 void lmDataView::paintEvent(QPaintEvent * event)
 {
 	//对于widget对象，Qpainter只能在该函数,或该函数调用的函数内使用;
+	clock_t lBefore = clock();
 	QPainter mcpainter(this);
 	drawBackGround(mcpainter);
 	if (drawclick)
@@ -86,7 +96,13 @@ void lmDataView::paintEvent(QPaintEvent * event)
 		drawclicked(mcpainter);
 		drawclick = false;
 	}
-	
+	if (drawcontain)
+	{
+		drawContain(mcpainter);
+		drawcontain = false;
+	}
+	double dResult = (double)(clock() - lBefore) / CLOCKS_PER_SEC;
+	std::cout << "dataview绘制处理时间：" << dResult << "s" << std::endl;
 }
 //绘制黑框;
 void lmDataView::drawBackGround(QPainter& cpainter)
@@ -115,14 +131,7 @@ void lmDataView::drawBackGround(QPainter& cpainter)
 			}
 			else
 			{
-				if (row < 17/* * sqSize[formatType]*/ && column < 17/* * sqSize[formatType]*/)
-					cpainter.setPen(QPen(Qt::black));
-				if (row < 17/* * sqSize[formatType]*/ && column >= 17/* * sqSize[formatType]*/)
-					cpainter.setPen(QPen(Qt::yellow));
-				if (row >= 17/* * sqSize[formatType]*/ && column < 17/* * sqSize[formatType]*/)
-					cpainter.setPen(QPen(Qt::blue));
-				if (row >= 17 /* * sqSize[formatType]*/ && column >= 17/* * sqSize[formatType]*/)
-					cpainter.setPen(QPen(Qt::red));
+				cpainter.setPen(QPen(color[chInfo(column-1, row-1)]));
 				cpainter.drawRect(column*sqSize[formatType], row*sqSize[formatType], sqSize[formatType], sqSize[formatType]);
 			}
 
@@ -148,21 +157,57 @@ void lmDataView::drawinfomation(QPainter& cpainter)
 	QFont displayFont;
 	cpainter.setFont(displayFont);
 	QFontMetrics fontMetrics(displayFont);
+	cpainter.setPen(QPen(Qt::black));
 	int iwidthInDrawArea = lastPositionClikedInDrawArea % ViewSize[formatType][1];
 	int iheightInDrawArea = lastPositionClikedInDrawArea / ViewSize[formatType][1];
 	QString ch;
-	if (iwidthInDrawArea<16&& iheightInDrawArea<16)
+	ch = cha[chInfo(iwidthInDrawArea, iheightInDrawArea)];
+	QString V = "(channel:" + ch + ",postionInImage:" + QString::fromStdString(std::to_string(iwidthInDrawArea + mXIn16))+","+ QString::fromStdString(std::to_string(iheightInDrawArea + mYIn16))+")";
+	//绘制文字信息;
+	cpainter.drawText(ViewSize[formatType][1] * (sqSize[formatType]>>1) + (sqSize[formatType] / 2) - fontMetrics.width(V) / 2, (ViewSize[formatType][0]+1) *sqSize[formatType] + sqSize[formatType] / 4 + fontMetrics.ascent(), V);
+	//绘制坐标指示线;
+	cpainter.setPen(QPen(QColor(192,32,32)));
+	cpainter.drawLine((iwidthInDrawArea+1)*sqSize[formatType]+ (sqSize[formatType] >> 1),0, (iwidthInDrawArea + 1)*sqSize[formatType] + (sqSize[formatType] >> 1), sqSize[formatType]* (2+ViewSize[formatType][0]));
+	cpainter.drawLine(0, (iheightInDrawArea + 1)*sqSize[formatType] + (sqSize[formatType] >> 1), sqSize[formatType] * (2 + ViewSize[formatType][1]), (iheightInDrawArea + 1)*sqSize[formatType] + (sqSize[formatType] >> 1));
+}
+//判断通道信息;ret=0:Y;ret=1:U;ret=2:V;
+int lmDataView::chInfo(int x, int y)
+{
+	//400和444格式;
+	if (formatType == 0 || formatType == 2)
 	{
-		ch = "Y";
-	}
-	else if(iheightInDrawArea<16)
-	{
-		ch = "U";
+		if (y < lRect && x < lRect)
+			return 0;
+		if (y < lRect && x >= lRect)
+			return 2;
+		if (y >= lRect&& x < lRect)
+			return 1;
 	}
 	else
 	{
-		ch = "V";
+		if (y < lRect && x < lRect)
+			return 0;
+		if (y < sRect && x >= lRect)
+			return 1;
+		if (y >= sRect && x >= lRect)
+			return 2;
 	}
-	QString V = "(" + ch + "," + QString::fromStdString(std::to_string(iwidthInDrawArea + mXIn16))+","+ QString::fromStdString(std::to_string(iheightInDrawArea + mYIn16))+")";
-	cpainter.drawText(ViewSize[formatType][1] * (sqSize[formatType]>>1) + (sqSize[formatType] / 2) - fontMetrics.width(V) / 2, (ViewSize[formatType][0]+1) *sqSize[formatType] + sqSize[formatType] / 4 + fontMetrics.ascent(), V);
+/*	if (y >= 17 && x >= 17)*/
+		return 3;
+}
+//计算VU通道在图片中的坐标;
+void lmDataView::chInfo(int ix, int iy, int &px, int &py)
+{
+	//int chType = chInfo(ix, iy);
+	//if (chType==1)
+	//	//U
+	//{
+
+	//}
+}
+
+void lmDataView::drawContain(QPainter&)
+{
+	std::cout << "更新数据内容" << std::endl;
+
 }
