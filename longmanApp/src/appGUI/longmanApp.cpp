@@ -238,12 +238,14 @@ void longmanApp::on_f1Button_clicked()
 	if (!showdataEnable)
 	{
 		m_DataView->show();
-		ui.YUVgroupBox->setEnabled(false);
+		ui.YUVgroupBox->setEnabled(showdataEnable);
+		ui.actionOpen->setEnabled(showdataEnable);
 	}
 	else
 	{
 		m_DataView->hide();	
-		ui.YUVgroupBox->setEnabled(true);
+		ui.YUVgroupBox->setEnabled(showdataEnable);
+		ui.actionOpen->setEnabled(showdataEnable);
 	}
 	longmanEvt showdata(EvtTYPE2);
 	showdata.setParam("CommandName", "show_yuvdata");

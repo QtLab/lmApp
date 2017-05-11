@@ -94,12 +94,13 @@ void lmDataView::paintEvent(QPaintEvent * event)
 	if (drawclick)
 	{
 		drawclicked(mcpainter);
+		drawContain(mcpainter);
 		drawclick = false;
 	}
 	if (drawcontain)
 	{
 		drawContain(mcpainter);
-		//drawcontain = false;
+		drawcontain = false;
 	}
 	double dResult = (double)(clock() - lBefore) / CLOCKS_PER_SEC;
 	std::cout << "dataview绘制处理时间：" << dResult << "s" << std::endl;
