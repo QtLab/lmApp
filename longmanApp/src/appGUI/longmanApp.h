@@ -28,6 +28,7 @@ private:
 	lmDataView* m_DataView;
 	QTimeLine timeLine;
 	QImage* imageSave;
+	lmParserBitConfigure *mBitParseCFG;
 private slots:
 void on_actionOpen_SHVC_bitstream_triggered();
 void on_actionOpen_triggered();

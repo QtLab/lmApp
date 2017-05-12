@@ -14,7 +14,8 @@ longmanApp::longmanApp(QWidget *parent)
 	m_imageView(new lmGraphView(this)),
 	msgBox(new lmMessageBox(this)),
 	imageSave(nullptr),
-	m_DataView(new lmDataView(this))
+	m_DataView(new lmDataView(this)),
+	mBitParseCFG(new lmParserBitConfigure(this))
 {
 	timeLine.stop();
 	ui.setupUi(this);
@@ -58,12 +59,17 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 
 void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
 {
-	lmParserBitConfigure mBitParseCFG(this);
-	if (mBitParseCFG.exec() == QDialog::Rejected)
-		return;
-	longmanEvt parsestream(EvtTYPE2);
-	parsestream.setParam("CommandName", "parse_shvcbitstream");
-	parsestream.dispatch();
+	QString bspath;
+	int layertobedecode = 0;
+	if (mBitParseCFG->exec() == QDialog::Accepted&&mBitParseCFG->getcfg(bspath, layertobedecode))
+		{
+			longmanEvt parsestream(EvtTYPE2);
+			parsestream.setParam("CommandName", "parse_shvcbitstream");
+			parsestream.setParam("bitstream_path", bspath);
+			parsestream.setParam("layer_num", layertobedecode);
+			parsestream.dispatch();
+		}
+
 
 }
 
@@ -74,12 +80,12 @@ void longmanApp::on_actionOpen_triggered()
 		ui.FrameIdxSlider->setMinimum(-1);
 		ui.FrameIdxSlider->setValue(-1);
 	}
-	QFileDialog dialog(this, QStringLiteral("打开YUV文件"));
+	QFileDialog dialog(this, QStringLiteral("open yuv file"));
 	if (OpenNum == -1) {
 		const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 		dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
 	}
-	dialog.setNameFilter(QStringLiteral("YUV 文件 (*.yuv)"));//文件格式设置;
+	dialog.setNameFilter(QStringLiteral("YUV file (*.yuv)"));//文件格式设置;
 	QString FliePath; //QString YuvName("v");
 	if (dialog.exec() != QDialog::Accepted && dialog.selectedFiles().isEmpty())
 		return;
