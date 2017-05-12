@@ -1,16 +1,16 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'lmMessageBox.h'
+** Meta object code from reading C++ file 'lmParserBitConfigure.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../src/appGUI/lmMessageBox.h"
+#include "../../src/appGUI/lmParserBitConfigure.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'lmMessageBox.h' doesn't include <QObject>."
+#error "The header file 'lmParserBitConfigure.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -18,25 +18,25 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-struct qt_meta_stringdata_lmMessageBox_t {
+struct qt_meta_stringdata_lmParserBitConfigure_t {
     QByteArrayData data[1];
-    char stringdata0[13];
+    char stringdata0[21];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_lmMessageBox_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_lmParserBitConfigure_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_lmMessageBox_t qt_meta_stringdata_lmMessageBox = {
+static const qt_meta_stringdata_lmParserBitConfigure_t qt_meta_stringdata_lmParserBitConfigure = {
     {
-QT_MOC_LITERAL(0, 0, 12) // "lmMessageBox"
+QT_MOC_LITERAL(0, 0, 20) // "lmParserBitConfigure"
 
     },
-    "lmMessageBox"
+    "lmParserBitConfigure"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_lmMessageBox[] = {
+static const uint qt_meta_data_lmParserBitConfigure[] = {
 
  // content:
        7,       // revision
@@ -52,7 +52,7 @@ static const uint qt_meta_data_lmMessageBox[] = {
        0        // eod
 };
 
-void lmMessageBox::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void lmParserBitConfigure::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     Q_UNUSED(_o);
     Q_UNUSED(_id);
@@ -60,30 +60,28 @@ void lmMessageBox::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
     Q_UNUSED(_a);
 }
 
-const QMetaObject lmMessageBox::staticMetaObject = {
-    { &QMessageBox::staticMetaObject, qt_meta_stringdata_lmMessageBox.data,
-      qt_meta_data_lmMessageBox,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+const QMetaObject lmParserBitConfigure::staticMetaObject = {
+    { &QDialog::staticMetaObject, qt_meta_stringdata_lmParserBitConfigure.data,
+      qt_meta_data_lmParserBitConfigure,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
 
-const QMetaObject *lmMessageBox::metaObject() const
+const QMetaObject *lmParserBitConfigure::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *lmMessageBox::qt_metacast(const char *_clname)
+void *lmParserBitConfigure::qt_metacast(const char *_clname)
 {
     if (!_clname) return Q_NULLPTR;
-    if (!strcmp(_clname, qt_meta_stringdata_lmMessageBox.stringdata0))
-        return static_cast<void*>(const_cast< lmMessageBox*>(this));
-    if (!strcmp(_clname, "lmView"))
-        return static_cast< lmView*>(const_cast< lmMessageBox*>(this));
-    return QMessageBox::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_lmParserBitConfigure.stringdata0))
+        return static_cast<void*>(const_cast< lmParserBitConfigure*>(this));
+    return QDialog::qt_metacast(_clname);
 }
 
-int lmMessageBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int lmParserBitConfigure::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QMessageBox::qt_metacall(_c, _id, _a);
+    _id = QDialog::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     return _id;

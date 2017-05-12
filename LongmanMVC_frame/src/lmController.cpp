@@ -7,7 +7,8 @@ const char *cmdtable[] =
 {
 	"open_yuvfile",//+文件路径+宽+高+格式(格式转换规则见lmData.cpp);
 	"change_imagepoc",//+目标POC+是否强制读取数据(针对固定窗口数据存储方式)+是否恢复上次文件关联(针对已打开文件后的打开失败场景);
-	"show_yuvdata"
+	"show_yuvdata",//请在整个工程查找该命令，以获取其参数;
+	"parse_shvcbitstream"//解码SHVC码流
 };
 ////绑定命令和相应的处理函数,增加命令时必须添加代码;
 void lmController::xcmdInti()
@@ -18,6 +19,8 @@ void lmController::xcmdInti()
 	workThread.addCommandHandle(cmdtable[1], pcCmdHandle1);
 	CallBackFunc pcCmdHandle2 = std::bind(&cmdProcessThread::showyuvData, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[2], pcCmdHandle2);
+	CallBackFunc pcCmdHandle3 = std::bind(&cmdProcessThread::parseSHVCBitBtream, &workThread, std::placeholders::_1);
+	workThread.addCommandHandle(cmdtable[3], pcCmdHandle3);
 	//callController msgfromworkthread= std::bind(&lmController::sendMsg, this, std::placeholders::_1);
 	//workThread.setMsgSendHandle(msgfromworkthread);
 

@@ -56,6 +56,17 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	return true;
 }
 
+void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
+{
+	lmParserBitConfigure mBitParseCFG(this);
+	if (mBitParseCFG.exec() == QDialog::Rejected)
+		return;
+	longmanEvt parsestream(EvtTYPE2);
+	parsestream.setParam("CommandName", "parse_shvcbitstream");
+	parsestream.dispatch();
+
+}
+
 void longmanApp::on_actionOpen_triggered()
 {
 	if (OpenNum==-1)

@@ -94,6 +94,9 @@
     <ClInclude Include="src\appData\lmImageDrawFuc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_lmParserBitConfigure.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -174,6 +177,24 @@
     <ClCompile Include="src\appData\lmNormalDraw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_lmParserBitConfigure.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_lmParserBitConfigure.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\appGUI\lmParserBitConfigure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_lmParseStreamPro.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_lmParseStreamPro.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\appData\lmParseStreamPro.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\appGUI\longmanApp.h">
@@ -207,6 +228,15 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="src\appGUI\norwegianwoodstyle.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\appGUI\lmParserBitConfigure.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\appGUI\lmParserBitConfigure.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\appData\lmParseStreamPro.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

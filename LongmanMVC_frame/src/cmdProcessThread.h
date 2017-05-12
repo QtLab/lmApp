@@ -10,6 +10,7 @@
 #include "src/lmTYPE.h"
 #include "src/lmmodel.h"
 #include "..\longmanApp\src\appData\lmData.h"
+#include "..\longmanApp\src\appData\lmParseStreamPro.h"
 #include "..\longmanApp\src\appData\lmImageDraw.h"
 #include "..\longmanApp\src\appData\lmNormalDraw.h"
 typedef std::list<longmanEvt*> EvtQue;
@@ -41,15 +42,23 @@ protected:
 	void run() Q_DECL_OVERRIDE;
 private:
 	void handleCmd(longmanEvt&);
+	//EvtTYPE2类型的Event的列队;
 	EvtQue evtue;
 	CallBackFuncList _commandTable;
+	//yuv数据模块;
 	lmData dataModel;
-	QImage mImage;
+	//当前显示的图片模块;
+	QImage mImage;	
+	//上次成功打开的yuv参数;
 	cyuvParam lastyuvParam;
+	//绘制模块,使用了简单的装饰模式,以便后续功能的扩展和叠加;
 	lmImageDrawBase *mImageDraw;
+	//SHVC码流解析模块;
+	lmParseStreamPro *mparsestream;
 public:
 	bool openyuvfile(longmanEvt&);
 	bool changeimagepoc(longmanEvt&);
 	bool showyuvData(longmanEvt&);
+	bool parseSHVCBitBtream(longmanEvt&);
 };
 #endif // cmdProcessThread_h__

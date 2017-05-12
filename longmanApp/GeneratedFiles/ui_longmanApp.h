@@ -41,6 +41,7 @@ public:
     QAction *actionAbout;
     QAction *action;
     QAction *actionAboutQT;
+    QAction *actionOpen_SHVC_bitstream;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -113,6 +114,8 @@ public:
         action->setObjectName(QStringLiteral("action"));
         actionAboutQT = new QAction(longmanAppClass);
         actionAboutQT->setObjectName(QStringLiteral("actionAboutQT"));
+        actionOpen_SHVC_bitstream = new QAction(longmanAppClass);
+        actionOpen_SHVC_bitstream->setObjectName(QStringLiteral("actionOpen_SHVC_bitstream"));
         centralWidget = new QWidget(longmanAppClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         longmanAppClass->setCentralWidget(centralWidget);
@@ -409,6 +412,7 @@ public:
         menuBar->addAction(menuAbout->menuAction());
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave_as_image);
+        menuFile->addAction(actionOpen_SHVC_bitstream);
         menuAbout->addAction(actionAbout);
         menuAbout->addAction(actionAboutQT);
 
@@ -426,6 +430,7 @@ public:
         actionAbout->setText(QApplication::translate("longmanAppClass", "about", 0));
         action->setText(QApplication::translate("longmanAppClass", "aboutQT", 0));
         actionAboutQT->setText(QApplication::translate("longmanAppClass", "aboutQT", 0));
+        actionOpen_SHVC_bitstream->setText(QApplication::translate("longmanAppClass", "open SHVC bitstream", 0));
         menuFile->setTitle(QApplication::translate("longmanAppClass", "file", 0));
         menuEdit->setTitle(QApplication::translate("longmanAppClass", "edit", 0));
         menuAbout->setTitle(QApplication::translate("longmanAppClass", "about", 0));

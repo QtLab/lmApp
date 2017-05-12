@@ -35,6 +35,7 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave_as_image"/>
+    <addaction name="actionOpen_SHVC_bitstream"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -438,6 +439,11 @@
   <action name="actionAboutQT">
    <property name="text">
     <string>aboutQT</string>
+   </property>
+  </action>
+  <action name="actionOpen_SHVC_bitstream">
+   <property name="text">
+    <string>open SHVC bitstream</string>
    </property>
   </action>
  </widget>

@@ -208,6 +208,12 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 	return true;
 }
 
+bool cmdProcessThread::parseSHVCBitBtream(longmanEvt&)
+{
+	std::cout << "½âÎöSHVCÂëÁ÷!" << std::endl;
+	return true;
+}
+
 void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 {
 	CallBackFuncList::iterator m_cmdHandlef;

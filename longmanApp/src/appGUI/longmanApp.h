@@ -12,6 +12,7 @@
 #include "yuvParamSet.h"
 #include "lmMessageBox.h"
 #include "lmDataView.h"
+#include "lmParserBitConfigure.h"
 //主界面，额外继承了lmView，通过listenParam接口设定响应函数;
 class longmanApp : public QMainWindow ,public lmView
 {
@@ -28,7 +29,7 @@ private:
 	QTimeLine timeLine;
 	QImage* imageSave;
 private slots:
-//void on_actionOpen_clicked();
+void on_actionOpen_SHVC_bitstream_triggered();
 void on_actionOpen_triggered();
 void on_actionAbout_triggered();
 void on_actionAboutQT_triggered();
