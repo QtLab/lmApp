@@ -54,7 +54,7 @@ private:
 	//绘制模块,使用了简单的装饰模式,以便后续功能的扩展和叠加;
 	lmImageDrawBase *mImageDraw;
 	//SHVC码流解析模块;
-	lmParseStreamPro *mparsestream;
+	//lmParseStreamPro *mparsestream;
 public:
 	bool openyuvfile(longmanEvt&);
 	bool changeimagepoc(longmanEvt&);

@@ -7,6 +7,7 @@ cmdProcessThread::cmdProcessThread(QObject *parent):QThread(parent)
 {
 	//被装饰者实例化;
 	mImageDraw = new lmImageDraw;
+	//mparsestream = new lmParseStreamPro(this);
 }
 cmdProcessThread::~cmdProcessThread()
 {
@@ -208,9 +209,18 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 	return true;
 }
 
-bool cmdProcessThread::parseSHVCBitBtream(longmanEvt&)
+bool cmdProcessThread::parseSHVCBitBtream(longmanEvt& rEvt)
 {
 	std::cout << "解析SHVC码流!" << std::endl;
+	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
+	int layerNum = rEvt.getParam("layer_num").toInt();
+	bool decodesuccessed = false;
+	lmParseStreamPro mparsestream(nullptr);
+	decodesuccessed=mparsestream.decoderBitstream(bitstream, layerNum);
+	//if (!decodesuccessed)
+	//{
+
+	//}
 	return true;
 }
 

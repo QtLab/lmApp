@@ -9,6 +9,7 @@ class lmParseStreamPro : public QObject
 public:
 	lmParseStreamPro(QObject *parent);
 	~lmParseStreamPro();
+	bool decoderBitstream(const std::string &,int);
 private:
 	QProcess mCallDecoderEXE;
 };
