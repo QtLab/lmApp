@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
 	
 	QApplication a(argc, argv);
-	QApplication::setStyle(new NorwegianWoodStyle);
+	//QApplication::setStyle(new NorwegianWoodStyle);
 	QIcon icon;
 	icon.addFile(QStringLiteral(":/appicon/app.ico"), QSize(), QIcon::Normal, QIcon::Off);
 	QApplication::setWindowIcon(icon);

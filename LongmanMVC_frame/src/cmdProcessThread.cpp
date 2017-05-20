@@ -196,6 +196,7 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 	mImageDraw = new lmNormalDraw(mImageDraw, iXmouse, iYmouse, dataModel.getimageWidth(), dataModel.getimageHeight());
 	//通知图片显示类;
 	QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
+
 	longmanEvt lmgraphview(EvtTYPE1);
 	lmgraphview.setParam("CommandName", "update_image");
 	lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
