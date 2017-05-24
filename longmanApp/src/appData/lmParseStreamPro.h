@@ -7,7 +7,7 @@ class lmParseStreamPro : public QObject
 	Q_OBJECT
 
 public:
-	lmParseStreamPro(QObject *parent);
+	lmParseStreamPro(QObject *parent=Q_NULLPTR);
 	~lmParseStreamPro();
 	bool decoderBitstream(const std::string &,int);
 private:

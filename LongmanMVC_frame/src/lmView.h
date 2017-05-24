@@ -9,7 +9,7 @@
 class lmView:public lmmodel
 {
 public:
-	lmView(lmEvtBus *evtBus=nullptr);
+	explicit lmView(lmEvtBus *evtBus=nullptr);
 	~lmView();
 	void listenParam(const std::string & , const CallBackFunc&);
 	bool handlevt(longmanEvt&);

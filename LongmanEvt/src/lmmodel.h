@@ -6,7 +6,7 @@
 class lmmodel
 {
 public:
-	lmmodel(lmEvtBus *evtBus);
+	explicit lmmodel(lmEvtBus *evtBus);
 	/*~lmmodel();*/
 	void subscribeEvt(const std::string&, const CallBackFunc&);
 	void unsubcribeEvt(const std::string&);

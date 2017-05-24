@@ -27,7 +27,7 @@ private:
 	int imageWidth;
 	int imageHeight;
 
-	QPixmap  *mImage;
+	QPixmap  *mImage;//Щїжи
 protected:
 	void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 	virtual void mousePressEvent(QMouseEvent * event);

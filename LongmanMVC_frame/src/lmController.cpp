@@ -23,7 +23,7 @@ void lmController::xcmdInti()
 	workThread.addCommandHandle(cmdtable[3], pcCmdHandle3);
 	//callController msgfromworkthread= std::bind(&lmController::sendMsg, this, std::placeholders::_1);
 	//workThread.setMsgSendHandle(msgfromworkthread);
-
+	workThread.setParseEXE(&mStreamParse);
 }
 
 bool lmController::sendMsg(const std::string& iEvtInfo)

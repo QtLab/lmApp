@@ -60,5 +60,8 @@ public:
 	bool changeimagepoc(longmanEvt&);
 	bool showyuvData(longmanEvt&);
 	bool parseSHVCBitBtream(longmanEvt&);
+	void setParseEXE(lmParseStreamPro *pStreamParse) { mStreamParse = pStreamParse; };
+private:
+	lmParseStreamPro *mStreamParse = nullptr;
 };
 #endif // cmdProcessThread_h__

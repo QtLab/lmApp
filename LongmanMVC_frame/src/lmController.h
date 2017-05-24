@@ -18,13 +18,15 @@ public:
 private:
 	void xcmdInti();
 	bool sendMsg(const std::string&);
-	lmController(lmEvtBus *evtBus);
+	//构造函数私有，以配合单例模式;
+	explicit lmController(lmEvtBus *evtBus);
 	static lmController* _mInstance;
 	CallBackFuncList mCallBacklist;
 	cmdProcessThread workThread;
 	longmanEvt workThreadMsg;
 	int maxQue;
 	bool EvtQueFull;
+	lmParseStreamPro mStreamParse;
 };
 #endif // lmController_h__
 

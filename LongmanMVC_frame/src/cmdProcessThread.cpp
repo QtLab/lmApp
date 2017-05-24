@@ -216,12 +216,7 @@ bool cmdProcessThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
 	int layerNum = rEvt.getParam("layer_num").toInt();
 	bool decodesuccessed = false;
-	lmParseStreamPro mparsestream(nullptr);
-	decodesuccessed=mparsestream.decoderBitstream(bitstream, layerNum);
-	//if (!decodesuccessed)
-	//{
-
-	//}
+	decodesuccessed= mStreamParse->decoderBitstream(bitstream, layerNum);
 	return true;
 }
 
