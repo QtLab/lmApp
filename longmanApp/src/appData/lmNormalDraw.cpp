@@ -20,6 +20,7 @@ lmNormalDraw::lmNormalDraw(lmImageDrawBase * pcDrawBase):
 
 lmNormalDraw::~lmNormalDraw()
 {
+	
 }
 
 QPixmap * lmNormalDraw::lmDraw(QImage &iDrawMap)
