@@ -9,7 +9,7 @@ class lmImageDrawBase
 {
 public:
 	lmImageDrawBase() {};
-	virtual ~lmImageDrawBase() {};
+	virtual ~lmImageDrawBase() = 0;
 	virtual QPixmap *lmDraw(QImage &iDrawMap) = 0;
 };
 #endif // lmImageDrawBase_h__

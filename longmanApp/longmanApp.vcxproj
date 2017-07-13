@@ -168,6 +168,7 @@
     </ClCompile>
     <ClCompile Include="src\appData\lmData.cpp" />
     <ClCompile Include="src\appData\lmImageDraw.cpp" />
+    <ClCompile Include="src\appData\lmImageDrawBase.cpp" />
     <ClCompile Include="src\appData\lmNormalDraw.cpp" />
     <ClCompile Include="src\appData\lmParseStreamPro.cpp" />
     <ClCompile Include="src\appData\TComChromaFormat.cpp" />
