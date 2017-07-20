@@ -20,7 +20,6 @@ public:
 private:
 	void xcmdInti();
 	bool sendMsg(const std::string&);
-	void note(bool s);
 	//构造函数私有，以配合单例模式;
 	explicit lmController(lmEvtBus *evtBus);
 	static lmController* _mInstance;
