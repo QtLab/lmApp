@@ -19,8 +19,10 @@ void lmController::xcmdInti()
 	workThread.addCommandHandle(cmdtable[1], pcCmdHandle1);
 	CallBackFunc pcCmdHandle2 = std::bind(&cmdProcessThread::showyuvData, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[2], pcCmdHandle2);
-	//CallBackFunc pcCmdHandle3 = std::bind(&lmController::parseSHVCBitBtream, this, std::placeholders::_1);
-	//workThread.addCommandHandle(cmdtable[3], pcCmdHandle3);
+	CallBackFunc pcCmdHandle3 = std::bind(&lmController::parseSHVCBitBtream, this, std::placeholders::_1);
+	workThread.addCommandHandle(cmdtable[3], pcCmdHandle3);
+	CallBackFunc pcCmdHandle3_dethread = std::bind(&lmDecodeThread::parseSHVCBitBtream, &pDecoder, std::placeholders::_1);
+	pDecoder.addCommandHandle(cmdtable[3], pcCmdHandle3_dethread);
 	//callController msgfromworkthread= std::bind(&lmController::sendMsg, this, std::placeholders::_1);
 	//workThread.setMsgSendHandle(msgfromworkthread);
 	//workThread.setParseEXE(&mStreamParse);
@@ -56,12 +58,12 @@ lmController::~lmController()
 //将EvtTYPE2事件推入事件列队,唤醒工作线程进行处理;
 bool lmController::handlevt(longmanEvt& pEvt)
 {
-	//预处理事件：拦截parse_shvcbitstream事件;
+	////预处理事件：拦截parse_shvcbitstream事件;
 	if (pEvt.getParam("CommandName") == "parse_shvcbitstream")
-		parseSHVCBitBtream(pEvt);
-	//推入工作线程事件列表;
-	else
-	{
+		pDecoder.start();
+		////推入工作线程事件列表;
+	//else
+	//{
 		EvtQue &evtue = workThread.getEvtQue();
 		if (evtue.size() >= maxQue)
 		{
@@ -82,7 +84,7 @@ bool lmController::handlevt(longmanEvt& pEvt)
 		workThread.start();
 	else
 		workThread.condition.wakeOne();
-	}
+	/*}*/
 	return true;
 }
 //将lmController的派生类的回调函数加入列表，类似于model的subscribeEvt函数
@@ -113,24 +115,37 @@ void lmController::recoverhandle(cyuvParam& yuvParam)
 
 bool lmController::parseSHVCBitBtream(longmanEvt& rEvt)
 {
-	lmParseStreamPro mStreamParse;
-	std::cout << "解析SHVC码流!" << std::endl;
-	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
-	int layerNum = rEvt.getParam("layer_num").toInt();
-	sendMsg("waiting decoding...");
-	//longmanEvt testmsg(EvtTYPE1);
-	//testmsg.setParam("CommandName", "show_message");
-	//testmsg.setParam("MsgType", 0);
-	//testmsg.setParam("info", "waiting decoding...");
-	//testmsg.dispatch();
-	bool decodeSuccessed = false;
-	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, layerNum);
-	//if (decodeSuccessed)
-	//{
-	//	longmanEvt testmsg(EvtTYPE1);
-	//	testmsg.setParam("CommandName", "show_message");
-	//	testmsg.setParam("isHide", true);
-	//	testmsg.dispatch();
-	//}
+	EvtQue &evtue = pDecoder.getEvtQue();
+	QMutexLocker locker(&pDecoder.getMutx());
+	evtue.push_back(rEvt.clone());
+	if (!pDecoder.isRunning())
+		pDecoder.start();
+	else
+		pDecoder.getCondition().wakeOne(); 
+
 	return true;
 }
+
+// bool lmController::parseSHVCBitBtream(longmanEvt& rEvt)
+// {
+// 	lmParseStreamPro mStreamParse;
+// 	std::cout << "解析SHVC码流!" << std::endl;
+// 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
+// 	int layerNum = rEvt.getParam("layer_num").toInt();
+// 	sendMsg("waiting decoding...");
+// 	//longmanEvt testmsg(EvtTYPE1);
+// 	//testmsg.setParam("CommandName", "show_message");
+// 	//testmsg.setParam("MsgType", 0);
+// 	//testmsg.setParam("info", "waiting decoding...");
+// 	//testmsg.dispatch();
+// 	bool decodeSuccessed = false;
+// 	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, layerNum);
+// 	//if (decodeSuccessed)
+// 	//{
+// 	//	longmanEvt testmsg(EvtTYPE1);
+// 	//	testmsg.setParam("CommandName", "show_message");
+// 	//	testmsg.setParam("isHide", true);
+// 	//	testmsg.dispatch();
+// 	//}
+// 	return true;
+// }
