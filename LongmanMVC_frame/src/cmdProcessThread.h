@@ -13,7 +13,6 @@
 #include "..\longmanApp\src\appData\lmParseStreamPro.h"
 #include "..\longmanApp\src\appData\lmImageDraw.h"
 #include "..\longmanApp\src\appData\lmNormalDraw.h"
-typedef std::list<longmanEvt*> EvtQue;
 //（目前）作用:在工作线程中处理EvtTYPE2类型的Event,建立简单的Event缓冲机制;
 //
 struct cyuvParam
@@ -59,9 +58,9 @@ public:
 	bool openyuvfile(longmanEvt&);
 	bool changeimagepoc(longmanEvt&);
 	bool showyuvData(longmanEvt&);
-	bool parseSHVCBitBtream(longmanEvt&);
-	void setParseEXE(lmParseStreamPro *pStreamParse) { mStreamParse = pStreamParse; };
-private:
-	lmParseStreamPro *mStreamParse = nullptr;
+	//bool parseSHVCBitBtream(longmanEvt&);
+	//void setParseEXE(lmParseStreamPro *pStreamParse) { mStreamParse = pStreamParse; };
+//private:
+	//lmParseStreamPro *mStreamParse = nullptr;
 };
 #endif // cmdProcessThread_h__

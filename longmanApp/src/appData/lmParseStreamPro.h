@@ -12,5 +12,6 @@ public:
 	bool decoderBitstream(const std::string &,int);
 private:
 	QProcess mCallDecoderEXE;
+	
 };
 #endif // lmParseStreamPro_h__

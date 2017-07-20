@@ -210,15 +210,15 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 	return true;
 }
 
-bool cmdProcessThread::parseSHVCBitBtream(longmanEvt& rEvt)
-{
-	std::cout << "解析SHVC码流!" << std::endl;
-	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
-	int layerNum = rEvt.getParam("layer_num").toInt();
-	bool decodesuccessed = false;
-	decodesuccessed= mStreamParse->decoderBitstream(bitstream, layerNum);
-	return true;
-}
+// bool cmdProcessThread::parseSHVCBitBtream(longmanEvt& rEvt)
+// {
+// 	std::cout << "解析SHVC码流!" << std::endl;
+// 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
+// 	int layerNum = rEvt.getParam("layer_num").toInt();
+// 	bool decodesuccessed = false;
+// 	decodesuccessed= mStreamParse->decoderBitstream(bitstream, layerNum);
+// 	return true;
+// }
 
 void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 {

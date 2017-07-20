@@ -27,13 +27,19 @@ bool lmMessageBox::handleMsgEvt(longmanEvt& rMsgEvt)
 	paramlist::const_iterator paramBeg;
 	paramlist::const_iterator paramEnd;
 	rMsgEvt.getParamIter(paramBeg, paramEnd);
+	bool hideFlag = false;
 	for (auto i = paramBeg; i != paramEnd; ++i)
 	{
 		if (i->first== "MsgType")
 			setIcon(msgType[i->second.toInt()]);
 		if (i->first == "info")
 			setText(i->second.toString());
+		if (i->first == "isHide")
+			hideFlag = i->second.toBool();
 	}
-	show();
+	if (!hideFlag)
+		show();
+	else
+		hide();
 	return true;
 }

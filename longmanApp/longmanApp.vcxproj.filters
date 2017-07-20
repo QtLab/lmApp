@@ -198,6 +198,15 @@
     <ClCompile Include="src\appData\lmImageDrawBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_lmDecodeThread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_lmDecodeThread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\appData\lmDecodeThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\appGUI\longmanApp.h">
@@ -240,6 +249,9 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="src\appData\lmParseStreamPro.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\appData\lmDecodeThread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -19,11 +19,11 @@ void lmController::xcmdInti()
 	workThread.addCommandHandle(cmdtable[1], pcCmdHandle1);
 	CallBackFunc pcCmdHandle2 = std::bind(&cmdProcessThread::showyuvData, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[2], pcCmdHandle2);
-	CallBackFunc pcCmdHandle3 = std::bind(&cmdProcessThread::parseSHVCBitBtream, &workThread, std::placeholders::_1);
-	workThread.addCommandHandle(cmdtable[3], pcCmdHandle3);
+	//CallBackFunc pcCmdHandle3 = std::bind(&lmController::parseSHVCBitBtream, this, std::placeholders::_1);
+	//workThread.addCommandHandle(cmdtable[3], pcCmdHandle3);
 	//callController msgfromworkthread= std::bind(&lmController::sendMsg, this, std::placeholders::_1);
 	//workThread.setMsgSendHandle(msgfromworkthread);
-	workThread.setParseEXE(&mStreamParse);
+	//workThread.setParseEXE(&mStreamParse);
 }
 
 bool lmController::sendMsg(const std::string& iEvtInfo)
@@ -56,25 +56,33 @@ lmController::~lmController()
 //将EvtTYPE2事件推入事件列队,唤醒工作线程进行处理;
 bool lmController::handlevt(longmanEvt& pEvt)
 {
-	EvtQue &evtue = workThread.getEvtQue();
-	if (evtue.size() >= maxQue)
+	//预处理事件：拦截parse_shvcbitstream事件;
+	if (pEvt.getParam("CommandName") == "parse_shvcbitstream")
+		parseSHVCBitBtream(pEvt);
+	//推入工作线程事件列表;
+	else
 	{
-		longmanEvt testmsg(EvtTYPE1);
-		testmsg.setParam("CommandName", "show_message");
-		testmsg.setParam("MsgType", 0);
-		//std::string infoEvtQue = "too many command, "+std::to_string(evtue.size())+" commands left to handle!";
-		std::string infoEvtQue = "操作过快！/n还有 " + std::to_string(evtue.size()) + " 个事件等待处理!";
-		testmsg.setParam("info", QStringLiteral("对不起，处理过慢，排队事件超过20个！\n***************请等待！****************"));
-		testmsg.dispatch();
-		EvtQueFull = true;
-		return false;//排队事件过多;
-	}
-	QMutexLocker locker(&workThread.mutex);
-	evtue.push_back(pEvt.clone());
+		EvtQue &evtue = workThread.getEvtQue();
+		if (evtue.size() >= maxQue)
+		{
+			longmanEvt testmsg(EvtTYPE1);
+			testmsg.setParam("CommandName", "show_message");
+			testmsg.setParam("MsgType", 0);
+			//std::string infoEvtQue = "too many command, "+std::to_string(evtue.size())+" commands left to handle!";
+			std::string infoEvtQue = "操作过快！/n还有 " + std::to_string(evtue.size()) + " 个事件等待处理!";
+			testmsg.setParam("info", QStringLiteral("对不起，处理过慢，排队事件超过20个！\n***************请等待！****************"));
+			testmsg.dispatch();
+			EvtQueFull = true;
+			return false;//排队事件过多;
+		}
+		QMutexLocker locker(&workThread.mutex);
+		evtue.push_back(pEvt.clone());
+	
 	if (!workThread.isRunning())
 		workThread.start();
 	else
 		workThread.condition.wakeOne();
+	}
 	return true;
 }
 //将lmController的派生类的回调函数加入列表，类似于model的subscribeEvt函数
@@ -101,4 +109,28 @@ void lmController::recoverhandle(cyuvParam& yuvParam)
 	openyuv.setParam("yuv_height", QVariant::fromValue(yuvParam.mHeight));
 	openyuv.setParam("yuv_format", QVariant::fromValue(yuvParam.mFormat));
 	openyuv.dispatch();
+}
+
+bool lmController::parseSHVCBitBtream(longmanEvt& rEvt)
+{
+	lmParseStreamPro mStreamParse;
+	std::cout << "解析SHVC码流!" << std::endl;
+	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
+	int layerNum = rEvt.getParam("layer_num").toInt();
+	sendMsg("waiting decoding...");
+	//longmanEvt testmsg(EvtTYPE1);
+	//testmsg.setParam("CommandName", "show_message");
+	//testmsg.setParam("MsgType", 0);
+	//testmsg.setParam("info", "waiting decoding...");
+	//testmsg.dispatch();
+	bool decodeSuccessed = false;
+	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, layerNum);
+	//if (decodeSuccessed)
+	//{
+	//	longmanEvt testmsg(EvtTYPE1);
+	//	testmsg.setParam("CommandName", "show_message");
+	//	testmsg.setParam("isHide", true);
+	//	testmsg.dispatch();
+	//}
+	return true;
 }

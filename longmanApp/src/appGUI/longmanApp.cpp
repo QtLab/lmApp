@@ -60,7 +60,7 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
 {
 	QString bspath;
-	int layertobedecode = 0;
+	int layertobedecode = 1;
 #if 0
 	if (mBitParseCFG->exec() == QDialog::Accepted&&mBitParseCFG->getcfg(bspath, layertobedecode))
 		{
