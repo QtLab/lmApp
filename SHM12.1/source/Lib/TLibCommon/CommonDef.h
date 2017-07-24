@@ -42,7 +42,6 @@
 #include <iostream>
 #include <assert.h>
 #include <limits>
-
 #if _MSC_VER > 1000
 // disable "signed and unsigned mismatch"
 #pragma warning( disable : 4018 )
@@ -112,6 +111,7 @@ inline Int64 abs (Int64 x) { return _abs64(x); };
 #define NULL              0
 #endif
 
+//
 // ====================================================================================================================
 // Common constants
 // ====================================================================================================================

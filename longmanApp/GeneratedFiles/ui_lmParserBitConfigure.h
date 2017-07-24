@@ -34,9 +34,11 @@ public:
     QLabel *label;
     QLineEdit *lineEdit;
     QToolButton *toolButton;
+    QLabel *label_4;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_2;
     QSpinBox *spinBox;
+    QLabel *label_3;
     QSpacerItem *horizontalSpacer;
     QSpacerItem *verticalSpacer;
     QDialogButtonBox *buttonBox;
@@ -70,6 +72,11 @@ public:
 
         horizontalLayout->addWidget(toolButton);
 
+        label_4 = new QLabel(lmParserBitConfigure);
+        label_4->setObjectName(QStringLiteral("label_4"));
+
+        horizontalLayout->addWidget(label_4);
+
 
         verticalLayout->addLayout(horizontalLayout);
 
@@ -88,6 +95,11 @@ public:
         spinBox->setValue(2);
 
         horizontalLayout_2->addWidget(spinBox);
+
+        label_3 = new QLabel(lmParserBitConfigure);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        horizontalLayout_2->addWidget(label_3);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -119,7 +131,9 @@ public:
         lmParserBitConfigure->setWindowTitle(QApplication::translate("lmParserBitConfigure", "lmParserBitConfigure", 0));
         label->setText(QApplication::translate("lmParserBitConfigure", "bitstreampath", 0));
         toolButton->setText(QApplication::translate("lmParserBitConfigure", "...", 0));
+        label_4->setText(QApplication::translate("lmParserBitConfigure", "-b x", 0));
         label_2->setText(QApplication::translate("lmParserBitConfigure", "layersToBeDecoder", 0));
+        label_3->setText(QApplication::translate("lmParserBitConfigure", "-ls x", 0));
     } // retranslateUi
 
 };

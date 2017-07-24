@@ -1964,6 +1964,9 @@ Void TDecTop::xDecodeVPS(const std::vector<UChar> &naluData)
 
   xDeriveSmallestLayerId(vps);
 #endif
+  //获取VPS信息
+  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
+  lminfo->getVpsDecInfo(vps);
 }
 
 Void TDecTop::xDecodeSPS(const std::vector<UChar> &naluData)
@@ -1980,6 +1983,10 @@ Void TDecTop::xDecodeSPS(const std::vector<UChar> &naluData)
 #endif
   m_cEntropyDecoder.decodeSPS( sps );
   m_parameterSetManager.storeSPS(sps, naluData);
+
+  //获取SPS信息
+  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
+  lminfo->getSpsDecInfo(sps);
 }
 
 #if CGS_3D_ASYMLUT
