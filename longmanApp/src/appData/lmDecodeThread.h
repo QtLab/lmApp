@@ -7,6 +7,13 @@
 #include "src/lmmodel.h"
 #include "src/lmTYPE.h"
 #include "..\longmanApp\src\appData\lmParseStreamPro.h"
+struct bitSteInfo
+{
+	bitSteInfo() {};
+	int mWid=0;
+	int mHei=0;
+	int mFra=0;
+};
 class lmDecodeThread : public QThread
 {
 	Q_OBJECT
@@ -28,5 +35,6 @@ private:
 	CallBackFuncList _commandTable;
 	QMutex mutex;
 	QWaitCondition condition;
+	void xParseinfo();
 };
 #endif // lmDecodeThread_h__

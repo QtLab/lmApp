@@ -28,13 +28,8 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		testmsg.setParam("CommandName", "show_message");
 		testmsg.setParam("isHide", true);
 		testmsg.dispatch();
-		longmanEvt openyuv(EvtTYPE2);
-		openyuv.setParam("CommandName", "open_yuvfile");
-		openyuv.setParam("yuv_filePath", "..\\cache\\rec_layer1.yuv");
-		openyuv.setParam("yuv_width", 832);
-		openyuv.setParam("yuv_height", 480);
-		openyuv.setParam("yuv_format", 1);
-		openyuv.dispatch();
+		xParseinfo();
+
 	}
 	else
 	{
@@ -44,7 +39,7 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		testmsg.setParam("info", "decoding failed");
 		testmsg.dispatch();
 	}
-	return true;
+	return decodeSuccessed;
 }
 
 bool lmDecodeThread::addCommandHandle(const std::string& rpCmdName, CallBackFunc& pcCmdHandle)
@@ -100,4 +95,15 @@ void lmDecodeThread::handleCmd(longmanEvt& requstCmd)
 		m_cmdHandlef->second(requstCmd);
 	}
 	return;
+}
+
+void lmDecodeThread::xParseinfo()
+{
+	longmanEvt openyuv(EvtTYPE2);
+	openyuv.setParam("CommandName", "open_yuvfile");
+	openyuv.setParam("yuv_filePath", "..\\cache\\rec_layer1.yuv");
+	openyuv.setParam("yuv_width", 832);
+	openyuv.setParam("yuv_height", 480);
+	openyuv.setParam("yuv_format", 1);
+	openyuv.dispatch();
 }

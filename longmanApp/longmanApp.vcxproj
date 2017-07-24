@@ -277,6 +277,14 @@
   <ItemGroup>
     <Image Include="Resources\app.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LongmanEvt\LongmanEvt.vcxproj">
+      <Project>{b12702ad-abfb-343a-a199-8e24837244a3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LongmanMVC_frame\LongmanMVC_frame.vcxproj">
+      <Project>{4516d6e6-2e28-4275-a76b-3e296aced337}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4B28DCEA-5060-4969-A5A5-4F6332BE73F3}</ProjectGuid>
     <Keyword>Qt4VSv1.0</Keyword>

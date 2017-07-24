@@ -16,6 +16,7 @@ lmView(nullptr)
 	setStandardButtons(QMessageBox::Ignore| QMessageBox::Close);
 // 	setMinimumSize(this->size().width() / 4, this->size().height() / 4);
 // 	setMinimumSize(this->size().width() / 2, this->size().height() / 2);
+	//connect(this, SIGNAL(frameChanged(int)), this, SLOT(player(int)));
 }
 
 lmMessageBox::~lmMessageBox()

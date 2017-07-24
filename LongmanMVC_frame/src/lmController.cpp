@@ -77,13 +77,13 @@ bool lmController::handlevt(longmanEvt& pEvt)
 			EvtQueFull = true;
 			return false;//排队事件过多;
 		}
-		QMutexLocker locker(&workThread.mutex);
+		QMutexLocker locker(&workThread.getmutx());
 		evtue.push_back(pEvt.clone());
 	
 	if (!workThread.isRunning())
 		workThread.start();
 	else
-		workThread.condition.wakeOne();
+		workThread.getCondition().wakeOne();
 	/*}*/
 	return true;
 }

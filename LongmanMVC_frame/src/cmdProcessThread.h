@@ -32,8 +32,8 @@ public:
 	~cmdProcessThread();
 	bool addCommandHandle(const std::string& rpCmdName, CallBackFunc& pcCmdHandle);
 	EvtQue &getEvtQue() { return evtue; };
-	QMutex mutex;
-	QWaitCondition condition;
+	QMutex& getmutx() {return mutex;};
+	QWaitCondition& getCondition() {return condition;};
 	normalCallbacfun recoverhandle;
 	const cyuvParam getlastyuvParam() const { return lastyuvParam; };
 protected:
@@ -53,6 +53,8 @@ private:
 	lmImageDrawBase *mImageDraw;
 	//SHVCÂëÁ÷½âÎöÄ£¿é;
 	//lmParseStreamPro *mparsestream;
+	QMutex mutex;
+	QWaitCondition condition;
 public:
 	bool openyuvfile(longmanEvt&);
 	bool changeimagepoc(longmanEvt&);

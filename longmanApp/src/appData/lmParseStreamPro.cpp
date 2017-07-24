@@ -35,3 +35,8 @@ bool lmParseStreamPro::decoderBitstream(const std::string & rstrBitPath, int lay
 	return exeret;
 }
 
+void lmParseStreamPro::stopDecoding()
+{
+	mCallDecoderEXE.kill();
+}
+

@@ -10,6 +10,7 @@ public:
 	lmParseStreamPro(QObject *parent=Q_NULLPTR);
 	~lmParseStreamPro();
 	bool decoderBitstream(const std::string &,int);
+	void stopDecoding();
 private:
 	QProcess mCallDecoderEXE;
 	

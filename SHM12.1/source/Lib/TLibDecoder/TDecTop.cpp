@@ -803,7 +803,9 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
   m_apcSlicePilot->initSlice(); // the slice pilot is an object to prepare for a new slice
                                 // it is not associated with picture, sps or pps structures.
 #endif
-
+#if lmDecodeInfoOut
+  cout << "decode Slice" << "\n";
+#endif
   if (m_bFirstSliceInPicture)
   {
     m_uiSliceIdx = 0;
@@ -1938,7 +1940,10 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
 Void TDecTop::xDecodeVPS(const std::vector<UChar> &naluData)
 {
   TComVPS* vps = new TComVPS();
-
+  //Ω‚¬ÎVPS
+#if lmDecodeInfoOut
+  cout << "decode vps" << "\n";
+#endif
   m_cEntropyDecoder.decodeVPS( vps );
   m_parameterSetManager.storeVPS(vps, naluData);
 #if SVC_EXTENSION
@@ -1964,6 +1969,9 @@ Void TDecTop::xDecodeVPS(const std::vector<UChar> &naluData)
 Void TDecTop::xDecodeSPS(const std::vector<UChar> &naluData)
 {
   TComSPS* sps = new TComSPS();
+#if lmDecodeInfoOut
+  cout << "decode sps" <<"_layer_"<< m_layerId<< "\n";
+#endif
 #if O0043_BEST_EFFORT_DECODING
   sps->setForceDecodeBitDepth(m_forceDecodeBitDepth);
 #endif
@@ -1981,7 +1989,9 @@ Void TDecTop::xDecodePPS(const std::vector<UChar> &naluData)
 #endif
 {
   TComPPS* pps = new TComPPS();
-
+#if lmDecodeInfoOut
+  cout << "decode pps" << "\n";
+#endif
 #if SVC_EXTENSION
   pps->setLayerId( m_layerId );
 #endif

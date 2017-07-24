@@ -43,7 +43,7 @@
 #endif
 
 #include <vector>
-
+#define  lmDecodeInfoOut				 1
 #define SVC_EXTENSION                    1
 
 #if SVC_EXTENSION
