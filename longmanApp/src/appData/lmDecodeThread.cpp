@@ -1,4 +1,5 @@
 #include "lmDecodeThread.h"
+#include "../../../SHM12.1/source/Lib/lmdecInfo/lmAllDecInfo.h"
 //using std::cout;
 lmDecodeThread::lmDecodeThread(QObject *parent)
 	: QThread(parent)
@@ -99,6 +100,7 @@ void lmDecodeThread::handleCmd(longmanEvt& requstCmd)
 
 void lmDecodeThread::xParseinfo()
 {
+	lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
 	longmanEvt openyuv(EvtTYPE2);
 	openyuv.setParam("CommandName", "open_yuvfile");
 	openyuv.setParam("yuv_filePath", "..\\cache\\rec_layer1.yuv");

@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="..\source\Lib\libmd5\libmd5.h" />
     <ClInclude Include="..\source\Lib\libmd5\MD5.h" />
+    <ClInclude Include="..\source\Lib\lmdecInfo\lmAllDecInfo.h" />
+    <ClInclude Include="..\source\Lib\lmdecInfo\lmParaData.h" />
     <ClInclude Include="..\source\Lib\TLibCommon\AccessUnit.h" />
     <ClInclude Include="..\source\Lib\TLibCommon\CommonDef.h" />
     <ClInclude Include="..\source\Lib\TLibCommon\ContextModel.h" />
@@ -61,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\Lib\libmd5\libmd5.c" />
+    <ClCompile Include="..\source\Lib\lmdecInfo\lmAllDecInfo.cpp" />
+    <ClCompile Include="..\source\Lib\lmdecInfo\lmParaData.cpp" />
     <ClCompile Include="..\source\Lib\TLibCommon\ContextModel.cpp" />
     <ClCompile Include="..\source\Lib\TLibCommon\ContextModel3DBuffer.cpp" />
     <ClCompile Include="..\source\Lib\TLibCommon\Debug.cpp" />
@@ -165,10 +169,9 @@
       <AdditionalIncludeDirectories>..\source\Lib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -192,7 +195,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\source\Lib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\source\Lib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
