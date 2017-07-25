@@ -805,7 +805,13 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
 #endif
 #if lmDecodeInfoOut
   cout << "decode Slice" << "\n";
+
+  //尝试输出信息;
+  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
+  std::string outtxtpath = lminfo->txtpath();
+  lminfo->OutputPrintInfo(outtxtpath);
 #endif
+
   if (m_bFirstSliceInPicture)
   {
     m_uiSliceIdx = 0;
@@ -2008,6 +2014,9 @@ Void TDecTop::xDecodePPS(const std::vector<UChar> &naluData)
   m_cEntropyDecoder.decodePPS( pps );
 #endif
   m_parameterSetManager.storePPS( pps, naluData);
+  //获取PPS信息
+  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
+  lminfo->getPpsDecInfo(pps);
 }
 
 #if SVC_EXTENSION
