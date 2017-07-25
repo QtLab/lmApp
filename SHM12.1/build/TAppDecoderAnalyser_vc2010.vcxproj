@@ -193,14 +193,10 @@
     <ClCompile Include="..\source\App\TAppDecoder\decmain.cpp" />
     <ClCompile Include="..\source\App\TAppDecoder\TAppDecCfg.cpp" />
     <ClCompile Include="..\source\App\TAppDecoder\TAppDecTop.cpp" />
-    <ClCompile Include="..\source\Lib\lmdecInfo\lmAllDecInfo.cpp" />
-    <ClCompile Include="..\source\Lib\lmdecInfo\lmParaData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\App\TAppDecoder\TAppDecCfg.h" />
     <ClInclude Include="..\source\App\TAppDecoder\TAppDecTop.h" />
-    <ClInclude Include="..\source\Lib\lmdecInfo\lmAllDecInfo.h" />
-    <ClInclude Include="..\source\Lib\lmdecInfo\lmParaData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

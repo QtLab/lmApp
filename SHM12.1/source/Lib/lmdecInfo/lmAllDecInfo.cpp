@@ -23,6 +23,10 @@ bool lmAllDecInfo::getSpsDecInfo(const TComSPS* rcsps)
 	spsInfo msps;
 	msps.setspsIdx(rcsps->getSPSId());
 	msps.setlayerIdx(rcsps->getLayerId());
+	msps.setlumawidth(rcsps->getPicWidthInLumaSamples());
+	msps.setlumaheight(rcsps->getPicHeightInLumaSamples());
+	msps.setformat(rcsps->getChromaFormatIdc());
+	//msps.setbitdepth();
 	mSpsInf.push_back(msps);
 	return true;
 }

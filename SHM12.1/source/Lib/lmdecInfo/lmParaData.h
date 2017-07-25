@@ -1,6 +1,17 @@
 #ifndef lmParaData_h__
 #define lmParaData_h__
 #include <vector>
+class rpsInfo
+{
+public:
+	rpsInfo() :
+		rpsIdx(-1) {};
+	~rpsInfo(){};
+	void setrpsidx(int p) { rpsIdx = p; };
+private:
+	int rpsIdx;//vps的Id
+};
+
 class vpsInfo
 {
 public:
@@ -13,7 +24,6 @@ public:
 private:
 	int vpsIdx;//vps的Id
 	int maxlayer;//码流包含的最多层级;
-	
 };
 
 class spsInfo
@@ -40,6 +50,6 @@ private:
 	int mLumaWidth;
 	int mLumaHeight;
 	std::vector<int> mBitDepth{8,8,8};
-
+	std::vector<rpsInfo> rpslist;
 };
 #endif // lmParaData_h__
