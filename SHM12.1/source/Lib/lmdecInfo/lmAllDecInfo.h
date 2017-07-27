@@ -17,6 +17,11 @@ public:
 	//解码调用输出到文件;
 	bool OutputPrintInfo(const std::string &pPath);
 	const std::string& txtpath() { return mOutTxtpath; }
+	void clearAllData() {
+		mVpsInf.clear(); 
+		mSpsInf.clear();
+		mPpsInf.clear();
+	};
 private:
 	lmAllDecInfo();
 	static lmAllDecInfo* _instance;

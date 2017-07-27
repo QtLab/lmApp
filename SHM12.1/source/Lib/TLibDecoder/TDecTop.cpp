@@ -803,14 +803,7 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
   m_apcSlicePilot->initSlice(); // the slice pilot is an object to prepare for a new slice
                                 // it is not associated with picture, sps or pps structures.
 #endif
-#if lmDecodeInfoOut
-  cout << "decode Slice" << "\n";
-
-  //尝试输出信息;
-  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
-  std::string outtxtpath = lminfo->txtpath();
-  lminfo->OutputPrintInfo(outtxtpath);
-#endif
+ 
 
   if (m_bFirstSliceInPicture)
   {
@@ -1404,7 +1397,42 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
 
   // actual decoding starts here
   xActivateParameterSets();
-
+  //运行到这里，应该所有参数集合都正式解码完了;
+#if lmDecodeInfoOut
+  {
+	
+	  cout << "get PS information" << "\n";
+	  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
+	  ParameterSetManager &allPS = m_parameterSetManager;
+	  int i = 0;
+	  TComVPS*      fvps = allPS.getVPS(i);
+	  while (fvps!=nullptr)
+	  {
+		  lminfo->getVpsDecInfo(fvps);
+		  i++;
+		  fvps = allPS.getVPS(i);
+	  }
+	  i = 0;
+	  TComSPS*      fsps = allPS.getSPS(i);
+	  while (fsps != nullptr)
+	  {
+		  lminfo->getSpsDecInfo(fsps);
+		  i++;
+		  fsps = allPS.getSPS(i);
+	  }
+	  i = 0;
+	  TComPPS*      fpps = allPS.getPPS(i);
+	  while (fpps != nullptr)
+	  {
+		  lminfo->getPpsDecInfo(fpps);
+		  i++;
+		  fpps = allPS.getPPS(i);
+	  }
+	  lminfo->OutputPrintInfo(lminfo->txtpath());
+	  lminfo->clearAllData();
+	  cout << "get PS information completed!" << "\n";
+}
+#endif
   m_bFirstSliceInSequence = false;
   m_bFirstSliceInBitstream  = false;
 
@@ -1970,9 +1998,7 @@ Void TDecTop::xDecodeVPS(const std::vector<UChar> &naluData)
 
   xDeriveSmallestLayerId(vps);
 #endif
-  //获取VPS信息
-  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
-  lminfo->getVpsDecInfo(vps);
+
 }
 
 Void TDecTop::xDecodeSPS(const std::vector<UChar> &naluData)
@@ -2014,9 +2040,6 @@ Void TDecTop::xDecodePPS(const std::vector<UChar> &naluData)
   m_cEntropyDecoder.decodePPS( pps );
 #endif
   m_parameterSetManager.storePPS( pps, naluData);
-  //获取PPS信息
-  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
-  lminfo->getPpsDecInfo(pps);
 }
 
 #if SVC_EXTENSION

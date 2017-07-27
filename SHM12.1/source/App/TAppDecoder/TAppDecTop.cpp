@@ -1585,6 +1585,7 @@ Void TAppDecTop::markAllPicturesAsErased(Int layerIdx)
 
 Void TAppDecTop::checkOutputBeforeDecoding(Int layerIdx)
 {    
+	//输出到yuv文件;
   std::vector<Int>  listOfPocs;
   std::vector<Int>  listOfPocsInEachLayer[MAX_VPS_LAYER_IDX_PLUS1];
   std::vector<Int>  listOfPocsPositionInEachLayer[MAX_VPS_LAYER_IDX_PLUS1];

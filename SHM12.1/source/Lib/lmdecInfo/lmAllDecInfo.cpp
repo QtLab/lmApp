@@ -42,7 +42,7 @@ void lmAllDecInfo::xPrintPps(std::ofstream& pf)
 	{
 		//pf << "\n";
 		pf << "[PPS_Begin]" << "\n";
-		pf << "spsId:" << i->getppsid() << "\n";
+		pf << "ppsId:" << i->getppsid() << "\n";
 		pf << "layerId:" << i->getlayerid() << "\n";
 		pf << "[PPS_End]" << "\n";
 		//pf << "\n";
@@ -51,6 +51,7 @@ void lmAllDecInfo::xPrintPps(std::ofstream& pf)
 
 bool lmAllDecInfo::isReadyOut()
 {
+	//歪打正着的解决了PS存储方式变化;
 	if (!mVpsInf.empty()&&mSpsInf.size()==mVpsInf[0].getmaxlayer()&& mPpsInf.size() == mVpsInf[0].getmaxlayer())
 	{
 		return true;
@@ -105,10 +106,14 @@ bool lmAllDecInfo::OutputPrintInfo(const std::string &pPath)
 	{
 		return false;
 	}
-	std::ofstream printTXT(pPath,std::ofstream::out| std::ofstream::app);
-	xPrintVps(printTXT);
-	xPrintSps(printTXT);
-	xPrintPps(printTXT);
+	std::ofstream printTXTclear(pPath,std::ofstream::out);
+	printTXTclear << "[PS_BEGIN]" << '\n';
+	printTXTclear.close();
+	std::ofstream printTXTappend(pPath, std::ofstream::out | std::ofstream::app);
+	xPrintVps(printTXTappend);
+	xPrintSps(printTXTappend);
+	xPrintPps(printTXTappend);
+	printTXTappend << "[PS_END]" << '\n';
 	return true;
 }
 
