@@ -49,10 +49,11 @@ void lmAllDecInfo::xPrintPps(std::ofstream& pf)
 	}
 }
 
-bool lmAllDecInfo::isReadyOut()
+bool lmAllDecInfo::isPSReady()
 {
-	//歪打正着的解决了PS存储方式变化;
-	if (!mVpsInf.empty()&&mSpsInf.size()==mVpsInf[0].getmaxlayer()&& mPpsInf.size() == mVpsInf[0].getmaxlayer())
+	//仅当从最高层级的ParameterSetManager中获得所有PS后;
+	//才返回TRUE;
+	if (!mVpsInf.empty()&&mSpsInf.size()==mVpsInf[0].getmaxlayer()/*&& mPpsInf.size() == mVpsInf[0].getmaxlayer()*/)
 	{
 		return true;
 	}
@@ -63,7 +64,42 @@ bool lmAllDecInfo::isReadyOut()
 	
 }
 
-lmAllDecInfo::lmAllDecInfo()
+void lmAllDecInfo::getPSInfobyPSM(ParameterSetManager& allPS)
+{
+	if (!isPSReady())
+	{
+		clearAllData();
+		int i = 0;
+		TComVPS*      fvps = allPS.getVPS(i);
+		while (fvps != nullptr)
+		{
+			getVpsDecInfo(fvps);
+			i++;
+			fvps = allPS.getVPS(i);
+		}
+		i = 0;
+		TComSPS*      fsps = allPS.getSPS(i);
+		while (fsps != nullptr)
+		{
+			getSpsDecInfo(fsps);
+			i++;
+			fsps = allPS.getSPS(i);
+		}
+		i = 0;
+		TComPPS*      fpps = allPS.getPPS(i);
+		while (fpps != nullptr)
+		{
+			getPpsDecInfo(fpps);
+			i++;
+			fpps = allPS.getPPS(i);
+		}
+	}
+}
+
+lmAllDecInfo::lmAllDecInfo():
+	mVpsInf{},
+	mSpsInf{},
+	mPpsInf{}
 {
 
 }
@@ -102,7 +138,7 @@ bool lmAllDecInfo::getPpsDecInfo(const TComPPS* rcpps)
 }
 bool lmAllDecInfo::OutputPrintInfo(const std::string &pPath)
 {
-	if (!isReadyOut())
+	if (!isPSReady())
 	{
 		return false;
 	}

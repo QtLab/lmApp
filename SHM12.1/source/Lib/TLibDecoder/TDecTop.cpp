@@ -1398,39 +1398,10 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
   // actual decoding starts here
   xActivateParameterSets();
   //运行到这里，应该所有参数集合都正式解码完了;
-#if lmDecodeInfoOut
+#if 1//&& m_layerId > 0
   {
-	
-	  cout << "get PS information" << "\n";
 	  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
-	  ParameterSetManager &allPS = m_parameterSetManager;
-	  int i = 0;
-	  TComVPS*      fvps = allPS.getVPS(i);
-	  while (fvps!=nullptr)
-	  {
-		  lminfo->getVpsDecInfo(fvps);
-		  i++;
-		  fvps = allPS.getVPS(i);
-	  }
-	  i = 0;
-	  TComSPS*      fsps = allPS.getSPS(i);
-	  while (fsps != nullptr)
-	  {
-		  lminfo->getSpsDecInfo(fsps);
-		  i++;
-		  fsps = allPS.getSPS(i);
-	  }
-	  i = 0;
-	  TComPPS*      fpps = allPS.getPPS(i);
-	  while (fpps != nullptr)
-	  {
-		  lminfo->getPpsDecInfo(fpps);
-		  i++;
-		  fpps = allPS.getPPS(i);
-	  }
-	  lminfo->OutputPrintInfo(lminfo->txtpath());
-	  lminfo->clearAllData();
-	  cout << "get PS information completed!" << "\n";
+	  lminfo->getPSInfobyPSM(m_parameterSetManager);
 }
 #endif
   m_bFirstSliceInSequence = false;
@@ -2015,10 +1986,6 @@ Void TDecTop::xDecodeSPS(const std::vector<UChar> &naluData)
 #endif
   m_cEntropyDecoder.decodeSPS( sps );
   m_parameterSetManager.storeSPS(sps, naluData);
-
-  //获取SPS信息
-  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
-  lminfo->getSpsDecInfo(sps);
 }
 
 #if CGS_3D_ASYMLUT

@@ -5,6 +5,7 @@
 class TComVPS;
 class TComSPS;
 class TComPPS;
+class ParameterSetManager;
 class lmAllDecInfo
 {
 public:
@@ -22,6 +23,8 @@ public:
 		mSpsInf.clear();
 		mPpsInf.clear();
 	};
+	bool isPSReady();
+	void getPSInfobyPSM(ParameterSetManager& allPS);
 private:
 	lmAllDecInfo();
 	static lmAllDecInfo* _instance;
@@ -33,7 +36,6 @@ private:
 	void xPrintVps(std::ofstream& pf);
 	void xPrintSps(std::ofstream& pf);
 	void xPrintPps(std::ofstream& pf);
-	bool isReadyOut();
 };
 #endif // lmAllDecInfo_h__
 
