@@ -13,9 +13,9 @@ class lmParserBitConfigure : public QDialog
 public:
 	lmParserBitConfigure(QWidget *parent = Q_NULLPTR);
 	~lmParserBitConfigure();
-	bool getcfg(QString & bitstreampath,int & numlayer);
+	bool getcfg(QString & bitstreampath);
 	inline QString getbitstreamPath() { return ui.lineEdit->text(); };
-	inline int getNumLayersToBeDecode() { return ui.spinBox->value();};
+//	inline int getNumLayersToBeDecode() { return ui.spinBox->value();};
 
 private:
 	Ui::lmParserBitConfigure ui;

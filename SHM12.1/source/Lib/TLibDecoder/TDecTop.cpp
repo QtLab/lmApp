@@ -1398,11 +1398,12 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
   // actual decoding starts here
   xActivateParameterSets();
   //运行到这里，应该所有参数集合都正式解码完了;
-#if 1//&& m_layerId > 0
-  {
+#if 1//&& m_layerId ==MaxLayerId;
+  if (m_layerId==vps->getMaxLayerId())
+	{
 	  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
 	  lminfo->getPSInfobyPSM(m_parameterSetManager);
-}
+	}
 #endif
   m_bFirstSliceInSequence = false;
   m_bFirstSliceInBitstream  = false;

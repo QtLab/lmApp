@@ -19,8 +19,6 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 
@@ -35,12 +33,6 @@ public:
     QLineEdit *lineEdit;
     QToolButton *toolButton;
     QLabel *label_4;
-    QHBoxLayout *horizontalLayout_2;
-    QLabel *label_2;
-    QSpinBox *spinBox;
-    QLabel *label_3;
-    QSpacerItem *horizontalSpacer;
-    QSpacerItem *verticalSpacer;
     QDialogButtonBox *buttonBox;
 
     void setupUi(QDialog *lmParserBitConfigure)
@@ -80,38 +72,6 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        label_2 = new QLabel(lmParserBitConfigure);
-        label_2->setObjectName(QStringLiteral("label_2"));
-
-        horizontalLayout_2->addWidget(label_2);
-
-        spinBox = new QSpinBox(lmParserBitConfigure);
-        spinBox->setObjectName(QStringLiteral("spinBox"));
-        spinBox->setMinimum(1);
-        spinBox->setMaximum(8);
-        spinBox->setValue(2);
-
-        horizontalLayout_2->addWidget(spinBox);
-
-        label_3 = new QLabel(lmParserBitConfigure);
-        label_3->setObjectName(QStringLiteral("label_3"));
-
-        horizontalLayout_2->addWidget(label_3);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_2->addItem(horizontalSpacer);
-
-
-        verticalLayout->addLayout(horizontalLayout_2);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout->addItem(verticalSpacer);
-
         buttonBox = new QDialogButtonBox(lmParserBitConfigure);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -132,8 +92,6 @@ public:
         label->setText(QApplication::translate("lmParserBitConfigure", "bitstreampath", 0));
         toolButton->setText(QApplication::translate("lmParserBitConfigure", "...", 0));
         label_4->setText(QApplication::translate("lmParserBitConfigure", "-b x", 0));
-        label_2->setText(QApplication::translate("lmParserBitConfigure", "layersToBeDecoder", 0));
-        label_3->setText(QApplication::translate("lmParserBitConfigure", "-ls x", 0));
     } // retranslateUi
 
 };

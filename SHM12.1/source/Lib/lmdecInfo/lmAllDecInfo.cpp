@@ -96,15 +96,63 @@ void lmAllDecInfo::getPSInfobyPSM(ParameterSetManager& allPS)
 	}
 }
 
+void lmAllDecInfo::getPreDecodeInfo(ParameterSetManager& allPS)
+{
+	int i = 0;
+	TComVPS*      fvps = allPS.getVPS(i);
+	while (fvps != nullptr)
+	{
+		vpsInfo mvps;
+		mvps.setmaxlayer(fvps->getMaxLayers());
+		mvps.setvpsidx(fvps->getVPSId());
+		mPredec.push_back(mvps);
+		i++;
+		fvps = allPS.getVPS(i);
+	}
+}
+
+void lmAllDecInfo::outputPreDec()
+{
+	std::ofstream printTXTclear(mOutPreDec, std::ofstream::out);
+	printTXTclear << "[PreDec_BEGIN]" << '\n';
+	printTXTclear.close();
+	std::ofstream printTXTappend(mOutPreDec, std::ofstream::out | std::ofstream::app);
+	for (auto i = mPredec.begin(); i != mPredec.end(); ++i)
+	{
+		//pf << "\n";
+		printTXTappend << "[VPS_Begin]" << "\n";
+		printTXTappend << "vpsId:" << i->getvpsid() << "\n";
+		printTXTappend << "maxLayer:" << i->getmaxlayer() << "\n";
+		printTXTappend << "[VPS_End]" << "\n";
+		//pf << "\n";
+	}
+	printTXTappend << "[PreDec_END]" << '\n';
+
+}
+
+void lmAllDecInfo::readPreDec()
+{
+	std::string predeci = sCachePath + mOutPreDec;
+	std::ofstream infotxt(mOutPreDec, std::ofstream::in);
+
+}
+
+void lmAllDecInfo::setCachepath(const std::string &pPath)
+{
+	sCachePath = pPath;
+}
+
 lmAllDecInfo::lmAllDecInfo():
 	mVpsInf{},
 	mSpsInf{},
-	mPpsInf{}
+	mPpsInf{},
+	mPredec{}
 {
 
 }
 lmAllDecInfo::~lmAllDecInfo()
 {
+
 }
 
 bool lmAllDecInfo::getVpsDecInfo(const TComVPS *rcvps)

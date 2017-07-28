@@ -1,5 +1,4 @@
 #include "lmDecodeThread.h"
-#include "../../../SHM12.1/source/Lib/lmdecInfo/lmAllDecInfo.h"
 //using std::cout;
 lmDecodeThread::lmDecodeThread(QObject *parent)
 	: QThread(parent)
@@ -15,13 +14,22 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	lmParseStreamPro mStreamParse;
 	//std::cout << "½âÎöSHVCÂëÁ÷!" << std::endl;
 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
-	int layerNum = rEvt.getParam("layer_num").toInt();
+	//int layerNum = rEvt.getParam("layer_num").toInt();
+
+	bool Predec= false;
+	Predec = mStreamParse.preDec(bitstream);
+	lmAllDecInfo *decinfo = lmAllDecInfo::getInstance();
+	decinfo->readPreDec();
+	return true;
 	longmanEvt testmsg(EvtTYPE1);
 	testmsg.setParam("CommandName", "show_message");
 	testmsg.setParam("MsgType", 0);
 	testmsg.setParam("info", "waiting decoding...");
 	testmsg.dispatch();
+
+
 	bool decodeSuccessed = false;
+	int layerNum = 1;
 	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, layerNum);
 	if (decodeSuccessed)
 	{

@@ -133,7 +133,8 @@ Bool TAppDecCfg::parseCfg( Int argc, TChar* argv[] )
 #endif
   ("OutputDecodedSEIMessagesFilename",  m_outputDecodedSEIMessagesFilename,    string(""), "When non empty, output decoded SEI messages to the indicated file. If file is '-', then output to stdout\n")
   ("ClipOutputVideoToRec709Range",      m_bClipOutputVideoToRec709Range,  false, "If true then clip output video to the Rec. 709 Range on saving")
-  ;
+  ("-pdec",isPreDecode,false,"preDecode enable" )
+	  ;
 
   po::setDefaults(opts);
   po::ErrorReporter err;

@@ -60,23 +60,22 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
 {
 	QString bspath;
-	int layertobedecode = 1;
-#if 1
-	if (mBitParseCFG->exec() == QDialog::Accepted&&mBitParseCFG->getcfg(bspath, layertobedecode))
+	//int layertobedecode = 1;
+#if 0
+	if (mBitParseCFG->exec() == QDialog::Accepted&&mBitParseCFG->getcfg(bspath))
 		{
 			longmanEvt parsestream(EvtTYPE2);
 			parsestream.setParam("CommandName", "parse_shvcbitstream");
 			parsestream.setParam("bitstream_path", bspath);
-			parsestream.setParam("layer_num", layertobedecode);
+			//parsestream.setParam("layer_num", layertobedecode);
 			parsestream.dispatch();
 		}
+#else
+	longmanEvt parsestream(EvtTYPE2);
+	parsestream.setParam("CommandName", "parse_shvcbitstream");
+	parsestream.setParam("bitstream_path", "C:/Users/Administrator/Documents/str.bin");
+	parsestream.dispatch();
 #endif
-// 	longmanEvt parsestream(EvtTYPE2);
-// 	parsestream.setParam("CommandName", "parse_shvcbitstream");
-// 	parsestream.setParam("bitstream_path", "C:/Users/Administrator/Documents/str.bin");
-// 	parsestream.setParam("layer_num", layertobedecode);
-// 	parsestream.dispatch();
-
 }
 
 void longmanApp::on_actionOpen_triggered()

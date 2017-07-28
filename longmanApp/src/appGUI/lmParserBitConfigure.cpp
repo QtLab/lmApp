@@ -2,7 +2,7 @@
 #include "src/lmmodel.h"
 #include <fstream>
 static int openBitsreamnum = -1;
-static QString lastbsf;
+static QString lastbsf="str.bin";
 lmParserBitConfigure::lmParserBitConfigure(QWidget *parent)
 	: QDialog(parent)
 {
@@ -13,7 +13,7 @@ lmParserBitConfigure::~lmParserBitConfigure()
 {
 }
 
-bool lmParserBitConfigure::getcfg(QString & bitstreampath, int & numlayer)
+bool lmParserBitConfigure::getcfg(QString & bitstreampath)
 {
 	QString bsf = ui.lineEdit->text();
 	if (bsf.isEmpty())
@@ -46,7 +46,6 @@ bool lmParserBitConfigure::getcfg(QString & bitstreampath, int & numlayer)
 	openBitsreamnum = 1;
 	bitstreampath = bsf;
 	lastbsf = bsf;
-	numlayer = ui.spinBox->value();
 	return true;
 }
 

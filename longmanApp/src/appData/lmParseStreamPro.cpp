@@ -1,10 +1,13 @@
 #include "lmParseStreamPro.h"
+//#include "..\\lib_cfg.h"
 #include <QDir>
+
 lmParseStreamPro::lmParseStreamPro(QObject *parent)
 	: QObject(parent)
 	//mCallDecoderEXE(this)
 {
-
+	lmAllDecInfo *decinfo = lmAllDecInfo::getInstance();
+	decinfo->setCachepath(sCache.toStdString());
 }
 
 lmParseStreamPro::~lmParseStreamPro()
@@ -15,10 +18,10 @@ lmParseStreamPro::~lmParseStreamPro()
 bool lmParseStreamPro::decoderBitstream(const std::string & rstrBitPath, int layernum)
 {
 	QDir cCurDir = QDir::current();
-	QString strdecoderpath = "..//SHM12.1//bin//vc2010//Win32//Debug//TAppDecoderAnalyser.exe";
+	QString strdecoderpath = decoderPath;
 	QString strdecoderpathabslout = QDir(strdecoderpath).absolutePath();
 	QString bitstreamPath(QString::fromStdString(rstrBitPath));
-	QString cachefolder = QDir(QString("..//cache")).absolutePath();
+	QString cachefolder = QDir(sCache).absolutePath();
 	//QString cachefolder = QDir(QString("E://Longman//cache")).absolutePath();
 	mCallDecoderEXE.setWorkingDirectory(cachefolder);// -o0 bl_yuv.yuv -o1 el_yuv.yuv
 	
@@ -32,6 +35,22 @@ bool lmParseStreamPro::decoderBitstream(const std::string & rstrBitPath, int lay
 	mCallDecoderEXE.start(allCommand);
 	mCallDecoderEXE.waitForFinished(-1);
 	bool exeret = mCallDecoderEXE.exitCode()==0;
+	return exeret;
+}
+
+
+bool lmParseStreamPro::preDec(const std::string & rstrBitPath)
+{
+	QString strdecoderpath = decoderPath;
+	QString strdecoderpathabslout = QDir(strdecoderpath).absolutePath();
+	QString bitstreamPath(QString::fromStdString(rstrBitPath));
+	QString arguments = "-pdec 1";
+	QString cachefolder = QDir(sCache).absolutePath();
+	mCallDecoderEXE.setWorkingDirectory(cachefolder);// -o0 bl_yuv.yuv -o1 el_yuv.yuv
+	QString allCommand = QString("\"%1\" -b \"%2\" %3").arg(strdecoderpathabslout).arg(bitstreamPath).arg(arguments);
+	mCallDecoderEXE.start(allCommand);
+	mCallDecoderEXE.waitForFinished(-1);
+	bool exeret = mCallDecoderEXE.exitCode() == 0;
 	return exeret;
 }
 

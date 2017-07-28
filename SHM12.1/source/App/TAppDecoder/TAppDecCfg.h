@@ -56,6 +56,7 @@
 class TAppDecCfg
 {
 protected:
+	bool isPreDecode = false;// «∑Ò‘§Ω‚¬Î;
   std::string   m_bitstreamFileName;                    ///< input bitstream file name
 #if SVC_EXTENSION
   std::string   m_reconFileName[MAX_LAYERS];            ///< output reconstruction file name
