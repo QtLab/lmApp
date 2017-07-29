@@ -49,6 +49,34 @@ void lmAllDecInfo::xPrintPps(std::ofstream& pf)
 	}
 }
 
+void lmAllDecInfo::xreadvps(std::ifstream& pf, bool isforPreDec)
+{
+	if (isforPreDec)
+	{
+		std::string temps;
+		bool readyRead=false;
+		while (getline(pf,temps))
+		{
+			if (temps=="[VPS_Begin]")
+			{
+				readyRead = true;
+			}
+			if (temps == "[VPS_End]")
+			{
+				break;
+			}
+			if (readyRead)
+			{
+
+			}
+		}
+	}
+	else
+	{
+		int x = 0;
+	}
+}
+
 bool lmAllDecInfo::isPSReady()
 {
 	//仅当从最高层级的ParameterSetManager中获得所有PS后;
@@ -133,8 +161,11 @@ void lmAllDecInfo::outputPreDec()
 void lmAllDecInfo::readPreDec()
 {
 	std::string predeci = sCachePath + mOutPreDec;
-	std::ofstream infotxt(mOutPreDec, std::ofstream::in);
-
+	std::ifstream infotxt(predeci, std::ifstream::in);
+	if (infotxt.fail())
+		return;
+	xreadvps(infotxt, true);
+	
 }
 
 void lmAllDecInfo::setCachepath(const std::string &pPath)

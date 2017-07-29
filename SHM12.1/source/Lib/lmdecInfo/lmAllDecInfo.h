@@ -49,6 +49,9 @@ private:
 	void xPrintVps(std::ofstream& pf);
 	void xPrintSps(std::ofstream& pf);
 	void xPrintPps(std::ofstream& pf);
+	void xreadvps(std::ifstream& pf,bool isforPreDec=false);
+	void xreadsps(const std::ifstream& pf);
+	void xreadpps(const std::ifstream& pf);
 };
 #endif // lmAllDecInfo_h__
 
