@@ -54,8 +54,7 @@
 #include "TDecSbac.h"
 #include "TDecCAVLC.h"
 #include "SEIread.h"
-//解码信息类型;
-#include "../lmdecInfo/lmAllDecInfo.h"
+
 class InputNALUnit;
 
 //! \ingroup TLibDecoder

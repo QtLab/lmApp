@@ -22,7 +22,6 @@
     <ClInclude Include="..\source\Lib\libmd5\libmd5.h" />
     <ClInclude Include="..\source\Lib\libmd5\MD5.h" />
     <ClInclude Include="..\source\Lib\lmdecInfo\lmAllDecInfo.h" />
-    <ClInclude Include="..\source\Lib\lmdecInfo\lmParaData.h" />
     <ClInclude Include="..\source\Lib\TLibCommon\AccessUnit.h" />
     <ClInclude Include="..\source\Lib\TLibCommon\CommonDef.h" />
     <ClInclude Include="..\source\Lib\TLibCommon\ContextModel.h" />
@@ -64,7 +63,6 @@
   <ItemGroup>
     <ClCompile Include="..\source\Lib\libmd5\libmd5.c" />
     <ClCompile Include="..\source\Lib\lmdecInfo\lmAllDecInfo.cpp" />
-    <ClCompile Include="..\source\Lib\lmdecInfo\lmParaData.cpp" />
     <ClCompile Include="..\source\Lib\TLibCommon\ContextModel.cpp" />
     <ClCompile Include="..\source\Lib\TLibCommon\ContextModel3DBuffer.cpp" />
     <ClCompile Include="..\source\Lib\TLibCommon\Debug.cpp" />
@@ -93,6 +91,11 @@
     <ClCompile Include="..\source\Lib\TLibCommon\TComUpsampleFilter.cpp" />
     <ClCompile Include="..\source\Lib\TLibCommon\TComWeightPrediction.cpp" />
     <ClCompile Include="..\source\Lib\TLibCommon\TComYuv.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\lmDecInfoData\lmDecInfoData.vcxproj">
+      <Project>{ee2ab675-a480-4cdf-8dc6-3abbf3abd1f1}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>TLibCommon</ProjectName>

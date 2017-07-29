@@ -131,9 +131,6 @@
     <ClInclude Include="..\source\Lib\lmdecInfo\lmAllDecInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\Lib\lmdecInfo\lmParaData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\Lib\TLibCommon\ContextModel.cpp">
@@ -224,9 +221,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Lib\lmdecInfo\lmAllDecInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Lib\lmdecInfo\lmParaData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

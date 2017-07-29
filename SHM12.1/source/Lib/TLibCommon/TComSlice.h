@@ -45,7 +45,8 @@
 #include "TComRom.h"
 #include "TComList.h"
 #include "TComChromaFormat.h"
-
+//解码信息类型;
+#include "../../Lib/lmdecInfo/lmAllDecInfo.h"
 //! \ingroup TLibCommon
 //! \{
 

@@ -6,8 +6,10 @@ lmParseStreamPro::lmParseStreamPro(QObject *parent)
 	: QObject(parent)
 	//mCallDecoderEXE(this)
 {
+#if 0
 	lmAllDecInfo *decinfo = lmAllDecInfo::getInstance();
 	decinfo->setCachepath(sCache.toStdString());
+#endif
 }
 
 lmParseStreamPro::~lmParseStreamPro()

@@ -16,10 +16,12 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
 	//int layerNum = rEvt.getParam("layer_num").toInt();
 
+#if 0
 	bool Predec= false;
 	Predec = mStreamParse.preDec(bitstream);
 	lmAllDecInfo *decinfo = lmAllDecInfo::getInstance();
 	decinfo->readPreDec();
+#endif
 	return true;
 	longmanEvt testmsg(EvtTYPE1);
 	testmsg.setParam("CommandName", "show_message");
@@ -108,7 +110,6 @@ void lmDecodeThread::handleCmd(longmanEvt& requstCmd)
 
 void lmDecodeThread::xParseinfo()
 {
-	lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
 	longmanEvt openyuv(EvtTYPE2);
 	openyuv.setParam("CommandName", "open_yuvfile");
 	openyuv.setParam("yuv_filePath", "..\\cache\\rec_layer1.yuv");

@@ -1402,7 +1402,46 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
   if (m_layerId==vps->getMaxLayerId())
 	{
 	  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
-	  lminfo->getPSInfobyPSM(m_parameterSetManager);
+	  ParameterSetManager *allps = getParameterSetManager();
+	  int i = 0;
+	  TComVPS*      fvps = allps->getVPS(i);
+	  while (fvps != nullptr)
+	  {
+		  lmPSData tVPS("vps");
+		  tVPS << sParam(tVPS.getParamName(0), int(fvps->getVPSId()))
+			  << sParam(tVPS.getParamName(1), int(fvps->getMaxLayers()));
+		  (*lminfo) << tVPS;
+		  i++;
+		  fvps = allps->getVPS(i);
+	  }
+
+	  i = 0;
+	  TComSPS*      fsps = allps->getSPS(i);
+	  while (fsps != nullptr)
+	  {
+		  lmPSData tSPS("sps");
+		  tSPS << sParam(tSPS.getParamName(0), int(fsps->getSPSId()))
+				<< sParam(tSPS.getParamName(1), int(fsps->getLayerId()))
+				<< sParam(tSPS.getParamName(2), int(fsps->getChromaFormatIdc()))
+				<< sParam(tSPS.getParamName(3), int(fsps->getPicWidthInLumaSamples()))
+				<< sParam(tSPS.getParamName(4), int(fsps->getPicHeightInLumaSamples()));
+		  (*lminfo) << tSPS;
+		  i++;
+		  fsps = allps->getSPS(i);
+	  }
+
+	  i = 0;
+	  TComPPS*      fpps = allps->getPPS(i);
+	  while (fpps != nullptr)
+	  {
+		  lmPSData tPPS("sps");
+		  tPPS << sParam(tPPS.getParamName(0), int(fpps->getSPSId()))
+			  << sParam(tPPS.getParamName(1), int(fpps->getLayerId()));
+		  (*lminfo) << tPPS;
+		  i++;
+		  fpps = allps->getPPS(i);
+	  }
+	  lminfo->outputDec();
 	}
 #endif
   m_bFirstSliceInSequence = false;

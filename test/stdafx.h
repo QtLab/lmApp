@@ -9,12 +9,12 @@
 
 #include <stdio.h>
 #include <tchar.h>
-#ifdef _DEBUG
-#pragma comment(lib,"../\\lmDecInfoData\\Win32\\lmDecInfoDatad.lib")
-#else
-#pragma comment(lib,"Evtr.lib")
-#pragma comment(lib,"longmanMVCr.lib")
-#endif
+//#ifdef _DEBUG
+//#pragma comment(lib,"../\\lmDecInfoData\\Win32\\lmDecInfoDatad.lib")
+//#else
+//#pragma comment(lib,"Evtr.lib")
+//#pragma comment(lib,"longmanMVCr.lib")
+//#endif
 
 
 // TODO:  在此处引用程序需要的其他头文件

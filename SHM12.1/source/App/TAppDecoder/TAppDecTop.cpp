@@ -201,17 +201,29 @@ Void TAppDecTop::decode()
 
   while (!!bitstreamFile)
   {
+#if 1
 	  if (isPreDecode)
 	  {
 		  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
 		  ParameterSetManager *allps = m_apcTDecTop[0]->getParameterSetManager();
-		  lminfo->getPreDecodeInfo(*allps);
-		  if (lminfo->isPreDecReady())
+		  int i = 0;
+		  TComVPS*      fvps = allps->getVPS(i);
+		  while (fvps != nullptr)
+		  {
+			  lmPSData tVPS("vps");
+			  tVPS << sParam(tVPS.getParamName(0), int(fvps->getMaxLayers()))
+				  << sParam(tVPS.getParamName(1), int(fvps->getVPSId()));
+			  (*lminfo) << tVPS;
+			  i++;
+			  fvps = allps->getVPS(i);
+		  }
+		  if (lminfo->preDecReady())
 		  {
 			  lminfo->outputPreDec();
 			  exit(0);
 		  }
 	  }
+#endif
     /* location serves to work around a design fault in the decoder, whereby
      * the process of reading a new slice that is the first slice of a new frame
      * requires the TDecTop::decode() method to be called again with the same
