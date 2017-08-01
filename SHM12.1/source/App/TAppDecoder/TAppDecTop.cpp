@@ -210,7 +210,7 @@ Void TAppDecTop::decode()
 		  TComVPS*      fvps = allps->getVPS(i);
 		  while (fvps != nullptr)
 		  {
-			  lmPSData tVPS("vps");
+			  lmPSData tVPS(lmPStype[paraTYPE::vps]);
 			  tVPS << sParam(tVPS.getParamName(0), int(fvps->getMaxLayers()))
 				  << sParam(tVPS.getParamName(1), int(fvps->getVPSId()));
 			  (*lminfo) << tVPS;

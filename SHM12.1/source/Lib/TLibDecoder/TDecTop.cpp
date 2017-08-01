@@ -1407,7 +1407,7 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
 	  TComVPS*      fvps = allps->getVPS(i);
 	  while (fvps != nullptr)
 	  {
-		  lmPSData tVPS("vps");
+		  lmPSData tVPS(lmPStype[paraTYPE::vps]);
 		  tVPS << sParam(tVPS.getParamName(0), int(fvps->getVPSId()))
 			  << sParam(tVPS.getParamName(1), int(fvps->getMaxLayers()));
 		  (*lminfo) << tVPS;
@@ -1419,7 +1419,7 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
 	  TComSPS*      fsps = allps->getSPS(i);
 	  while (fsps != nullptr)
 	  {
-		  lmPSData tSPS("sps");
+		  lmPSData tSPS(lmPStype[paraTYPE::sps]);
 		  tSPS << sParam(tSPS.getParamName(0), int(fsps->getSPSId()))
 				<< sParam(tSPS.getParamName(1), int(fsps->getLayerId()))
 				<< sParam(tSPS.getParamName(2), int(fsps->getChromaFormatIdc()))
@@ -1434,7 +1434,7 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
 	  TComPPS*      fpps = allps->getPPS(i);
 	  while (fpps != nullptr)
 	  {
-		  lmPSData tPPS("sps");
+		  lmPSData tPPS(lmPStype[paraTYPE::pps]);
 		  tPPS << sParam(tPPS.getParamName(0), int(fpps->getSPSId()))
 			  << sParam(tPPS.getParamName(1), int(fpps->getLayerId()));
 		  (*lminfo) << tPPS;

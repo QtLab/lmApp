@@ -24,7 +24,8 @@ private:
 		double xd = 0;
 	};
 public:
-
+	//空构造;
+	lmVar() :valuetype(lmVarTYPE::vnum){ mData.xint = 0; };
 	//构造函数，提供隐形转换;
 	lmVar(int pint) :valuetype(lmVarTYPE::intv){ mData.xint = pint; };
 	lmVar(const std::string &pstr) :valuetype(lmVarTYPE::str) { mstr = pstr; };
@@ -32,7 +33,7 @@ public:
 	lmVar(bool pb) :valuetype(lmVarTYPE::boolv) { mData.xb = pb; };
 	lmVar(double pd) :valuetype(lmVarTYPE::doublev) { mData.xd = pd; };
 	//移动构造,不怎么熟悉，以后再说;
-	//复制构造
+	//复制构造;
 	lmVar(const lmVar &rp) { *this = rp.mData; *this = rp.mstr; this->valuetype = rp.valuetype; };
 	//析构函数;
 	~lmVar() {};

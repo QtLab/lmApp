@@ -55,7 +55,7 @@ void lmAllDecInfo::outputDec()
 
 lmAllDecInfo& lmAllDecInfo::operator<<(const lmPSData& rps)
 {
-	std::vector<lmPSData> tvps{ rps };
+	//std::vector<lmPSData> tvps{ rps };
 	mpsdec[rps.getType()].push_back(rps);
 	return *this;
 }

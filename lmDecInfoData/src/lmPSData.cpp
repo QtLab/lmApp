@@ -5,7 +5,12 @@ const static  std::vector<std::vector<std::string>> gParamName = {
 	{ "idx","layerIdx" ,"formatId", "picWidth","picHeight" },//sps
 	{ "idx","layerIdx" }//pps
 };
-
+const static  std::vector<std::vector<lmVarTYPE>> gParamValueType = {
+	{ lmVarTYPE::intv,lmVarTYPE::intv }, //vps
+	{ lmVarTYPE::intv,lmVarTYPE::intv,lmVarTYPE::intv,lmVarTYPE::intv,lmVarTYPE::intv },//sps
+	{ lmVarTYPE::intv,lmVarTYPE::intv }//pps
+};
+const static std::vector<std::string> lmPStypeInString = { "vps","sps","pps" };
 std::string  lmPSData::getParamName(const paraTYPE &t, int n)
 {
 	std::string tr="unknown";
@@ -31,32 +36,32 @@ std::string  lmPSData::getParamName(const paraTYPE &t, int n)
 
 std::string lmPSData::getParamName(int n)
 {
-	if (n<int(psParaName.size()))
-	{
-		return psParaName[n];
-	}
-	else
+	int in = 0;
+	for (auto i = psParaName.cbegin(); i != psParaName.cend(); ++i, ++in)
+		if (in == n)
+			return i->first;
 		return "unknown";
 	
 }
 
+std::string lmPSData::getPSTypeInString(const paraTYPE &t)
+{
+	return lmPStypeInString[t];
+}
+
+const lmVarTYPE  lmPSData::getValueTypeByName(const std::string& pstr)const
+{
+	auto i = psParaName.find(pstr);
+	if (i != psParaName.cend())
+	{
+		return i->second;
+	}
+	return lmVarTYPE::vnum;
+}
+
 lmPSData& lmPSData::operator>>(std::ofstream& out)
 {
-	std::string tstr("unknown");
-	switch (mType)
-	{
-	case vps:
-		tstr = "VPS";
-		break;
-	case sps:
-		tstr = "SPS";
-		break;
-	case pps:
-		tstr = "PPS";
-		break;
-	default:
-		break;
-	}
+	std::string tstr = lmPStypeInString[mType];
 	out << "[" + tstr + "_Begin]" << '\n';
 	for (auto i = mparalist.cbegin(); i != mparalist.cend(); ++i)
 	{
@@ -84,36 +89,41 @@ lmPSData& lmPSData::operator>>(std::ofstream& out)
 	return *this;
 }
 
+paraTYPE  lmPSData::PSTypeIdxByflag(const std::string& strptype)
+{
+	if (strptype == "[" + lmPStypeInString[paraTYPE::vps] + "_Begin]")
+		return paraTYPE::vps;
+	if (strptype == "[" + lmPStypeInString[paraTYPE::sps] + "_Begin]")
+		return paraTYPE::sps;
+	if (strptype == "[" + lmPStypeInString[paraTYPE::pps] + "_Begin]")
+		return paraTYPE::pps;
+	return paraTYPE::psnum;
+}
+
 void lmPSData::xadd(const std::string& pstr, const lmVar &d)
 {
-	std::vector<std::string> &pspn = psParaName;
-	auto i = pspn.cbegin();
-	for (; i != pspn.cend(); ++i)
-	{
-		if ((*i)== pstr)
-		{
-			break;
-		}
-	}
-	//添加的参数名不符合要求，终止编译;
-	if (i == pspn.cend())
-	{
+	auto i = psParaName.find(pstr);
+	if (i == psParaName.cend())
 		throw std::runtime_error("unknown param name!");
-	}
 	mparalist.insert(sParam(pstr,d));
 }
 
 void lmPSData::inti(const std::string& pstr)
 {
-	if (pstr=="vps")
+	if (pstr==lmPStypeInString[paraTYPE::vps])
 		mType = paraTYPE::vps;
-	else if (pstr == "sps")
+	else if (pstr == lmPStypeInString[paraTYPE::sps])
 		mType = paraTYPE::sps;
-	else if (pstr == "pps")
+	else if (pstr == lmPStypeInString[paraTYPE::pps])
 		mType = paraTYPE::pps;
 	else
 	{
 		throw std::runtime_error("unknown PS type!");
 	}
-	psParaName = gParamName[mType];
+	std::vector<std::string> ps_para = gParamName[mType];
+	std::vector<lmVarTYPE> ps_paraVType = gParamValueType[mType];
+	for (auto i = 0; i < ps_para.size(); ++i)
+	{
+		psParaName.insert({ ps_para[i], ps_paraVType[i] });
+	}
 }

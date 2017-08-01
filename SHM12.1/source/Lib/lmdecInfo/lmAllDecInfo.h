@@ -19,7 +19,7 @@ private:
 	static lmAllDecInfo* _instance;
 	const std::string mOutPreDec = "predec.txt";
 	const std::string mOutTxtpath = "dec.txt";
-	std::vector<std::vector<lmPSData>> mpsdec;
+	lmPSList mpsdec;
 };
 #endif // lmAllDecInfo_h__
 

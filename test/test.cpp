@@ -7,10 +7,9 @@
 
 int main()
 {
-	lmVar tv = 100;
-	lmVar tcc("hell");
-	int y = tv.toInt();
 	lmDecInfo tesstp;
+	//tesstp.readDec();
+	tesstp.readDec(true);
     return 0;
 }
 
