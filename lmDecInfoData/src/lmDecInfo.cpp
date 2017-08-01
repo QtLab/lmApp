@@ -1,4 +1,5 @@
 #include "lmDecInfo.h"
+std::string gAbsPath("\\");
 lmDecInfo::lmDecInfo()
 {
 	for (size_t i = 0; i < paraTYPE::psnum; i++)
@@ -20,14 +21,14 @@ void lmDecInfo::readDec(bool isPreDec)
 	std::string prefalag[2];
 	if (isPreDec)
 		 {
-		 	tf.open(mOutPreDec, std::ifstream::in);
+		 	tf.open(gAbsPath+mOutPreDec, std::ifstream::in);
 			prefalag[0] = "[PreDec_BEGIN]";
 			prefalag[1] = "[PreDec_END]";
 			clearPSList(mPSPreDec);
 		 }
 	else
 		{
-			tf.open(mOutTxtpath, std::ifstream::in);
+			tf.open(gAbsPath + mOutTxtpath, std::ifstream::in);
 			prefalag[0] = "[Dec_BEGIN]";
 			prefalag[1] = "[Dec_END]";
 			clearPSList(mPSDec);
@@ -55,6 +56,11 @@ void lmDecInfo::readDec(bool isPreDec)
 			}
 		}
 	}
+}
+
+void lmDecInfo::setInfoSoluPath(const std::string& pstr)
+{
+	gAbsPath = pstr;
 }
 
 void lmDecInfo::insertps(const lmPSData &pp, bool isPerDec)
@@ -103,7 +109,7 @@ void lmDecInfo::readPS(lmPSData &pp, std::ifstream& pf)
 			mParamValueInVar = std::stoi(sparavalue);
 			break;
 		case boolv:
-			mParamValueInVar = static_cast<bool>(std::stoi(sparavalue));
+			mParamValueInVar = std::stoi(sparavalue)!=0;
 			break;
 		case doublev:
 			mParamValueInVar = std::stod(sparavalue);

@@ -35,7 +35,7 @@ private:
 	lmParam mparalist;
 	void xadd(const std::string& pstr, const lmVar &d);
 	void inti(const std::string& pstr);
-	std::map<std::string, lmVarTYPE> psParaName;
+	std::map<std::string, lmVarTYPE> psParaName;//存储当前PS的所有参数名称和数据类型;
 
 };
 typedef  std::vector<std::vector<lmPSData>> lmPSList;

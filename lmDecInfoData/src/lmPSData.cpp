@@ -36,6 +36,7 @@ std::string  lmPSData::getParamName(const paraTYPE &t, int n)
 
 std::string lmPSData::getParamName(int n)
 {
+	//返回第n个参数名称的字符;
 	int in = 0;
 	for (auto i = psParaName.cbegin(); i != psParaName.cend(); ++i, ++in)
 		if (in == n)

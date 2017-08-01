@@ -7,6 +7,10 @@ lmParserBitConfigure::lmParserBitConfigure(QWidget *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
+	setModelName("BitStreamCfg_View_Model");
+	CallBackFunc pcEvtHandle = std::bind(&lmParserBitConfigure::handleEvt, this, std::placeholders::_1);
+	listenParam("Get_Layer", pcEvtHandle);
+	ui.layerSelectArea->setEnabled(false);
 }
 
 lmParserBitConfigure::~lmParserBitConfigure()
@@ -15,6 +19,8 @@ lmParserBitConfigure::~lmParserBitConfigure()
 
 bool lmParserBitConfigure::getcfg(QString & bitstreampath)
 {
+	ui.layerSelectArea->setEnabled(false);
+	ui.bitstreamPath->setEnabled(true);
 	QString bsf = ui.lineEdit->text();
 	if (bsf.isEmpty())
 	{
@@ -47,6 +53,39 @@ bool lmParserBitConfigure::getcfg(QString & bitstreampath)
 	bitstreampath = bsf;
 	lastbsf = bsf;
 	return true;
+}
+
+bool lmParserBitConfigure::handleEvt(longmanEvt& rEvt)
+{
+	paramlist::const_iterator paramBeg;
+	paramlist::const_iterator paramEnd;
+	rEvt.getParamIter(paramBeg, paramEnd);
+	bool hideFlag = false;
+	for (auto i = paramBeg; i != paramEnd; ++i)
+	{
+		if (i->first == "MaxLayer")
+			{
+				mMaxLayer=i->second.toInt();
+				ui.layerSelectArea->setEnabled(true);
+				ui.bitstreamPath->setEnabled(false);
+				if (exec() != Accepted)
+					return false;
+				decCammand();
+				return true;
+			}
+	}
+
+	return false;
+}
+
+void lmParserBitConfigure::decCammand()
+{
+	//屏蔽高于Maxlayer的选项;
+	
+	if (mMaxLayer>8)
+	{
+		int x = 0;
+	}
 }
 
 void lmParserBitConfigure::on_toolButton_clicked()

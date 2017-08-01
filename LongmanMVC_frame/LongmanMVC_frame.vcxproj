@@ -113,6 +113,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\lmDecInfoData\lmDecInfoData.vcxproj">
+      <Project>{ee2ab675-a480-4cdf-8dc6-3abbf3abd1f1}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

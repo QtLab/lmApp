@@ -7,6 +7,8 @@
 #include "src/lmmodel.h"
 #include "src/lmTYPE.h"
 #include "..\longmanApp\src\appData\lmParseStreamPro.h"
+#include "..\lmDecInfoData\src\lmDecInfo.h"
+class lmDecInfo;
 struct bitSteInfo
 {
 	bitSteInfo() {};
@@ -22,6 +24,7 @@ public:
 	lmDecodeThread(QObject *parent = 0);
 	~lmDecodeThread();
 	bool parseSHVCBitBtream(longmanEvt& rEvt);
+	bool preDec(longmanEvt& rEvt);
 	bool addCommandHandle(const std::string& rpCmdName, CallBackFunc& pcCmdHandle);
 	EvtQue &getEvtQue() { return evtue; };
 	QWaitCondition& getCondition() { return condition; }
@@ -36,5 +39,7 @@ private:
 	QMutex mutex;
 	QWaitCondition condition;
 	void xParseinfo();
+	void xParsePreDecinfo();
+	lmDecInfo decinfo;
 };
 #endif // lmDecodeThread_h__

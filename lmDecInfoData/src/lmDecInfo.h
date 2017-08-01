@@ -8,13 +8,14 @@ public:
 	~lmDecInfo();
 	//void readDec();
 	void readDec(bool isPreDec=false);
+	void setInfoSoluPath(const std::string& pstr);
 public:
 	void insertps(const lmPSData &pp, bool isPerDec = false);
 private:
 	lmPSList mPSDec;
 	lmPSList mPSPreDec;
-	const std::string mOutPreDec = "predec.txt";
-	const std::string mOutTxtpath = "dec.txt";
+	std::string mOutPreDec = "predec.txt";
+	std::string mOutTxtpath = "dec.txt";
 	void readPS(lmPSData &pp,std::ifstream& pf);
 	void clearPSList(lmPSList& rpsl);
 };

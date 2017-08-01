@@ -14,24 +14,14 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	lmParseStreamPro mStreamParse;
 	//std::cout << "解析SHVC码流!" << std::endl;
 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
-	//int layerNum = rEvt.getParam("layer_num").toInt();
-
-#if 0
-	bool Predec= false;
-	Predec = mStreamParse.preDec(bitstream);
-	lmAllDecInfo *decinfo = lmAllDecInfo::getInstance();
-	decinfo->readPreDec();
-#endif
-	return true;
 	longmanEvt testmsg(EvtTYPE1);
 	testmsg.setParam("CommandName", "show_message");
 	testmsg.setParam("MsgType", 0);
 	testmsg.setParam("info", "waiting decoding...");
 	testmsg.dispatch();
-
-
 	bool decodeSuccessed = false;
 	int layerNum = 1;
+	//调用解码;
 	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, layerNum);
 	if (decodeSuccessed)
 	{
@@ -51,6 +41,22 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		testmsg.dispatch();
 	}
 	return decodeSuccessed;
+}
+
+bool lmDecodeThread::preDec(longmanEvt& rEvt)
+{
+	lmParseStreamPro mStreamParse;
+	//std::cout << "解析SHVC码流!" << std::endl;
+	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
+	//预解码,获得最大编码层;
+	bool bPreDecSuccessed = mStreamParse.preDec(bitstream);
+	decinfo.setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
+	decinfo.readDec(true);
+	longmanEvt layer(EvtTYPE1);
+	layer.setParam("CommandName", "Get_Layer");
+	layer.setParam("MaxLayer", 2);
+	layer.dispatch();
+	return true;
 }
 
 bool lmDecodeThread::addCommandHandle(const std::string& rpCmdName, CallBackFunc& pcCmdHandle)
@@ -117,4 +123,9 @@ void lmDecodeThread::xParseinfo()
 	openyuv.setParam("yuv_height", 480);
 	openyuv.setParam("yuv_format", 1);
 	openyuv.dispatch();
+}
+
+void lmDecodeThread::xParsePreDecinfo()
+{
+
 }

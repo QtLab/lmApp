@@ -5,8 +5,9 @@
 #include <QFileDialog>
 #include <QStandardPaths> 
 #include "ui_lmParserBitConfigure.h"
-
-class lmParserBitConfigure : public QDialog
+#include "src/lmView.h"
+//作用:码流信息选择;
+class lmParserBitConfigure : public QDialog,public lmView
 {
 	Q_OBJECT
 
@@ -19,6 +20,9 @@ public:
 
 private:
 	Ui::lmParserBitConfigure ui;
+	bool handleEvt(longmanEvt&);
+	int mMaxLayer = -1;
+	void decCammand();
 private slots:
 	void on_toolButton_clicked();
 };

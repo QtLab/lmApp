@@ -16,7 +16,8 @@ public:
 	void registerCommand(const std::string &, const CallBackFunc&);
 	static lmController* getInstance();
 	void recoverhandle(cyuvParam&);
-	bool parseSHVCBitBtream(longmanEvt& rEvt);
+	bool callDecodeTread(longmanEvt& rEvt);
+	bool preDecode(longmanEvt& rEvt);
 private:
 	void xcmdInti();
 	bool sendMsg(const std::string&);

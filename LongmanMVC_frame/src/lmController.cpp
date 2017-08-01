@@ -8,24 +8,31 @@ const char *cmdtable[] =
 	"open_yuvfile",//+文件路径+宽+高+格式(格式转换规则见lmData.cpp);
 	"change_imagepoc",//+目标POC+是否强制读取数据(针对固定窗口数据存储方式)+是否恢复上次文件关联(针对已打开文件后的打开失败场景);
 	"show_yuvdata",//请在整个工程查找该命令，以获取其参数;
-	"parse_shvcbitstream"//解码SHVC码流
+	"parse_shvcbitstream",//解码SHVC码流
+	"preDecode"//预解码;
 };
 ////绑定命令和相应的处理函数,增加命令时必须添加代码;
 void lmController::xcmdInti()
 {
+	//普通事件交给workThread执行;
 	CallBackFunc pcCmdHandle0 = std::bind(&cmdProcessThread::openyuvfile, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[0], pcCmdHandle0);
 	CallBackFunc pcCmdHandle1 = std::bind(&cmdProcessThread::changeimagepoc, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[1], pcCmdHandle1);
 	CallBackFunc pcCmdHandle2 = std::bind(&cmdProcessThread::showyuvData, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[2], pcCmdHandle2);
-	CallBackFunc pcCmdHandle3 = std::bind(&lmController::parseSHVCBitBtream, this, std::placeholders::_1);
+	CallBackFunc pcCmdHandle3 = std::bind(&lmController::callDecodeTread, this, std::placeholders::_1);
+	//回调DecodeThread函数过程：先统一交给workThread,workThread回调本模块的callDecodeTread()
+	//callDecodeTread()将Evt再交给DecodeThread，由DecodeThread执行;
 	workThread.addCommandHandle(cmdtable[3], pcCmdHandle3);
 	CallBackFunc pcCmdHandle3_dethread = std::bind(&lmDecodeThread::parseSHVCBitBtream, &pDecoder, std::placeholders::_1);
 	pDecoder.addCommandHandle(cmdtable[3], pcCmdHandle3_dethread);
-	//callController msgfromworkthread= std::bind(&lmController::sendMsg, this, std::placeholders::_1);
-	//workThread.setMsgSendHandle(msgfromworkthread);
-	//workThread.setParseEXE(&mStreamParse);
+	CallBackFunc pcCmdHandle4 = std::bind(&lmController::callDecodeTread, this, std::placeholders::_1);
+	workThread.addCommandHandle(cmdtable[4], pcCmdHandle4);
+	CallBackFunc pcCmdHandle4_dethread = std::bind(&lmDecodeThread::preDec, &pDecoder, std::placeholders::_1);
+	pDecoder.addCommandHandle(cmdtable[4], pcCmdHandle4_dethread);
+
+
 }
 
 bool lmController::sendMsg(const std::string& iEvtInfo)
@@ -58,13 +65,15 @@ lmController::~lmController()
 //将EvtTYPE2事件推入事件列队,唤醒工作线程进行处理;
 bool lmController::handlevt(longmanEvt& pEvt)
 {
+	EvtQue &evtue = workThread.getEvtQue();
 	////预处理事件：拦截parse_shvcbitstream事件;
-	if (pEvt.getParam("CommandName") == "parse_shvcbitstream")
+	if (pEvt.getParam("CommandName") == "parse_shvcbitstream"
+		|| pEvt.getParam("CommandName") == "preDecode")
 		pDecoder.start();
 		////推入工作线程事件列表;
 	//else
 	//{
-		EvtQue &evtue = workThread.getEvtQue();
+
 		if (evtue.size() >= maxQue)
 		{
 			longmanEvt testmsg(EvtTYPE1);
@@ -113,7 +122,7 @@ void lmController::recoverhandle(cyuvParam& yuvParam)
 	openyuv.dispatch();
 }
 
-bool lmController::parseSHVCBitBtream(longmanEvt& rEvt)
+bool lmController::callDecodeTread(longmanEvt& rEvt)
 {
 	EvtQue &evtue = pDecoder.getEvtQue();
 	QMutexLocker locker(&pDecoder.getMutx());
@@ -125,7 +134,6 @@ bool lmController::parseSHVCBitBtream(longmanEvt& rEvt)
 
 	return true;
 }
-
 // bool lmController::parseSHVCBitBtream(longmanEvt& rEvt)
 // {
 // 	lmParseStreamPro mStreamParse;
