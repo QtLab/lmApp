@@ -14,23 +14,57 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	lmParseStreamPro mStreamParse;
 	//std::cout << "解析SHVC码流!" << std::endl;
 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
+	int layerDec = rEvt.getParam("numLayerToDec").toInt();
+	int maxLayerIdx = rEvt.getParam("maxLayerIdx").toInt();
+	layerDec &= 0x0f;
+	std::vector<int> layerIdxToDec;
+	int t = 0;
+	for (size_t i = 0; i < 8; i++)
+	{
+		t = (layerDec >> i) & 0x01;
+		if (t == 1)
+			layerIdxToDec.push_back(i);
+
+	}
 	longmanEvt testmsg(EvtTYPE1);
 	testmsg.setParam("CommandName", "show_message");
 	testmsg.setParam("MsgType", 0);
 	testmsg.setParam("info", "waiting decoding...");
 	testmsg.dispatch();
 	bool decodeSuccessed = false;
-	int layerNum = 1;
-	//调用解码;
-	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, layerNum);
+	//调用解码,不管解码多少层，最大层级解码必须调用，从而获得各层级PS信息;
+	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, maxLayerIdx);
 	if (decodeSuccessed)
 	{
+		decinfo.setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
+		decinfo.readDec();
+		//解码剩余层选项;
+		for (size_t i = 0; i < layerIdxToDec.size(); i++)
+		{
+			if (layerIdxToDec[i]!= maxLayerIdx)
+			{
+				mStreamParse.decoderBitstream(bitstream, i);
+			}
+		}
 		longmanEvt testmsg(EvtTYPE1);
 		testmsg.setParam("CommandName", "show_message");
 		testmsg.setParam("isHide", true);
 		testmsg.dispatch();
-		xParseinfo();
-
+		//发送openyuvfile事件，刷新显示的yuv,打开最高层级;
+		lmPSData msps(lmPSData::getPSTypeInString(paraTYPE::sps));
+		decinfo.getPS(msps, maxLayerIdx);
+		int mf = msps.getValueByName(msps.getParamName(2)).toInt();
+		int mw = msps.getValueByName(msps.getParamName(3)).toInt();
+		int mh = msps.getValueByName(msps.getParamName(4)).toInt();
+		QString yuvpath = QString::fromStdString( decinfo.retSoluPath() + lmParseStreamPro::getDecYUVName(maxLayerIdx));
+		longmanEvt openyuv(EvtTYPE2);
+		openyuv.setParam("CommandName", "open_yuvfile");
+		openyuv.setParam("yuv_filePath", QVariant::fromValue(yuvpath));
+		openyuv.setParam("yuv_width", QVariant::fromValue(mw));
+		openyuv.setParam("yuv_height", QVariant::fromValue(mh));
+		openyuv.setParam("yuv_format", QVariant::fromValue(mf));
+		openyuv.dispatch();
+		
 	}
 	else
 	{
@@ -39,6 +73,7 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		testmsg.setParam("MsgType", 2);
 		testmsg.setParam("info", "decoding failed");
 		testmsg.dispatch();
+		return false;
 	}
 	return decodeSuccessed;
 }
@@ -50,11 +85,40 @@ bool lmDecodeThread::preDec(longmanEvt& rEvt)
 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
 	//预解码,获得最大编码层;
 	bool bPreDecSuccessed = mStreamParse.preDec(bitstream);
+	if (!bPreDecSuccessed)
+	//{
+	//	longmanEvt testmsg(EvtTYPE1);
+	//	testmsg.setParam("CommandName", "show_message");
+	//	testmsg.setParam("isHide", true);
+	//	testmsg.dispatch();
+	//}
+	//else
+	{
+		longmanEvt testmsg(EvtTYPE1);
+		testmsg.setParam("CommandName", "show_message");
+		testmsg.setParam("MsgType", 2);
+		testmsg.setParam("info", "decoding failed");
+		testmsg.dispatch();
+		return false;
+	}
 	decinfo.setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
 	decinfo.readDec(true);
+	//判断预解码是否成功;
+	if (decinfo.preDecFailed())
+	{
+		longmanEvt testmsg(EvtTYPE1);
+		testmsg.setParam("CommandName", "show_message");
+		testmsg.setParam("MsgType", 2);
+		testmsg.setParam("info", "pre-decoding failed");
+		testmsg.dispatch();
+		return false;
+	}
+	lmPSData mvps(lmPSData::getPSTypeInString(paraTYPE::vps));
+	decinfo.getPS(mvps, 0, true);
+	int maxLayer = mvps.getValueByName(mvps.getParamName(0)).toInt();
 	longmanEvt layer(EvtTYPE1);
 	layer.setParam("CommandName", "Get_Layer");
-	layer.setParam("MaxLayer", 2);
+	layer.setParam("MaxLayer", maxLayer);
 	layer.dispatch();
 	return true;
 }

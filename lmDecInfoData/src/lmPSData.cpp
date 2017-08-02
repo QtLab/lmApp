@@ -1,9 +1,9 @@
 #include "lmPSData.h"
 #include <stdexcept>
 const static  std::vector<std::vector<std::string>> gParamName = {
-	{ "idx","layerIdx" }, //vps
-	{ "idx","layerIdx" ,"formatId", "picWidth","picHeight" },//sps
-	{ "idx","layerIdx" }//pps
+	{ "0_MaxLayerIdx","1_layerIdx" }, //vps
+	{ "0_idx","1_layerIdx" ,"2_formatId", "3_picWidth","4_picHeight" },//sps
+	{ "0_idx","1_layerIdx" }//pps
 };
 const static  std::vector<std::vector<lmVarTYPE>> gParamValueType = {
 	{ lmVarTYPE::intv,lmVarTYPE::intv }, //vps
@@ -13,35 +13,36 @@ const static  std::vector<std::vector<lmVarTYPE>> gParamValueType = {
 const static std::vector<std::string> lmPStypeInString = { "vps","sps","pps" };
 std::string  lmPSData::getParamName(const paraTYPE &t, int n)
 {
-	std::string tr="unknown";
-	switch (t)
-	{
-	case vps:
-		if (n<int(gParamName[vps].size()))
-			tr = gParamName[vps][n];
-		break;
-	case sps:
-		if (n < int(gParamName[sps].size()))
-			tr = gParamName[sps][n];
-		break;
-	case pps:
-		if (n < int(gParamName[pps].size()))
-			tr = gParamName[pps][n];
-		break;
-	default:
-		break;
-	}
-	return tr;
+	//std::string tr= gParamName[t][n];
+	//switch (t)
+	//{
+	//case vps:
+	//	if (n<int(gParamName[vps].size()))
+	//		tr = gParamName[vps][n];
+	//	break;
+	//case sps:
+	//	if (n < int(gParamName[sps].size()))
+	//		tr = gParamName[sps][n];
+	//	break;
+	//case pps:
+	//	if (n < int(gParamName[pps].size()))
+	//		tr = gParamName[pps][n];
+	//	break;
+	//default:
+	//	break;
+	//}
+	return  gParamName[t][n];
 }
 
 std::string lmPSData::getParamName(int n)
 {
 	//返回第n个参数名称的字符;
-	int in = 0;
-	for (auto i = psParaName.cbegin(); i != psParaName.cend(); ++i, ++in)
-		if (in == n)
-			return i->first;
-		return "unknown";
+	return gParamName[mType][n];
+	//int in = 0;
+	//for (auto i = psParaName.cbegin(); i != psParaName.cend(); ++i, ++in)
+	//	if (in == n)
+	//		return i->first;
+	//	return "unknown";
 	
 }
 
@@ -58,6 +59,18 @@ const lmVarTYPE  lmPSData::getValueTypeByName(const std::string& pstr)const
 		return i->second;
 	}
 	return lmVarTYPE::vnum;
+}
+
+
+
+const lmVar& lmPSData::getValueByName(const std::string& pstr) const
+{
+	auto i = mparalist.find(pstr);
+	if (i != mparalist.cend())
+	{
+		return i->second;
+	}
+	throw std::runtime_error("unknown param name!");
 }
 
 lmPSData& lmPSData::operator>>(std::ofstream& out)

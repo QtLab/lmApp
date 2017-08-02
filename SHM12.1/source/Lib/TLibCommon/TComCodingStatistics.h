@@ -284,6 +284,7 @@ class TComCodingStatistics
 
     ~TComCodingStatistics()
     {
+		return;
       const Int64 es=TCOMCODINGSTATISTICS_ENTROPYSCALE;
 
       Int64 cr=0; // CABAC remainder, which is added to "STATS__CABAC_INITIALISATION"

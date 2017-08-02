@@ -1399,17 +1399,17 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
   xActivateParameterSets();
   //运行到这里，应该所有参数集合都正式解码完了;
 #if 1//&& m_layerId ==MaxLayerId;
-  if (m_layerId==vps->getMaxLayerId())
+  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
+  if (m_layerId==vps->getMaxLayerId()&& (lminfo->hasOutputDec()==0))
 	{
-	  lmAllDecInfo *lminfo = lmAllDecInfo::getInstance();
 	  ParameterSetManager *allps = getParameterSetManager();
 	  int i = 0;
 	  TComVPS*      fvps = allps->getVPS(i);
 	  while (fvps != nullptr)
 	  {
 		  lmPSData tVPS(lmPSData::getPSTypeInString(paraTYPE::vps));
-		  tVPS << sParam(tVPS.getParamName(0), int(fvps->getVPSId()))
-			  << sParam(tVPS.getParamName(1), int(fvps->getMaxLayers()));
+		  tVPS << sParam(tVPS.getParamName(0), int(fvps->getMaxLayers()))
+			  << sParam(tVPS.getParamName(1), int(fvps->getVPSId()));
 		  (*lminfo) << tVPS;
 		  i++;
 		  fvps = allps->getVPS(i);
@@ -1420,6 +1420,7 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
 	  while (fsps != nullptr)
 	  {
 		  lmPSData tSPS(lmPSData::getPSTypeInString(paraTYPE::sps));
+		  int x = 0;
 		  tSPS << sParam(tSPS.getParamName(0), int(fsps->getSPSId()))
 				<< sParam(tSPS.getParamName(1), int(fsps->getLayerId()))
 				<< sParam(tSPS.getParamName(2), int(fsps->getChromaFormatIdc()))

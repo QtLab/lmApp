@@ -1,7 +1,7 @@
 #include "lmParseStreamPro.h"
 //#include "..\\lib_cfg.h"
 #include <QDir>
-
+static std::string reyuv[8];
 lmParseStreamPro::lmParseStreamPro(QObject *parent)
 	: QObject(parent)
 	//mCallDecoderEXE(this)
@@ -28,11 +28,9 @@ bool lmParseStreamPro::decoderBitstream(const std::string & rstrBitPath, int lay
 	mCallDecoderEXE.setWorkingDirectory(cachefolder);// -o0 bl_yuv.yuv -o1 el_yuv.yuv
 	
 
-	QString arguments = QString("-ls %1 " ).arg(layernum + 1);
-	for (size_t i = 0; i < layernum + 1; i++)
-	{
-		arguments += QString("-o%1 rec_layer%2.yuv ").arg(i).arg(i);
-	}
+	QString arguments = QString("-olsidx %1 " ).arg(layernum);
+	arguments += QString("-o%1 rec_layer%2.yuv ").arg(layernum).arg(layernum);
+	reyuv[layernum] = QString("rec_layer%1.yuv").arg(layernum).toStdString();
 	QString allCommand = QString("\"%1\" -b \"%2\" %3").arg(strdecoderpathabslout).arg(bitstreamPath).arg(arguments);
 	mCallDecoderEXE.start(allCommand);
 	mCallDecoderEXE.waitForFinished(-1);
@@ -59,5 +57,13 @@ bool lmParseStreamPro::preDec(const std::string & rstrBitPath)
 void lmParseStreamPro::stopDecoding()
 {
 	mCallDecoderEXE.kill();
+}
+
+std::string& lmParseStreamPro::getDecYUVName(int lsyerIdx)
+{
+	if (lsyerIdx)
+	return reyuv[lsyerIdx];
+	else
+		throw std::runtime_error("idx no!");
 }
 

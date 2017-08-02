@@ -63,6 +63,29 @@ void lmDecInfo::setInfoSoluPath(const std::string& pstr)
 	gAbsPath = pstr;
 }
 
+std::string lmDecInfo::retSoluPath() const
+{
+	return gAbsPath;
+}
+
+void lmDecInfo::getPS(lmPSData &ps, int pl, bool ispre)
+{
+	paraTYPE mftype = ps.getType();
+	lmPSList * plist = nullptr;
+	if (ispre)
+		plist = &mPSPreDec;
+	else
+		plist = &mPSDec;
+	std::vector<lmPSData> psl = (*plist)[mftype];
+
+	for (size_t i = 0; i < psl.size(); i++)
+	{
+		if (psl[i].getValueByName(ps.getParamName(1)).toInt() == pl)
+			ps = psl[i];
+	}
+
+}
+
 void lmDecInfo::insertps(const lmPSData &pp, bool isPerDec)
 {
 	if (pp.getType() == paraTYPE::psnum)

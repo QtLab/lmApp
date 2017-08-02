@@ -72,7 +72,7 @@
       <item>
        <layout class="QVBoxLayout" name="layer_0">
         <item>
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="checkBox_0">
           <property name="text">
            <string/>
           </property>
@@ -90,7 +90,7 @@
       <item>
        <layout class="QVBoxLayout" name="layer_1">
         <item>
-         <widget class="QCheckBox" name="checkBox_4">
+         <widget class="QCheckBox" name="checkBox_1">
           <property name="text">
            <string/>
           </property>
@@ -108,7 +108,7 @@
       <item>
        <layout class="QVBoxLayout" name="layer_2">
         <item>
-         <widget class="QCheckBox" name="checkBox_5">
+         <widget class="QCheckBox" name="checkBox_2">
           <property name="text">
            <string/>
           </property>
@@ -126,7 +126,7 @@
       <item>
        <layout class="QVBoxLayout" name="layer_3">
         <item>
-         <widget class="QCheckBox" name="checkBox_6">
+         <widget class="QCheckBox" name="checkBox_3">
           <property name="text">
            <string/>
           </property>
@@ -144,7 +144,7 @@
       <item>
        <layout class="QVBoxLayout" name="layer_4">
         <item>
-         <widget class="QCheckBox" name="checkBox_7">
+         <widget class="QCheckBox" name="checkBox_4">
           <property name="text">
            <string/>
           </property>
@@ -162,7 +162,7 @@
       <item>
        <layout class="QVBoxLayout" name="layer_5">
         <item>
-         <widget class="QCheckBox" name="checkBox_2">
+         <widget class="QCheckBox" name="checkBox_5">
           <property name="text">
            <string/>
           </property>
@@ -180,7 +180,7 @@
       <item>
        <layout class="QVBoxLayout" name="layer_6">
         <item>
-         <widget class="QCheckBox" name="checkBox_8">
+         <widget class="QCheckBox" name="checkBox_6">
           <property name="text">
            <string/>
           </property>
@@ -198,7 +198,7 @@
       <item>
        <layout class="QVBoxLayout" name="layer_7">
         <item>
-         <widget class="QCheckBox" name="checkBox_9">
+         <widget class="QCheckBox" name="checkBox_7">
           <property name="text">
            <string/>
           </property>

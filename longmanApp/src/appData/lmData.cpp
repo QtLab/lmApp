@@ -35,10 +35,10 @@ lmData::~lmData()
 //读取yuv文件，获取yuv信息，返回读取状态;
 int lmData::openyuv_r(const std::string &fileName, Bool bWriteMode, int formatType, int pwidth, int pheight)
 {
-// 	if (formatType==0)
-// 	{
-// 		return 1;
-// 	}
+	if (formatType < 0 && formatType>2)
+	{
+		return -6;
+	}
 	closeandclear();
 	mwidth = pwidth; mheight = pheight; mformattype = formatType;
 	int m_aiPad[2] = { 0 };

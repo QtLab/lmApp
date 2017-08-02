@@ -72,6 +72,8 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 		case -3:openstyuv.setParam("info", QStringLiteral("failed to write output YUV file!")); break;
 		case -4:openstyuv.setParam("info", QStringLiteral("failed to open Input YUV file!")); break;
 		case -5:openstyuv.setParam("info", QStringLiteral("Sorry,Not enough data in this file!\nReturn last file£¡")); break;
+		case -6:openstyuv.setParam("info", QStringLiteral("Wrong format!")); break;
+		
 		default:
 			break;
 		}

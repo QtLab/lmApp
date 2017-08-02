@@ -14,6 +14,7 @@ public:
 	void outputDec();
 public:
 	lmAllDecInfo& operator<<(const lmPSData& rps);
+	int hasOutputDec();
 private:
 	lmAllDecInfo();
 	static lmAllDecInfo* _instance;

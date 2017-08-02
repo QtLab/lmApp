@@ -17,12 +17,13 @@ public:
 	bool getcfg(QString & bitstreampath);
 	inline QString getbitstreamPath() { return ui.lineEdit->text(); };
 //	inline int getNumLayersToBeDecode() { return ui.spinBox->value();};
-
+	void resetState(bool bitpath=true);
 private:
 	Ui::lmParserBitConfigure ui;
 	bool handleEvt(longmanEvt&);
+	bool getLayertoDec();
 	int mMaxLayer = -1;
-	void decCammand();
+	void proCheckBox();
 private slots:
 	void on_toolButton_clicked();
 };

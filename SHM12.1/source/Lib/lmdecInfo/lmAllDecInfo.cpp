@@ -1,7 +1,7 @@
 #include "lmAllDecInfo.h"
 #include "../TLibCommon/TComSlice.h"
 #include <fstream>
-
+static int outflag = 0;
 lmAllDecInfo::lmAllDecInfo() 
 {
 		for (int i = 0; i < paraTYPE::psnum;i++)
@@ -39,6 +39,7 @@ void lmAllDecInfo::outputPreDec()
 
 void lmAllDecInfo::outputDec()
 {
+	outflag = 0;
 	std::ofstream printTXTclear(mOutTxtpath, std::ofstream::out);
 	printTXTclear.close();//清除所有原先内容;
 	std::ofstream printTXTappend(mOutTxtpath, std::ofstream::out | std::ofstream::app);
@@ -51,6 +52,7 @@ void lmAllDecInfo::outputDec()
 		}
 	}
 	printTXTappend << "[Dec_END]" << '\n';
+	++outflag;
 }
 
 lmAllDecInfo& lmAllDecInfo::operator<<(const lmPSData& rps)
@@ -58,6 +60,11 @@ lmAllDecInfo& lmAllDecInfo::operator<<(const lmPSData& rps)
 	//std::vector<lmPSData> tvps{ rps };
 	mpsdec[rps.getType()].push_back(rps);
 	return *this;
+}
+
+int lmAllDecInfo::hasOutputDec()
+{
+	return outflag;
 }
 
 lmAllDecInfo* lmAllDecInfo::getInstance()

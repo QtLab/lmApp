@@ -62,6 +62,7 @@ void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
 	QString bspath;
 	//int layertobedecode = 1;
 #if 1
+	mBitParseCFG->resetState();
 	if (mBitParseCFG->exec() == QDialog::Accepted&&mBitParseCFG->getcfg(bspath))
 		{
 			longmanEvt parsestream(EvtTYPE2);
