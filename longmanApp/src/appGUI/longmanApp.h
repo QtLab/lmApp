@@ -13,6 +13,7 @@
 #include "lmMessageBox.h"
 #include "lmDataView.h"
 #include "lmParserBitConfigure.h"
+#include "lmlayerlist.h"
 //主界面，额外继承了lmView，通过listenParam接口设定响应函数;
 class longmanApp : public QMainWindow ,public lmView
 {
@@ -29,6 +30,7 @@ private:
 	QTimeLine timeLine;
 	QImage* imageSave;
 	lmParserBitConfigure *mBitParseCFG;
+	lmLayerList *mlayerList;
 private slots:
 void on_actionOpen_SHVC_bitstream_triggered();
 void on_actionOpen_triggered();

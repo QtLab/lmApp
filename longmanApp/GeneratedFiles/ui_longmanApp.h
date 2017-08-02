@@ -96,6 +96,10 @@ public:
     QPushButton *f8Button;
     QGroupBox *groupBox;
     QGridLayout *gridLayout_2;
+    QGridLayout *gridLayout_6;
+    QFrame *frame;
+    QVBoxLayout *verticalLayout_4;
+    QLabel *label_3;
     QFrame *line;
 
     void setupUi(QMainWindow *longmanAppClass)
@@ -391,8 +395,30 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        gridLayout_6 = new QGridLayout();
+        gridLayout_6->setSpacing(6);
+        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
+
+        gridLayout_2->addLayout(gridLayout_6, 0, 0, 1, 1);
+
 
         verticalLayout_3->addWidget(groupBox);
+
+        frame = new QFrame(FucAeraBox);
+        frame->setObjectName(QStringLiteral("frame"));
+        frame->setFrameShape(QFrame::StyledPanel);
+        frame->setFrameShadow(QFrame::Raised);
+        verticalLayout_4 = new QVBoxLayout(frame);
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        label_3 = new QLabel(frame);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        verticalLayout_4->addWidget(label_3);
+
+
+        verticalLayout_3->addWidget(frame);
 
         line = new QFrame(FucAeraBox);
         line->setObjectName(QStringLiteral("line"));
@@ -456,7 +482,7 @@ public:
         label_format->setText(QApplication::translate("longmanAppClass", "420", 0));
         dockWidget_1->setWindowTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
         groupBox_2->setTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
-        f1Button->setText(QApplication::translate("longmanAppClass", "f1", 0));
+        f1Button->setText(QApplication::translate("longmanAppClass", "show Pixel", 0));
         f2Button->setText(QApplication::translate("longmanAppClass", "f2", 0));
         f3Button->setText(QApplication::translate("longmanAppClass", "f3", 0));
         f4Button->setText(QApplication::translate("longmanAppClass", "f4", 0));
@@ -465,6 +491,7 @@ public:
         f7Button->setText(QApplication::translate("longmanAppClass", "f7", 0));
         f8Button->setText(QApplication::translate("longmanAppClass", "f8", 0));
         groupBox->setTitle(QApplication::translate("longmanAppClass", "List Area", 0));
+        label_3->setText(QApplication::translate("longmanAppClass", "wait dev...", 0));
     } // retranslateUi
 
 };

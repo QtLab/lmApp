@@ -64,7 +64,12 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		openyuv.setParam("yuv_height", QVariant::fromValue(mh));
 		openyuv.setParam("yuv_format", QVariant::fromValue(mf));
 		openyuv.dispatch();
-		
+		//发送最大层数给list;
+		longmanEvt lmlistview(EvtTYPE1);
+		lmlistview.setParam("CommandName", "addressLayer_list");
+		lmlistview.setParam("maxLayer", QVariant::fromValue(maxLayerIdx));
+		lmlistview.dispatch();
+		return decodeSuccessed;
 	}
 	else
 	{
@@ -73,9 +78,9 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		testmsg.setParam("MsgType", 2);
 		testmsg.setParam("info", "decoding failed");
 		testmsg.dispatch();
-		return false;
+		return decodeSuccessed;
 	}
-	return decodeSuccessed;
+	
 }
 
 bool lmDecodeThread::preDec(longmanEvt& rEvt)

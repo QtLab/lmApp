@@ -19,6 +19,7 @@ const char *cha[4] = { "Y","U","V","NULL" };
 const QColor color[4] = {Qt::black,QColor(182,64,128),QColor(64,64,180),QColor(64,192,64) };
 const int lRect = 16;
 const int sRect = 8;
+bool isInPaintArea=true;
 lmDataView::lmDataView(QWidget *parent)
 	: QDialog(parent, Qt::CustomizeWindowHint|Qt::WindowTitleHint),
 	lmView(nullptr)
@@ -72,9 +73,10 @@ bool lmDataView::updatedataview(longmanEvt & rEvt)
 void lmDataView::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton) {
-		bool respond = event->y() <= drawAreaRange[0] && event->x() <= drawAreaRange[1];
-		respond= respond&& event->y() > sqSize[formatType] && event->x() > sqSize[formatType];
-		if (respond)
+		isInPaintArea = event->y() <= drawAreaRange[0] && event->x() <= drawAreaRange[1];
+		
+		bool res= isInPaintArea&& event->y() > sqSize[formatType] && event->x() > sqSize[formatType];
+		if (res)
 			lastPositionClikedInDrawArea = (event->y() / sqSize[formatType] - 1)*(ViewSize[formatType][1])+ event->x() / sqSize[formatType]- 1;
 		else
 			lastPositionClikedInDrawArea = -1;
@@ -87,6 +89,8 @@ void lmDataView::mousePressEvent(QMouseEvent *event)
 
 void lmDataView::paintEvent(QPaintEvent * event)
 {
+	//if (!isInPaintArea)
+	//	return;
 	//对于widget对象，Qpainter只能在该函数,或该函数调用的函数内使用;
 	clock_t lBefore = clock();
 	QPainter mcpainter(this);

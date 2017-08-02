@@ -15,11 +15,14 @@ longmanApp::longmanApp(QWidget *parent)
 	msgBox(new lmMessageBox(this)),
 	imageSave(nullptr),
 	m_DataView(new lmDataView(this)),
-	mBitParseCFG(new lmParserBitConfigure(this))
+	mBitParseCFG(new lmParserBitConfigure(this)),
+	mlayerList(new lmLayerList(this))
 {
 	timeLine.stop();
 	ui.setupUi(this);
 	setCentralWidget(m_imageView);
+	
+	ui.gridLayout_6->addWidget(mlayerList);
 	CallBackFunc pcupdate = std::bind(&longmanApp::updatemainwindow, this, std::placeholders::_1);
 	listenParam("update_mainwindow", pcupdate);
 	setModelName("MainWindow_View_Model");
@@ -262,12 +265,14 @@ void longmanApp::on_f1Button_clicked()
 		m_DataView->show();
 		ui.YUVgroupBox->setEnabled(showdataEnable);
 		ui.actionOpen->setEnabled(showdataEnable);
+		ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
 	}
 	else
 	{
 		m_DataView->hide();	
 		ui.YUVgroupBox->setEnabled(showdataEnable);
 		ui.actionOpen->setEnabled(showdataEnable);
+		ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
 	}
 	longmanEvt showdata(EvtTYPE2);
 	showdata.setParam("CommandName", "show_yuvdata");
