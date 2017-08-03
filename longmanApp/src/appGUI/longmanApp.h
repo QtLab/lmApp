@@ -22,6 +22,7 @@ class longmanApp : public QMainWindow ,public lmView
 public:
 	longmanApp(QWidget *parent = 0);
 	bool updatemainwindow(longmanEvt&);
+	bool openyuvFailed(longmanEvt&);
 private:
 	Ui::longmanAppClass ui;
 	lmGraphView *m_imageView;

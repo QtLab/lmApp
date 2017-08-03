@@ -17,7 +17,7 @@ public:
 	static lmController* getInstance();
 	void recoverhandle(cyuvParam&);
 	bool callDecodeTread(longmanEvt& rEvt);
-	bool preDecode(longmanEvt& rEvt);
+	//bool preDecode(longmanEvt& rEvt);
 private:
 	void xcmdInti();
 	bool sendMsg(const std::string&);

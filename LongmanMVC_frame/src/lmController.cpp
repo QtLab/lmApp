@@ -9,29 +9,38 @@ const char *cmdtable[] =
 	"change_imagepoc",//+目标POC+是否强制读取数据(针对固定窗口数据存储方式)+是否恢复上次文件关联(针对已打开文件后的打开失败场景);
 	"show_yuvdata",//请在整个工程查找该命令，以获取其参数;
 	"parse_shvcbitstream",//解码SHVC码流
-	"preDecode"//预解码;
+	"preDecode",//预解码;
+	"parse_LayerToshow"
 };
 ////绑定命令和相应的处理函数,增加命令时必须添加代码;
 void lmController::xcmdInti()
 {
 	//普通事件交给workThread执行;
+	//open_yuvfile 事件，交给workThread.openyuvfile（）
 	CallBackFunc pcCmdHandle0 = std::bind(&cmdProcessThread::openyuvfile, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[0], pcCmdHandle0);
+	//change_imagepoc 事件，交给workThread.changeimagepoc（）
 	CallBackFunc pcCmdHandle1 = std::bind(&cmdProcessThread::changeimagepoc, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[1], pcCmdHandle1);
+	//show_yuvdata 事件，交给workThread.changeimagepoc（）
 	CallBackFunc pcCmdHandle2 = std::bind(&cmdProcessThread::showyuvData, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[2], pcCmdHandle2);
-	CallBackFunc pcCmdHandle3 = std::bind(&lmController::callDecodeTread, this, std::placeholders::_1);
 	//回调DecodeThread函数过程：先统一交给workThread,workThread回调本模块的callDecodeTread()
 	//callDecodeTread()将Evt再交给DecodeThread，由DecodeThread执行;
+	//parse_shvcbitstream 事件，workThread转交本模块callDecodeTread()，再推入pDecoder;
+	CallBackFunc pcCmdHandle3 = std::bind(&lmController::callDecodeTread, this, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[3], pcCmdHandle3);
 	CallBackFunc pcCmdHandle3_dethread = std::bind(&lmDecodeThread::parseSHVCBitBtream, &pDecoder, std::placeholders::_1);
 	pDecoder.addCommandHandle(cmdtable[3], pcCmdHandle3_dethread);
+	//preDecode事件，workThread转交本模块callDecodeTread()，再推入pDecoder;
 	CallBackFunc pcCmdHandle4 = std::bind(&lmController::callDecodeTread, this, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[4], pcCmdHandle4);
 	CallBackFunc pcCmdHandle4_dethread = std::bind(&lmDecodeThread::preDec, &pDecoder, std::placeholders::_1);
 	pDecoder.addCommandHandle(cmdtable[4], pcCmdHandle4_dethread);
-
+	//普通事件
+	//parse_LayerToshow事件，直接交给workThread处理;
+	CallBackFunc pcCmdHandle5 = std::bind(&cmdProcessThread::parseLayerFromList, &workThread, std::placeholders::_1);
+	workThread.addCommandHandle(cmdtable[5], pcCmdHandle5);
 
 }
 
@@ -134,6 +143,7 @@ bool lmController::callDecodeTread(longmanEvt& rEvt)
 
 	return true;
 }
+
 // bool lmController::parseSHVCBitBtream(longmanEvt& rEvt)
 // {
 // 	lmParseStreamPro mStreamParse;

@@ -14,9 +14,11 @@ public:
 	//void readDec();
 	void readDec(bool isPreDec=false);
 	void setInfoSoluPath(const std::string& pstr);
+	void setInfoSoluPath(const std::string& pstr, const std::string& pyuv);
 	std::string retSoluPath()const;
 	bool preDecFailed() const { return mPSPreDec[paraTYPE::vps].empty(); };
 	void getPS(lmPSData &ps,int pl,bool ispre=false)const;
+	std::string getyuvPath(int iLayerIdx)const;
 public:
 	void insertps(const lmPSData &pp, bool isPerDec = false);
 private:

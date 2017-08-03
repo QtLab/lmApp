@@ -78,6 +78,8 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 			break;
 		}
 		openstyuv.dispatch();
+		longmanEvt openstyuvtoMainW(EvtTYPE1);
+		openstyuvtoMainW.dispatch();
 		return false;
 	}
 	//保存成功打开的yuv信息;
@@ -133,7 +135,8 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 	lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
 	lmgraphview.dispatch();
 	//存储当前POC;
-	lastyuvParam.mcurPOC = mpoc;
+		lastyuvParam.mcurPOC = mpoc;
+	
 
 // 	if (enableShowYuvData|| firstrunChangePOC)
 // 	{
@@ -212,6 +215,27 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 	return true;
 }
 
+bool cmdProcessThread::parseLayerFromList(longmanEvt& rEvt)
+{
+	int layerIdx = rEvt.getParam("layerIdx").toInt();
+	const lmDecInfo* cDec = lmDecInfo::getInstanceForReadonly();
+	lmPSData msps(lmPSData::getPSTypeInString(paraTYPE::sps));
+	cDec->getPS(msps, layerIdx);
+	int mf = msps.getValueByName(msps.getParamName(2)).toInt();
+	int mw = msps.getValueByName(msps.getParamName(3)).toInt();
+	int mh = msps.getValueByName(msps.getParamName(4)).toInt();
+	QString yuvpath = QString::fromStdString(cDec->getyuvPath(layerIdx));
+	longmanEvt openyuv(EvtTYPE2);
+	openyuv.setParam("CommandName", "open_yuvfile");
+	openyuv.setParam("yuv_filePath", QVariant::fromValue(yuvpath));
+	openyuv.setParam("yuv_width", QVariant::fromValue(mw));
+	openyuv.setParam("yuv_height", QVariant::fromValue(mh));
+	openyuv.setParam("yuv_format", QVariant::fromValue(mf));
+	openyuvfile(openyuv);
+	//直接调用openyuvfile函数
+	return true;
+}
+
 // bool cmdProcessThread::parseSHVCBitBtream(longmanEvt& rEvt)
 // {
 // 	std::cout << "解析SHVC码流!" << std::endl;
@@ -243,6 +267,11 @@ void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 		m_cmdHandlef->second(requstCmd);
 	}
 	return;
+}
+
+void cmdProcessThread::xOpenYUVFile(longmanEvt&)
+{
+
 }
 
 void cmdProcessThread::run()

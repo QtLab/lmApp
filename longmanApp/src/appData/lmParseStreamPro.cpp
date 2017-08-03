@@ -59,11 +59,16 @@ void lmParseStreamPro::stopDecoding()
 	mCallDecoderEXE.kill();
 }
 
-std::string& lmParseStreamPro::getDecYUVName(int lsyerIdx)
+std::string lmParseStreamPro::getDecYUVName(int lsyerIdx)
 {
 	if (lsyerIdx)
 	return reyuv[lsyerIdx];
 	else
 		throw std::runtime_error("idx no!");
+}
+
+std::string lmParseStreamPro::getDecYUVName()
+{
+	return "rec_layer";
 }
 

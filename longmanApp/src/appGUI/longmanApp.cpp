@@ -25,6 +25,8 @@ longmanApp::longmanApp(QWidget *parent)
 	ui.gridLayout_6->addWidget(mlayerList);
 	CallBackFunc pcupdate = std::bind(&longmanApp::updatemainwindow, this, std::placeholders::_1);
 	listenParam("update_mainwindow", pcupdate);
+	CallBackFunc pcupdate1 = std::bind(&longmanApp::openyuvFailed, this, std::placeholders::_1);
+	listenParam("fail_opemyuv", pcupdate1);
 	setModelName("MainWindow_View_Model");
 	//
 	//connect(ui.FrameIdxSlider, SIGNAL(ValueChanged(int)), this, SLOT(on_FrameIdxSlider_ValueChanged(int)));
@@ -39,7 +41,7 @@ longmanApp::longmanApp(QWidget *parent)
 
 bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 {
-	++OpenNum;
+	OpenNum = OpenNum > 2 ? 2 : OpenNum + 1;
 	ui.YUVgroupBox->setEnabled(true);
 	int curpoc = updateWinEvt.getParam("yuv_currentPOC").toInt();
 	int totalfarmes= updateWinEvt.getParam("yuv_totalFrames").toInt();
@@ -55,10 +57,21 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	ui.label_format->setText(tr(formattext[formattype]));
 	ui.actionSave_as_image->setEnabled(true);
 	ui.f3Button->setEnabled(true);
-	ui.FrameIdxSlider->setValue(curpoc + 1);//触发更新命令;
+	//触发更新命令;
+	if (OpenNum % 2 == 1)
+		ui.FrameIdxSlider->setValue(curpoc + 1);
+	else
+		ui.FrameIdxSlider->setValue((curpoc - 1) < 0 ? 0 : (curpoc - 1));
+	
 	ui.f1Button->setEnabled(true);
 	//
 	
+	return true;
+}
+
+bool longmanApp::openyuvFailed(longmanEvt&)
+{
+	OpenNum = -1;
 	return true;
 }
 
@@ -163,7 +176,7 @@ void longmanApp::on_FrameIdxSlider_valueChanged(int poc)
 			yuvnext.setParam("recoverLast", true);
 			OpenNum = 1;
 		}
-	else if (OpenNum==1)//打开成功，已刷新第一帧;
+	else if (OpenNum>0)//打开成功，已刷新第一帧;
 		{
 			yuvnext.setParam("force_readData", true);
 			yuvnext.setParam("recoverLast", false);

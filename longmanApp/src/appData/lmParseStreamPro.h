@@ -13,7 +13,8 @@ public:
 	bool decoderBitstream(const std::string &,int);
 	bool preDec(const std::string &);
 	void stopDecoding();
-	static std::string& getDecYUVName(int lsyerIdx);
+	static std::string getDecYUVName(int lsyerIdx);
+	static std::string getDecYUVName();
 private:
 	QProcess mCallDecoderEXE;
 	QString decoderPath = "..//SHM12.1//bin//vc2010//Win32//Debug//TAppDecoderAnalyser.exe";

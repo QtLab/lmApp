@@ -1,5 +1,6 @@
 #include "lmDecInfo.h"
-std::string gAbsPath("\\");
+static std::string gAbsPath("\\");
+static std::string gyuvprefix;
 lmDecInfo * lmDecInfo::_instance = nullptr;
 lmDecInfo::lmDecInfo()
 {
@@ -78,6 +79,12 @@ void lmDecInfo::setInfoSoluPath(const std::string& pstr)
 	gAbsPath = pstr;
 }
 
+void lmDecInfo::setInfoSoluPath(const std::string& pstr, const std::string& pyuv)
+{
+	setInfoSoluPath(pstr);
+	gyuvprefix = pyuv;
+}
+
 std::string lmDecInfo::retSoluPath() const
 {
 	return gAbsPath;
@@ -97,6 +104,14 @@ void lmDecInfo::getPS(lmPSData &ps, int pl, bool ispre)const
 			ps = psl[i];
 	}
 
+}
+
+std::string lmDecInfo::getyuvPath(int iLayerIdx)const
+{
+	std::string str = gAbsPath;
+	str += gyuvprefix;
+	str = str + std::to_string(iLayerIdx)+".yuv";
+	return str;
 }
 
 void lmDecInfo::insertps(const lmPSData &pp, bool isPerDec)

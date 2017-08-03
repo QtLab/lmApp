@@ -12,6 +12,7 @@
 #include "..\longmanApp\src\appData\lmData.h"
 #include "..\longmanApp\src\appData\lmImageDraw.h"
 #include "..\longmanApp\src\appData\lmNormalDraw.h"
+#include "..\lmDecInfoData\src\lmDecInfo.h"
 //（目前）作用:在工作线程中处理EvtTYPE2类型的Event,建立简单的Event缓冲机制;
 //
 struct cyuvParam
@@ -55,10 +56,12 @@ private:
 	//lmParseStreamPro *mparsestream;
 	QMutex mutex;
 	QWaitCondition condition;
+	void xOpenYUVFile(longmanEvt&);
 public:
 	bool openyuvfile(longmanEvt&);
 	bool changeimagepoc(longmanEvt&);
 	bool showyuvData(longmanEvt&);
+	bool parseLayerFromList(longmanEvt&);
 	//bool parseSHVCBitBtream(longmanEvt&);
 	//void setParseEXE(lmParseStreamPro *pStreamParse) { mStreamParse = pStreamParse; };
 //private:

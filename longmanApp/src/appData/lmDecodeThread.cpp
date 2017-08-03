@@ -38,7 +38,7 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	{
 		{
 			lmDecInfo *decinfo = lmDecInfo::getInstanceForChange();
-			decinfo->setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
+			decinfo->setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\", lmParseStreamPro::getDecYUVName());
 			decinfo->readDec();
 		}
 		//½âÂëÊ£Óà²ãÑ¡Ïî;
@@ -60,7 +60,7 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		int mf = msps.getValueByName(msps.getParamName(2)).toInt();
 		int mw = msps.getValueByName(msps.getParamName(3)).toInt();
 		int mh = msps.getValueByName(msps.getParamName(4)).toInt();
-		QString yuvpath = QString::fromStdString(constdecinfo->retSoluPath() + lmParseStreamPro::getDecYUVName(maxLayerIdx));
+		QString yuvpath = QString::fromStdString(constdecinfo->getyuvPath(maxLayerIdx));
 		longmanEvt openyuv(EvtTYPE2);
 		openyuv.setParam("CommandName", "open_yuvfile");
 		openyuv.setParam("yuv_filePath", QVariant::fromValue(yuvpath));
