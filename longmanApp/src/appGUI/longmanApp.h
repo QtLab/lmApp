@@ -46,6 +46,8 @@ void on_playButton_clicked();
 void on_stopButton_clicked();
 void on_actionSave_as_image_triggered();
 void on_f1Button_clicked();
-
+void on_f2Button_clicked();
+void on_f3Button_clicked();
+void on_f4Button_clicked();
 };
 #endif // longmanApp_h__

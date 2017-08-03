@@ -21,6 +21,7 @@ lmLayerList::~lmLayerList()
 
 bool lmLayerList::getLayer(longmanEvt & pEvt)
 {
+	ui->listWidget->clear();
 	maxLayer = pEvt.getParam("maxLayer").toInt();
 	for (size_t i = 0; i < maxLayer+1; i++)
 	{

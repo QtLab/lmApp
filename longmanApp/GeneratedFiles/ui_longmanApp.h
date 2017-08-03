@@ -483,9 +483,9 @@ public:
         dockWidget_1->setWindowTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
         groupBox_2->setTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
         f1Button->setText(QApplication::translate("longmanAppClass", "show Pixel", 0));
-        f2Button->setText(QApplication::translate("longmanAppClass", "f2", 0));
-        f3Button->setText(QApplication::translate("longmanAppClass", "f3", 0));
-        f4Button->setText(QApplication::translate("longmanAppClass", "f4", 0));
+        f2Button->setText(QApplication::translate("longmanAppClass", "open yuv", 0));
+        f3Button->setText(QApplication::translate("longmanAppClass", "save image", 0));
+        f4Button->setText(QApplication::translate("longmanAppClass", "open bitstr", 0));
         f5Button->setText(QApplication::translate("longmanAppClass", "f5", 0));
         f6Button->setText(QApplication::translate("longmanAppClass", "f6", 0));
         f7Button->setText(QApplication::translate("longmanAppClass", "f7", 0));

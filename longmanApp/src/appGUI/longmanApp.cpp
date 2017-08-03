@@ -32,6 +32,7 @@ longmanApp::longmanApp(QWidget *parent)
 	ui.YUVgroupBox->setEnabled(false);
 	ui.stopButton->setEnabled(false);
 	ui.actionSave_as_image->setEnabled(false);
+	ui.f3Button->setEnabled(false);
 	ui.f1Button->setEnabled(false);
 	connect(&timeLine, SIGNAL(frameChanged(int)), this, SLOT(player(int)));
 }
@@ -53,6 +54,7 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	ui.MaxFraBox->setValue(totalfarmes);
 	ui.label_format->setText(tr(formattext[formattype]));
 	ui.actionSave_as_image->setEnabled(true);
+	ui.f3Button->setEnabled(true);
 	ui.FrameIdxSlider->setValue(curpoc + 1);//触发更新命令;
 	ui.f1Button->setEnabled(true);
 	//
@@ -259,12 +261,14 @@ void longmanApp::on_actionSave_as_image_triggered()
 void longmanApp::on_f1Button_clicked()
 {
 	static bool showdataEnable = false;
-
+	//showdataEnable标志，当查看yuv的pixel值功能打开时，禁用部分功能;
 	if (!showdataEnable)
 	{
 		m_DataView->show();
 		ui.YUVgroupBox->setEnabled(showdataEnable);
 		ui.actionOpen->setEnabled(showdataEnable);
+		ui.f2Button->setEnabled(showdataEnable);
+		ui.f4Button->setEnabled(showdataEnable);
 		ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
 	}
 	else
@@ -272,6 +276,8 @@ void longmanApp::on_f1Button_clicked()
 		m_DataView->hide();	
 		ui.YUVgroupBox->setEnabled(showdataEnable);
 		ui.actionOpen->setEnabled(showdataEnable);
+		ui.f2Button->setEnabled(showdataEnable);
+		ui.f4Button->setEnabled(showdataEnable);
 		ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
 	}
 	longmanEvt showdata(EvtTYPE2);
@@ -280,3 +286,19 @@ void longmanApp::on_f1Button_clicked()
 	showdata.dispatch();
 	showdataEnable = !showdataEnable;
 }
+
+void longmanApp::on_f2Button_clicked()
+{
+	on_actionOpen_triggered();
+}
+
+void longmanApp::on_f3Button_clicked()
+{
+	on_actionSave_as_image_triggered();
+}
+
+void longmanApp::on_f4Button_clicked()
+{
+	on_actionOpen_SHVC_bitstream_triggered();
+}
+

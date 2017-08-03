@@ -7,6 +7,10 @@ lmParserBitConfigure::lmParserBitConfigure(QWidget *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
+	setWindowTitle(tr("Bitstream set"));
+	Qt::WindowFlags flags = Qt::Dialog;
+	flags |= Qt::WindowCloseButtonHint;
+	setWindowFlags(flags);
 	setModelName("BitStreamCfg_View_Model");
 	CallBackFunc pcEvtHandle = std::bind(&lmParserBitConfigure::handleEvt, this, std::placeholders::_1);
 	listenParam("Get_Layer", pcEvtHandle);

@@ -19,6 +19,7 @@ class longmanEvt
 public:
 	//longmanEvt();
 	longmanEvt(const std::string &);
+	longmanEvt(const longmanEvt& pEvt) :m_paramList(pEvt.m_paramList), m_eventTYPE(pEvt.m_eventTYPE){};
 	virtual ~longmanEvt();
 	virtual longmanEvt* clone()const { return new longmanEvt(*this); }
 private:

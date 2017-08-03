@@ -1,6 +1,7 @@
 # 项目说明:
-> [学习项目](https://github.com/lheric/GitlHEVCAnalyzer)；
-> 以上述项目为模板，学习**QT**和**设计模式**；
+ * [学习项目](https://github.com/lheric/GitlHEVCAnalyzer)；
+ * 以上述项目为模板，学习**QT**和**设计模式**；
+ * [项目备忘](doc/项目备忘.md)
 ## 配置环境:
 [**Visual studio 2015 com**](https://www.visualstudio.com/);
 [**QT5.7.0**](https://www.qt.io/qt5-7/)
