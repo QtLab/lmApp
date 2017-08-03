@@ -36,8 +36,11 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, maxLayerIdx);
 	if (decodeSuccessed)
 	{
-		decinfo.setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
-		decinfo.readDec();
+		{
+			lmDecInfo *decinfo = lmDecInfo::getInstanceForChange();
+			decinfo->setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
+			decinfo->readDec();
+		}
 		//解码剩余层选项;
 		for (size_t i = 0; i < layerIdxToDec.size(); i++)
 		{
@@ -51,12 +54,13 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		testmsg.setParam("isHide", true);
 		testmsg.dispatch();
 		//发送openyuvfile事件，刷新显示的yuv,打开最高层级;
+		const lmDecInfo *constdecinfo = lmDecInfo::getInstanceForReadonly();
 		lmPSData msps(lmPSData::getPSTypeInString(paraTYPE::sps));
-		decinfo.getPS(msps, maxLayerIdx);
+		constdecinfo->getPS(msps, maxLayerIdx);
 		int mf = msps.getValueByName(msps.getParamName(2)).toInt();
 		int mw = msps.getValueByName(msps.getParamName(3)).toInt();
 		int mh = msps.getValueByName(msps.getParamName(4)).toInt();
-		QString yuvpath = QString::fromStdString( decinfo.retSoluPath() + lmParseStreamPro::getDecYUVName(maxLayerIdx));
+		QString yuvpath = QString::fromStdString(constdecinfo->retSoluPath() + lmParseStreamPro::getDecYUVName(maxLayerIdx));
 		longmanEvt openyuv(EvtTYPE2);
 		openyuv.setParam("CommandName", "open_yuvfile");
 		openyuv.setParam("yuv_filePath", QVariant::fromValue(yuvpath));
@@ -106,10 +110,14 @@ bool lmDecodeThread::preDec(longmanEvt& rEvt)
 		testmsg.dispatch();
 		return false;
 	}
-	decinfo.setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
-	decinfo.readDec(true);
+	{
+		lmDecInfo *decinfo = lmDecInfo::getInstanceForChange();
+		decinfo->setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
+		decinfo->readDec(true);
+	}
 	//判断预解码是否成功;
-	if (decinfo.preDecFailed())
+	const lmDecInfo *constdecinfo = lmDecInfo::getInstanceForReadonly();
+	if (constdecinfo->preDecFailed())
 	{
 		longmanEvt testmsg(EvtTYPE1);
 		testmsg.setParam("CommandName", "show_message");
@@ -119,7 +127,7 @@ bool lmDecodeThread::preDec(longmanEvt& rEvt)
 		return false;
 	}
 	lmPSData mvps(lmPSData::getPSTypeInString(paraTYPE::vps));
-	decinfo.getPS(mvps, 0, true);
+	constdecinfo->getPS(mvps, 0, true);
 	int maxLayer = mvps.getValueByName(mvps.getParamName(0)).toInt();
 	longmanEvt layer(EvtTYPE1);
 	layer.setParam("CommandName", "Get_Layer");

@@ -8,7 +8,6 @@
 #include "src/lmTYPE.h"
 #include "..\longmanApp\src\appData\lmParseStreamPro.h"
 #include "..\lmDecInfoData\src\lmDecInfo.h"
-class lmDecInfo;
 struct bitSteInfo
 {
 	bitSteInfo() {};
@@ -41,6 +40,6 @@ private:
 	void xParseinfo();
 	void xParsePreDecinfo();
 	
-	lmDecInfo decinfo;
+	//lmDecInfo decinfo;
 };
 #endif // lmDecodeThread_h__

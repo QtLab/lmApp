@@ -1,5 +1,6 @@
 #include "lmDecInfo.h"
 std::string gAbsPath("\\");
+lmDecInfo * lmDecInfo::_instance = nullptr;
 lmDecInfo::lmDecInfo()
 {
 	for (size_t i = 0; i < paraTYPE::psnum; i++)
@@ -9,6 +10,20 @@ lmDecInfo::lmDecInfo()
 	}
 }
 
+
+lmDecInfo * lmDecInfo::getInstanceForChange()
+{
+	if (_instance == nullptr)
+		_instance= new lmDecInfo();
+	return _instance;
+}
+
+const lmDecInfo * lmDecInfo::getInstanceForReadonly()
+{
+	if (_instance == nullptr)
+		_instance = new lmDecInfo();
+	return _instance;
+}
 
 lmDecInfo::~lmDecInfo()
 {
@@ -68,16 +83,14 @@ std::string lmDecInfo::retSoluPath() const
 	return gAbsPath;
 }
 
-void lmDecInfo::getPS(lmPSData &ps, int pl, bool ispre)
+void lmDecInfo::getPS(lmPSData &ps, int pl, bool ispre)const
 {
 	paraTYPE mftype = ps.getType();
-	lmPSList * plist = nullptr;
+	std::vector<lmPSData> psl;
 	if (ispre)
-		plist = &mPSPreDec;
+		psl = mPSPreDec[mftype];
 	else
-		plist = &mPSDec;
-	std::vector<lmPSData> psl = (*plist)[mftype];
-
+		psl = mPSDec[mftype]; 
 	for (size_t i = 0; i < psl.size(); i++)
 	{
 		if (psl[i].getValueByName(ps.getParamName(1)).toInt() == pl)
