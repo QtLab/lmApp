@@ -96,3 +96,9 @@ $RECYCLE.BIN/
 /.Archive
 /GeneratedFiles
 *.psd
+*.yuv
+*.cache
+*.txt
+*.vsd
+*.~vsd
+doc/.Archive
