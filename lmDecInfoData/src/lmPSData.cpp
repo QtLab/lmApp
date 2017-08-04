@@ -136,7 +136,7 @@ void lmPSData::inti(const std::string& pstr)
 	}
 	std::vector<std::string> ps_para = gParamName[mType];
 	std::vector<lmVarTYPE> ps_paraVType = gParamValueType[mType];
-	for (auto i = 0; i < ps_para.size(); ++i)
+	for (int  i = 0; i < ps_para.size(); ++i)
 	{
 		psParaName.insert({ ps_para[i], ps_paraVType[i] });
 	}

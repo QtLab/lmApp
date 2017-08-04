@@ -38,7 +38,7 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	{
 		{
 			lmDecInfo *decinfo = lmDecInfo::getInstanceForChange();
-			decinfo->setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\", lmParseStreamPro::getDecYUVName());
+			decinfo->setInfoSoluPath("C:/Users/Administrator/Documents/GitHub/lmApp/cache/", lmParseStreamPro::getDecYUVName());
 			decinfo->readDec();
 		}
 		//解码剩余层选项;
@@ -67,11 +67,13 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		openyuv.setParam("yuv_width", QVariant::fromValue(mw));
 		openyuv.setParam("yuv_height", QVariant::fromValue(mh));
 		openyuv.setParam("yuv_format", QVariant::fromValue(mf));
+		openyuv.setParam("yuv_layer", QVariant::fromValue(maxLayerIdx));
 		openyuv.dispatch();
-		//发送最大层数给list;
+		//发送需要显示的解码层，这个数来自于码流文件配置窗口;
 		longmanEvt lmlistview(EvtTYPE1);
 		lmlistview.setParam("CommandName", "addressLayer_list");
 		lmlistview.setParam("maxLayer", QVariant::fromValue(maxLayerIdx));
+		lmlistview.setParam("decLayer", QVariant::fromValue(layerDec));
 		lmlistview.dispatch();
 		return decodeSuccessed;
 	}
@@ -112,7 +114,7 @@ bool lmDecodeThread::preDec(longmanEvt& rEvt)
 	}
 	{
 		lmDecInfo *decinfo = lmDecInfo::getInstanceForChange();
-		decinfo->setInfoSoluPath("C:\\Users\\Administrator\\Documents\\GitHub\\lmApp\\cache\\");
+		decinfo->setInfoSoluPath("C:/Users/Administrator/Documents/GitHub/lmApp/cache/");
 		decinfo->readDec(true);
 	}
 	//判断预解码是否成功;
@@ -195,7 +197,7 @@ void lmDecodeThread::xParseinfo()
 {
 	longmanEvt openyuv(EvtTYPE2);
 	openyuv.setParam("CommandName", "open_yuvfile");
-	openyuv.setParam("yuv_filePath", "..\\cache\\rec_layer1.yuv");
+	openyuv.setParam("yuv_filePath", "../cache/rec_layer1.yuv");
 	openyuv.setParam("yuv_width", 832);
 	openyuv.setParam("yuv_height", 480);
 	openyuv.setParam("yuv_format", 1);

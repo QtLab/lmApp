@@ -15,15 +15,15 @@
 #include "..\lmDecInfoData\src\lmDecInfo.h"
 //（目前）作用:在工作线程中处理EvtTYPE2类型的Event,建立简单的Event缓冲机制;
 //
-struct cyuvParam
-{
-	int mWidth = 0;
-	int mHeight = 0;
-	int mFormat = 1;
-	int mcurPOC = 0;
-	std::string yuvPath;
-};
-typedef std::function<void(cyuvParam)> normalCallbacfun;
+// struct cyuvParam
+// {
+// 	int mWidth = 0;
+// 	int mHeight = 0;
+// 	int mFormat = 1;
+// 	int mcurPOC = 0;
+// 	std::string yuvPath;
+// };
+typedef std::function<void(lmYUVInfoList&)> normalCallbacfun;
 class cmdProcessThread : public QThread
 {
 	Q_OBJECT
@@ -36,7 +36,7 @@ public:
 	QMutex& getmutx() {return mutex;};
 	QWaitCondition& getCondition() {return condition;};
 	normalCallbacfun recoverhandle;
-	const cyuvParam getlastyuvParam() const { return lastyuvParam; };
+	//const cyuvParam getlastyuvParam() const { return lastyuvParam; };
 protected:
 	void run() Q_DECL_OVERRIDE;
 private:
@@ -48,15 +48,13 @@ private:
 	lmData dataModel;
 	//当前显示的图片模块;
 	QImage mImage;	
-	//上次成功打开的yuv参数;
-	cyuvParam lastyuvParam;
 	//绘制模块,使用了简单的装饰模式,以便后续功能的扩展和叠加;
 	lmImageDrawBase *mImageDraw;
 	//SHVC码流解析模块;
 	//lmParseStreamPro *mparsestream;
 	QMutex mutex;
 	QWaitCondition condition;
-	void xOpenYUVFile(longmanEvt&);
+	//void xOpenYUVFile(longmanEvt&,int);
 public:
 	bool openyuvfile(longmanEvt&);
 	bool changeimagepoc(longmanEvt&);
@@ -66,5 +64,7 @@ public:
 	//void setParseEXE(lmParseStreamPro *pStreamParse) { mStreamParse = pStreamParse; };
 //private:
 	//lmParseStreamPro *mStreamParse = nullptr;
+	//成功打开的yuv信息;
+	lmYUVInfoList myuvlist;
 };
 #endif // cmdProcessThread_h__

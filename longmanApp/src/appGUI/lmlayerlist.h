@@ -16,6 +16,7 @@ public:
     explicit lmLayerList(QWidget *parent = 0);
     ~lmLayerList();
 	bool getLayer(longmanEvt & upimage);
+//	bool addOpenedYUV(longmanEvt & pEvt);
 private:
     Ui::lmLayerList *ui;
 	int maxLayer = 0;

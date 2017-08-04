@@ -20,13 +20,13 @@ longmanApp::longmanApp(QWidget *parent)
 {
 	timeLine.stop();
 	ui.setupUi(this);
-	setCentralWidget(m_imageView);
-	
-	ui.gridLayout_6->addWidget(mlayerList);
+	ui.gridLayout_8->addWidget(m_imageView);
+		
+	ui.gridLayout_6->addWidget(mlayerList,0,0, Qt::AlignTop);
 	CallBackFunc pcupdate = std::bind(&longmanApp::updatemainwindow, this, std::placeholders::_1);
 	listenParam("update_mainwindow", pcupdate);
 	CallBackFunc pcupdate1 = std::bind(&longmanApp::openyuvFailed, this, std::placeholders::_1);
-	listenParam("fail_opemyuv", pcupdate1);
+	listenParam("fail_openyuv", pcupdate1);
 	setModelName("MainWindow_View_Model");
 	//
 	//connect(ui.FrameIdxSlider, SIGNAL(ValueChanged(int)), this, SLOT(on_FrameIdxSlider_ValueChanged(int)));
@@ -41,7 +41,7 @@ longmanApp::longmanApp(QWidget *parent)
 
 bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 {
-	OpenNum = OpenNum > 2 ? 2 : OpenNum + 1;
+	OpenNum = OpenNum >= 1 ? 1 : OpenNum + 1;
 	ui.YUVgroupBox->setEnabled(true);
 	int curpoc = updateWinEvt.getParam("yuv_currentPOC").toInt();
 	int totalfarmes= updateWinEvt.getParam("yuv_totalFrames").toInt();
@@ -57,22 +57,47 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	ui.label_format->setText(tr(formattext[formattype]));
 	ui.actionSave_as_image->setEnabled(true);
 	ui.f3Button->setEnabled(true);
-	//触发更新命令;
-	if (OpenNum % 2 == 1)
-		ui.FrameIdxSlider->setValue(curpoc + 1);
-	else
-		ui.FrameIdxSlider->setValue((curpoc - 1) < 0 ? 0 : (curpoc - 1));
-	
 	ui.f1Button->setEnabled(true);
-	//
-	
+	//触发更新命令;
+	sendEvttoChnagePOC(curpoc);
 	return true;
 }
 
 bool longmanApp::openyuvFailed(longmanEvt&)
 {
+	//ui.FrameIdxSlider->setMinimum(-1);
+	//ui.FrameIdxSlider->setValue(-1);
 	OpenNum = -1;
 	return true;
+}
+
+void longmanApp::sendEvttoChnagePOC(int ppoc)
+{
+	//构建图片更新事件;
+	//由于不再使用窗口存储图片，force_readData参数总为真;
+	int curpoc = ppoc;
+	longmanEvt yuvnext(EvtTYPE2);
+	yuvnext.setParam("CommandName", "change_imagepoc");
+	yuvnext.setParam("yuv_POC", curpoc);
+	if (OpenNum == -1)//打开失败，回退;
+	{
+		yuvnext.setParam("force_readData", true);
+		yuvnext.setParam("recoverLast", true);
+		//OpenNum = 1;
+	}
+	else if (OpenNum > 0)//打开成功，已刷新第一帧;
+	{
+		yuvnext.setParam("force_readData", true);
+		yuvnext.setParam("recoverLast", false);
+	}
+	else if (OpenNum == 0)//打开成功，未刷新第一帧;
+	{
+		yuvnext.setParam("force_readData", true);
+		yuvnext.setParam("recoverLast", false);
+		OpenNum++;
+		ui.FrameIdxSlider->setMinimum(0);
+	}
+	yuvnext.dispatch();
 }
 
 void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
@@ -136,6 +161,7 @@ void longmanApp::on_actionOpen_triggered()
 	openyuv.setParam("yuv_width", paramselect.getyuvwidth());
 	openyuv.setParam("yuv_height", paramselect.getyuvheight());
 	openyuv.setParam("yuv_format", paramselect.getformattype());
+	openyuv.setParam("yuv_layer", QVariant::fromValue(0));//普通打开yuv，默认layer=0;
 	openyuv.dispatch();	
 	OpenNum = -1;
 }
@@ -166,29 +192,7 @@ void longmanApp::on_backButton_clicked()
 
 void longmanApp::on_FrameIdxSlider_valueChanged(int poc)
 {
-	int curpoc = poc;
-	longmanEvt yuvnext(EvtTYPE2);
-	yuvnext.setParam("CommandName", "change_imagepoc");
-	yuvnext.setParam("yuv_POC", curpoc);
-	if (OpenNum == -1)//打开失败，回退;
-		{
-			yuvnext.setParam("force_readData", true);
-			yuvnext.setParam("recoverLast", true);
-			OpenNum = 1;
-		}
-	else if (OpenNum>0)//打开成功，已刷新第一帧;
-		{
-			yuvnext.setParam("force_readData", true);
-			yuvnext.setParam("recoverLast", false);
-		}
-	else if (OpenNum==0)//打开成功，未刷新第一帧;
-		{
-			yuvnext.setParam("force_readData", true);
-			yuvnext.setParam("recoverLast", false);
-			OpenNum = 1;
-			ui.FrameIdxSlider->setMinimum(0);
-		}
-	yuvnext.dispatch();
+	sendEvttoChnagePOC(poc);
 }
 
 void longmanApp::on_beginButton_clicked()
@@ -276,23 +280,15 @@ void longmanApp::on_f1Button_clicked()
 	static bool showdataEnable = false;
 	//showdataEnable标志，当查看yuv的pixel值功能打开时，禁用部分功能;
 	if (!showdataEnable)
-	{
 		m_DataView->show();
-		ui.YUVgroupBox->setEnabled(showdataEnable);
-		ui.actionOpen->setEnabled(showdataEnable);
-		ui.f2Button->setEnabled(showdataEnable);
-		ui.f4Button->setEnabled(showdataEnable);
-		ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
-	}
 	else
-	{
 		m_DataView->hide();	
-		ui.YUVgroupBox->setEnabled(showdataEnable);
-		ui.actionOpen->setEnabled(showdataEnable);
-		ui.f2Button->setEnabled(showdataEnable);
-		ui.f4Button->setEnabled(showdataEnable);
-		ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
-	}
+	ui.YUVgroupBox->setEnabled(showdataEnable);
+	ui.actionOpen->setEnabled(showdataEnable);
+	ui.f2Button->setEnabled(showdataEnable);
+	ui.f4Button->setEnabled(showdataEnable);
+	ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
+	ui.groupBox->setEnabled(showdataEnable);
 	longmanEvt showdata(EvtTYPE2);
 	showdata.setParam("CommandName", "show_yuvdata");
 	showdata.setParam("enabledByButton", true);

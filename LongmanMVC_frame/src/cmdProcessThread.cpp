@@ -58,6 +58,7 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	int mWidth = rpevt.getParam("yuv_width").toInt();
 	int mHeight = rpevt.getParam("yuv_height").toInt();
 	int mformattype = rpevt.getParam("yuv_format").toInt();
+	int mLayer = rpevt.getParam("yuv_layer").toInt();
 	//dataModel.close();
 	int openSt=dataModel.openyuv_r(filePath, false, mformattype, mWidth, mHeight);
 	if (openSt<0)
@@ -77,24 +78,25 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 		default:
 			break;
 		}
+		//通知主窗口，打开失败;
 		openstyuv.dispatch();
 		longmanEvt openstyuvtoMainW(EvtTYPE1);
+		openstyuvtoMainW.setParam("CommandName", "fail_openyuv");
 		openstyuvtoMainW.dispatch();
 		return false;
 	}
 	//保存成功打开的yuv信息;
-	lastyuvParam.mFormat = dataModel.getformat();
-	lastyuvParam.mWidth = dataModel.getimageWidth();
-	lastyuvParam.mHeight = dataModel.getimageHeight();
-	lastyuvParam.yuvPath = filePath;
+	lmYUVInfo tyuvinfo(filePath, dataModel.getimageWidth(), dataModel.getimageHeight(), dataModel.getformat());
+	tyuvinfo.setLayer(mLayer);
+	myuvlist << tyuvinfo;
 	//给datamodel中的图片存储空间套上QImage类头;
 	const unsigned char* imageptr = dataModel.getcurrimage();
-	auto rgbformat = lastyuvParam.mFormat? QImage::Format_RGB888 : QImage::Format_Grayscale8;
-	mImage = QImage(dataModel.getcurrimage(), lastyuvParam.mWidth, lastyuvParam.mHeight, rgbformat);
+	auto rgbformat = tyuvinfo.getFormat()? QImage::Format_RGB888 : QImage::Format_Grayscale8;
+	mImage = QImage(dataModel.getcurrimage(), tyuvinfo.getWidth(), tyuvinfo.getHeight(), rgbformat);
 	//通知主窗口类(longmanAPP);
 	longmanEvt updatemainwin(EvtTYPE1);
 	updatemainwin.setParam("CommandName", "update_mainwindow");
-	updatemainwin.setParam("yuv_currentPOC", lastyuvParam.mcurPOC);
+	updatemainwin.setParam("yuv_currentPOC", tyuvinfo.getPoc());
 	updatemainwin.setParam("yuv_totalFrames", dataModel.getTotalFrames());
 	updatemainwin.setParam("yuv_width", dataModel.getimageWidth());
 	updatemainwin.setParam("yuv_height", dataModel.getimageHeight());
@@ -118,7 +120,7 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 	//打开文件失败的回退处理;
 	if (openst)
 		{
-			recoverhandle(lastyuvParam);
+			recoverhandle(myuvlist);
 			return false;
 		}
 	int mpoc=rpevt.getParam("yuv_POC").toInt();
@@ -135,8 +137,7 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 	lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
 	lmgraphview.dispatch();
 	//存储当前POC;
-		lastyuvParam.mcurPOC = mpoc;
-	
+	myuvlist.getlast().setPOC(mpoc);
 
 // 	if (enableShowYuvData|| firstrunChangePOC)
 // 	{
@@ -217,6 +218,7 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 
 bool cmdProcessThread::parseLayerFromList(longmanEvt& rEvt)
 {
+
 	int layerIdx = rEvt.getParam("layerIdx").toInt();
 	const lmDecInfo* cDec = lmDecInfo::getInstanceForReadonly();
 	lmPSData msps(lmPSData::getPSTypeInString(paraTYPE::sps));
@@ -231,8 +233,9 @@ bool cmdProcessThread::parseLayerFromList(longmanEvt& rEvt)
 	openyuv.setParam("yuv_width", QVariant::fromValue(mw));
 	openyuv.setParam("yuv_height", QVariant::fromValue(mh));
 	openyuv.setParam("yuv_format", QVariant::fromValue(mf));
+	openyuv.setParam("yuv_layer", QVariant::fromValue(layerIdx));
+	//直接调用xopenyuvfile函数;
 	openyuvfile(openyuv);
-	//直接调用openyuvfile函数
 	return true;
 }
 
@@ -269,10 +272,11 @@ void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 	return;
 }
 
-void cmdProcessThread::xOpenYUVFile(longmanEvt&)
-{
-
-}
+//void cmdProcessThread::xOpenYUVFile(longmanEvt& rpevt, int layer)
+//{
+//	if (openyuvfile(rpevt))
+//		myuvlist.getlast().setPOC(layer);
+//}
 
 void cmdProcessThread::run()
 {

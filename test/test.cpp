@@ -7,9 +7,13 @@
 
 int main()
 {
-	lmDecInfo tesstp;
-	//tesstp.readDec();
-	tesstp.readDec(true);
+
+	lmYUVInfoList ylist;
+	lmYUVInfo myuv1("c//you.yuv",1,2,3);
+	
+	ylist << myuv1;
+	lmYUVInfo myuvt = ylist.getByPath("c//you.yuv");
+	
     return 0;
 }
 

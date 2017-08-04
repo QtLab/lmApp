@@ -30,7 +30,7 @@ public:
     {
         if (lmLayerList->objectName().isEmpty())
             lmLayerList->setObjectName(QStringLiteral("lmLayerList"));
-        lmLayerList->resize(175, 328);
+        lmLayerList->resize(175, 107);
         gridLayout = new QGridLayout(lmLayerList);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         listWidget = new QListWidget(lmLayerList);

@@ -64,4 +64,81 @@ private:
 
 typedef std::map<std::string, lmVar> lmParam;//参数容器;
 typedef lmParam::value_type sParam;//一对参数类型;
+//一个存储yuv文件信息的类;
+class lmYUVInfo
+{
+public:
+	lmYUVInfo(const std::string pa, int pw, int ph, int pf, int pl = 0,int ppco=0) :
+		mWidth(pw),
+		mHeight(ph),
+		mFormat(pf),
+		mName(),
+		lmabsyuvPath{ pa },
+		mLayer(pl)
+	{
+		if (pw < 0 || ph < 0 || pf<CHROMA_400 || pf>CHROMA_444)
+			throw std::runtime_error("attention!");
+		mName = xGetNameFromabsPath(pa);
+	};
+	lmYUVInfo() :mWidth(0),
+		mHeight(0),
+		mFormat(1),
+		mName{},
+		lmabsyuvPath{"//"},
+		mLayer(0) {};
+	lmYUVInfo(std::string pabsPath) :mWidth(0),
+		mHeight(0),
+		mFormat(1),
+		mName(),
+		lmabsyuvPath{ pabsPath },
+		mLayer(0) {mName = xGetNameFromabsPath(pabsPath); };
+	~lmYUVInfo() {};
+	const std::string & getName()const { return mName; };
+	const std::string & absyuvPath()const { return lmabsyuvPath; };
+	const int getWidth()const { return mWidth; };
+	const int getHeight()const { return mHeight; };
+	const int getFormat()const { return mFormat; };
+	const int getLayer()const { return mLayer; };
+	const int getPoc()const { return mpoc; };
+	void setPOC(int pc) { mpoc = pc; };
+	void setLayer(int pl) { mLayer = pl; }
+public:
+	enum yuvFormat
+	{
+		CHROMA_400 = 0,
+		CHROMA_420 = 1,
+		CHROMA_422 = 2,
+		CHROMA_444 = 3,
+		NUM_CHROMA_FORMAT = 4
+
+	};
+private:
+	int mWidth;
+	int mHeight;
+	int mFormat;
+	int mLayer;
+	int mpoc = 0;
+	std::string mName;
+	std::string lmabsyuvPath;
+	std::string xGetNameFromabsPath(const std::string& pstr) 
+	{
+		std::string tstr;
+		std::string tstrname;
+		for (auto i = pstr.rbegin(); i!= pstr.rend(); ++i)
+		{
+			tstr = (*i);
+			if (tstr=="/")
+				break;
+			tstrname.push_back(*i);
+		}
+		if (tstrname.empty())
+			throw std::runtime_error("attention!");
+		std::string tstrnamer;
+		for (auto i = tstrname.rbegin(); i != tstrname.rend(); ++i)
+			tstrnamer.push_back(*i);
+		return tstrnamer;
+	};
+	
+};
+
 #endif // lmTydef_h__

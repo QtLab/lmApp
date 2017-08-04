@@ -1,5 +1,5 @@
 #include "lmDecInfo.h"
-static std::string gAbsPath("\\");
+static std::string gAbsPath("/");
 static std::string gyuvprefix;
 lmDecInfo * lmDecInfo::_instance = nullptr;
 lmDecInfo::lmDecInfo()
@@ -182,4 +182,37 @@ void lmDecInfo::clearPSList(lmPSList& rpsl)
 	{
 		i->clear();
 	}
+}
+
+lmYUVInfoList& lmYUVInfoList::operator<<(const lmYUVInfo& pyuv)
+{
+	std::string pn = pyuv.absyuvPath();
+	auto mit=mInfoList.find(pn);
+	if (mit==mInfoList.end())
+	{
+		mInfoList.insert({ pn,pyuv });
+	}
+	return *this;
+}
+
+lmYUVInfoList& lmYUVInfoList::operator>>(lmYUVInfo& pyuv)
+{
+	std::string pnstr = pyuv.absyuvPath();
+	if(pnstr.empty())throw std::runtime_error("NULL Name!");
+	auto mit = mInfoList.find(pnstr);
+	if (mit == mInfoList.end())
+		throw std::runtime_error("No this yuvinfo!");
+	auto mit2 = mit->second;
+	lmYUVInfo tyuv(pnstr,mit2.getWidth(),mit2.getHeight(), mit2.getFormat(),mit2.getLayer());
+	pyuv = tyuv;
+	return *this;
+}
+
+const lmYUVInfo &lmYUVInfoList::getByPath(const std::string &pPath) const
+{
+	auto mit = mInfoList.find(pPath);
+	if (mit == mInfoList.end())
+		throw std::runtime_error("No this yuvinfo!");
+
+	return mit->second;
 }

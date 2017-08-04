@@ -10,12 +10,12 @@
 class lmController:public lmmodel
 {
 public:
-
+	
 	~lmController();
 	bool handlevt(longmanEvt&);
 	void registerCommand(const std::string &, const CallBackFunc&);
 	static lmController* getInstance();
-	void recoverhandle(cyuvParam&);
+	void recoverhandle(lmYUVInfoList&);
 	bool callDecodeTread(longmanEvt& rEvt);
 	//bool preDecode(longmanEvt& rEvt);
 private:

@@ -32,6 +32,7 @@ private:
 	QImage* imageSave;
 	lmParserBitConfigure *mBitParseCFG;
 	lmLayerList *mlayerList;
+	void sendEvttoChnagePOC(int ppoc);
 private slots:
 void on_actionOpen_SHVC_bitstream_triggered();
 void on_actionOpen_triggered();

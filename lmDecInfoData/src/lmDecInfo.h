@@ -1,6 +1,22 @@
 #ifndef lmDecInfo_h__
 #define lmDecInfo_h__
 #include "lmPSData.h"
+
+
+//yuv文件信息列表，以yuv文件完整路径为关键字;
+class lmYUVInfoList
+{
+public:
+	lmYUVInfoList() :mInfoList{} {};
+	~lmYUVInfoList() {};
+	lmYUVInfoList& operator<<(const lmYUVInfo& pyuv);
+	lmYUVInfoList& operator>>(lmYUVInfo& pyuv);
+	const lmYUVInfo &getByPath(const std::string &pPath)const;
+	 lmYUVInfo &getlast()  {return mInfoList.rbegin()->second;};
+private:
+	std::map < std::string, lmYUVInfo > mInfoList;
+
+};
 //最终决定，还是采用单例模式;
 //以便在不同线程中访问同一份数据;
 

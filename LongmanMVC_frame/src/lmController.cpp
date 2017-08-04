@@ -118,16 +118,18 @@ lmController* lmController::getInstance()
 	return _mInstance;
 }
 //通知工作线程重新读取上次成功的yuv文件;
-void lmController::recoverhandle(cyuvParam& yuvParam)
+void lmController::recoverhandle(lmYUVInfoList& yuvParam)
 {
 	//cyuvParam yuvParam = workThread.getlastyuvParam();
-	QString filepath = QString::fromStdString(yuvParam.yuvPath);
+	auto mit = yuvParam.getlast();
+	QString filepath = QString::fromStdString(mit.absyuvPath());
 	longmanEvt openyuv(EvtTYPE2);
 	openyuv.setParam("CommandName", "open_yuvfile");
 	openyuv.setParam("yuv_filePath", filepath);
-	openyuv.setParam("yuv_width", QVariant::fromValue(yuvParam.mWidth));
-	openyuv.setParam("yuv_height", QVariant::fromValue(yuvParam.mHeight));
-	openyuv.setParam("yuv_format", QVariant::fromValue(yuvParam.mFormat));
+	openyuv.setParam("yuv_width", QVariant::fromValue(mit.getWidth()));
+	openyuv.setParam("yuv_height", QVariant::fromValue(mit.getHeight()));
+	openyuv.setParam("yuv_format", QVariant::fromValue(mit.getFormat()));
+	openyuv.setParam("yuv_layer", QVariant::fromValue(mit.getLayer()));
 	openyuv.dispatch();
 }
 

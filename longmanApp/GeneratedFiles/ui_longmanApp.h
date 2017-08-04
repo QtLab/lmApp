@@ -20,8 +20,10 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMdiArea>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -43,6 +45,11 @@ public:
     QAction *actionAboutQT;
     QAction *actionOpen_SHVC_bitstream;
     QWidget *centralWidget;
+    QGridLayout *gridLayout_7;
+    QGridLayout *gridLayout_8;
+    QFrame *line_2;
+    QHBoxLayout *horizontalLayout;
+    QMdiArea *mdiArea;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuEdit;
@@ -100,6 +107,7 @@ public:
     QFrame *frame;
     QVBoxLayout *verticalLayout_4;
     QLabel *label_3;
+    QLCDNumber *lcdNumber;
     QFrame *line;
 
     void setupUi(QMainWindow *longmanAppClass)
@@ -122,6 +130,35 @@ public:
         actionOpen_SHVC_bitstream->setObjectName(QStringLiteral("actionOpen_SHVC_bitstream"));
         centralWidget = new QWidget(longmanAppClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        centralWidget->setMinimumSize(QSize(768, 640));
+        gridLayout_7 = new QGridLayout(centralWidget);
+        gridLayout_7->setSpacing(6);
+        gridLayout_7->setContentsMargins(11, 11, 11, 11);
+        gridLayout_7->setObjectName(QStringLiteral("gridLayout_7"));
+        gridLayout_8 = new QGridLayout();
+        gridLayout_8->setSpacing(6);
+        gridLayout_8->setObjectName(QStringLiteral("gridLayout_8"));
+
+        gridLayout_7->addLayout(gridLayout_8, 1, 0, 1, 1);
+
+        line_2 = new QFrame(centralWidget);
+        line_2->setObjectName(QStringLiteral("line_2"));
+        line_2->setFrameShape(QFrame::VLine);
+        line_2->setFrameShadow(QFrame::Sunken);
+
+        gridLayout_7->addWidget(line_2, 1, 1, 1, 1);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        mdiArea = new QMdiArea(centralWidget);
+        mdiArea->setObjectName(QStringLiteral("mdiArea"));
+
+        horizontalLayout->addWidget(mdiArea);
+
+
+        gridLayout_7->addLayout(horizontalLayout, 0, 0, 1, 1);
+
         longmanAppClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(longmanAppClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -328,6 +365,11 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         FucAeraBox = new QGroupBox(dockWidgetContents);
         FucAeraBox->setObjectName(QStringLiteral("FucAeraBox"));
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(FucAeraBox->sizePolicy().hasHeightForWidth());
+        FucAeraBox->setSizePolicy(sizePolicy2);
         FucAeraBox->setAlignment(Qt::AlignCenter);
         FucAeraBox->setFlat(true);
         verticalLayout_3 = new QVBoxLayout(FucAeraBox);
@@ -416,6 +458,11 @@ public:
         label_3->setObjectName(QStringLiteral("label_3"));
 
         verticalLayout_4->addWidget(label_3);
+
+        lcdNumber = new QLCDNumber(frame);
+        lcdNumber->setObjectName(QStringLiteral("lcdNumber"));
+
+        verticalLayout_4->addWidget(lcdNumber);
 
 
         verticalLayout_3->addWidget(frame);
