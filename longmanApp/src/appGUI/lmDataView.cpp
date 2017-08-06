@@ -16,7 +16,7 @@ const unsigned int ViewSize[3][2] =
 bool drawclick = false;
 bool drawcontain = false;
 const char *cha[4] = { "Y","U","V","NULL" };
-const QColor color[4] = {Qt::black,QColor(182,64,128),QColor(64,64,180),QColor(64,192,64) };
+const QColor color[4] = {Qt::black,QColor(182,64,128,200),QColor(64,64,180,200),QColor(164,192,25,200) };
 const int lRect = 16;
 const int sRect = 8;
 bool isInPaintArea=true;
@@ -104,7 +104,7 @@ void lmDataView::paintEvent(QPaintEvent * event)
 	if (drawcontain)
 	{
 		drawContain(mcpainter);
-		drawcontain = false;
+		//drawcontain = false;
 	}
 	double dResult = (double)(clock() - lBefore) / CLOCKS_PER_SEC;
 	std::cout << "dataview绘制处理时间：" << dResult << "s" << std::endl;
@@ -205,7 +205,7 @@ int lmDataView::chInfo(int x, int y)
 }
 //计算VU通道在图片中的坐标;
 //输入为ix和iy，为某像素在绘制表格中的坐标位置;
-//输出为px和py，为该像素在图片中相对于16大小块的便宜位置;
+//输出为px和py，为该像素在图片中相对于16大小块的偏移位置;
 void lmDataView::chInfo(int ix, int iy, int &px, int &py)
 {
 	int chType = chInfo(ix, iy);
@@ -300,6 +300,7 @@ void lmDataView::drawContain(QPainter& cpainter)
 				int ipelVlaue = yuvDateptr[ch][offsetImage];
 				QString V = QString::fromStdString(std::to_string(ipelVlaue));
 				cpainter.drawText(column*sqSize[formatType] + (sqSize[formatType] / 2) - fontMetrics.width(V) / 2, row*sqSize[formatType] + sqSize[formatType] / 2 + fontMetrics.ascent()/2, V);
+				cpainter.fillRect(column*sqSize[formatType], row*sqSize[formatType], sqSize[formatType], sqSize[formatType], QBrush(QColor(ipelVlaue, ipelVlaue, ipelVlaue,128)));
 			}
 		}
 	}

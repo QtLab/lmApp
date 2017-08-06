@@ -1,5 +1,6 @@
 #include "longmanApp.h"
 #include<QImageWriter>
+
 //命令构造说明;
 //1.("CommandName","update_mainwindow")+("yuv_currentPOC",int)+("yuv_totalFrames",int)+;
 //("yuv_width",int)+("yuv_height",int)+("image",uchar*)+;
@@ -16,12 +17,13 @@ longmanApp::longmanApp(QWidget *parent)
 	imageSave(nullptr),
 	m_DataView(new lmDataView(this)),
 	mBitParseCFG(new lmParserBitConfigure(this)),
-	mlayerList(new lmLayerList(this))
+	mlayerList(new lmLayerList(this))/*,
+	glWidget(new GLWidget(nullptr))*/
 {
 	timeLine.stop();
 	ui.setupUi(this);
 	ui.gridLayout_8->addWidget(m_imageView);
-		
+	//ui.gridLayout_9->addWidget(glWidget);
 	ui.gridLayout_6->addWidget(mlayerList,0,0, Qt::AlignTop);
 	CallBackFunc pcupdate = std::bind(&longmanApp::updatemainwindow, this, std::placeholders::_1);
 	listenParam("update_mainwindow", pcupdate);

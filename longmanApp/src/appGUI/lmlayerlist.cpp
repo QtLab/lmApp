@@ -22,8 +22,15 @@ lmLayerList::~lmLayerList()
 
 bool lmLayerList::getLayer(longmanEvt & pEvt)
 {
-	ui->listWidget->clear();
+	//ui->listWidget->clear();
+	if (!allLayer.empty())
+	{
+		for (size_t i = 0; i < allLayer.size(); i++)
+		{
+			delete allLayer[i];
+		}
 	allLayer.clear();
+	}
 	maxLayer = pEvt.getParam("maxLayer").toInt();
 	int layerDec = pEvt.getParam("decLayer").toInt();
 	//获得需要显示的层级;

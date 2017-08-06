@@ -24,7 +24,9 @@ class lmDecInfo
 {
 public:
 	//对于是写入信息，还是读取信息，进行严格const限定;
+	//写入句柄，仅在预解码和解码完之后使用;
 	static lmDecInfo *getInstanceForChange();
+	//读取句柄，都可使用;
 	const static lmDecInfo *getInstanceForReadonly();
 	~lmDecInfo();
 	//void readDec();

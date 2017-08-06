@@ -23,7 +23,6 @@
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMdiArea>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -48,8 +47,7 @@ public:
     QGridLayout *gridLayout_7;
     QGridLayout *gridLayout_8;
     QFrame *line_2;
-    QHBoxLayout *horizontalLayout;
-    QMdiArea *mdiArea;
+    QGridLayout *gridLayout_9;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuEdit;
@@ -148,16 +146,11 @@ public:
 
         gridLayout_7->addWidget(line_2, 1, 1, 1, 1);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setSpacing(6);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        mdiArea = new QMdiArea(centralWidget);
-        mdiArea->setObjectName(QStringLiteral("mdiArea"));
+        gridLayout_9 = new QGridLayout();
+        gridLayout_9->setSpacing(6);
+        gridLayout_9->setObjectName(QStringLiteral("gridLayout_9"));
 
-        horizontalLayout->addWidget(mdiArea);
-
-
-        gridLayout_7->addLayout(horizontalLayout, 0, 0, 1, 1);
+        gridLayout_7->addLayout(gridLayout_9, 0, 0, 1, 1);
 
         longmanAppClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(longmanAppClass);

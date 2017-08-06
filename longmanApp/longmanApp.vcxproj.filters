@@ -100,6 +100,9 @@
     <ClInclude Include="GeneratedFiles\ui_lmlayerlist.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\appGUI\logo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -219,6 +222,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_lmlayerlist.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="src\appGUI\glwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_glwidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_glwidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\appGUI\logo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\appGUI\longmanApp.h">
@@ -271,6 +286,9 @@
     </CustomBuild>
     <CustomBuild Include="src\appGUI\lmlayerlist.ui">
       <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\appGUI\glwidget.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
