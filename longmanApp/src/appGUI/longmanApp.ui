@@ -451,9 +451,6 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QLCDNumber" name="lcdNumber"/>
-           </item>
           </layout>
          </widget>
         </item>

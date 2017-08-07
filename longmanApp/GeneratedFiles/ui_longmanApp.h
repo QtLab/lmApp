@@ -20,7 +20,6 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -105,7 +104,6 @@ public:
     QFrame *frame;
     QVBoxLayout *verticalLayout_4;
     QLabel *label_3;
-    QLCDNumber *lcdNumber;
     QFrame *line;
 
     void setupUi(QMainWindow *longmanAppClass)
@@ -451,11 +449,6 @@ public:
         label_3->setObjectName(QStringLiteral("label_3"));
 
         verticalLayout_4->addWidget(label_3);
-
-        lcdNumber = new QLCDNumber(frame);
-        lcdNumber->setObjectName(QStringLiteral("lcdNumber"));
-
-        verticalLayout_4->addWidget(lcdNumber);
 
 
         verticalLayout_3->addWidget(frame);
