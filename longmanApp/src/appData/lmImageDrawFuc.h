@@ -8,7 +8,7 @@ class lmImageDrawFuc:public lmImageDrawBase
 {
 public:
 	lmImageDrawFuc(lmImageDrawBase * pcDrawBase) { c_lmImageDB = pcDrawBase; };
-	~lmImageDrawFuc() { delete c_lmImageDB; };
+	~lmImageDrawFuc() { /*delete c_lmImageDB;*/ };
 	lmImageDrawBase *c_lmImageDB;
 };
 #endif // lmImageDrawFuc_h__

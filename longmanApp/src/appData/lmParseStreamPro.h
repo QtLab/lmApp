@@ -17,7 +17,12 @@ public:
 	static std::string getDecYUVName();
 private:
 	QProcess mCallDecoderEXE;
-	QString decoderPath = "..//SHM12.1//bin//vc2010//Win32//Debug//TAppDecoderAnalyser.exe";
-	QString sCache = "..//cache//";
+//#if _DEBUG
+	//QString decoderPath = "..//SHM12.1//bin//vc2010//Win32//Debug//TAppDecoderAnalyser.exe";
+//#else
+	QString decoderPath = "TAppDecoderAnalyser.exe";
+//#endif
+	
+	QString sCache = "cache/";
 };
 #endif // lmParseStreamPro_h__

@@ -1,9 +1,9 @@
 #ifndef lmImageDrawBase_h__
 #define lmImageDrawBase_h__
-#include "..\lmTypeDef.h"
 #include <QTGui\QPixmap>
 #include <QTGui\QImage>
 #include <QTGui\QPainter>
+#include "..\lmTypeDef.h"
 //抽象被装饰者;
 class lmImageDrawBase
 {

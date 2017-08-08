@@ -5,6 +5,11 @@ lmImageDraw::lmImageDraw()
 }
 
 
+lmImageDraw::lmImageDraw(const QImage &iDrawMap)
+{
+	mPixMap = QPixmap::fromImage(iDrawMap);
+}
+
 lmImageDraw::~lmImageDraw()
 {
 }
@@ -19,6 +24,7 @@ lmImageDraw::~lmImageDraw()
 
 QPixmap *lmImageDraw::lmDraw(QImage &iDrawMap)
 {
+	//应该仅存在复制;
 	mPixMap = QPixmap::fromImage(iDrawMap);
 	return &mPixMap;
 }

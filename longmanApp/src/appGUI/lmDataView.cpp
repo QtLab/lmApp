@@ -77,11 +77,14 @@ void lmDataView::mousePressEvent(QMouseEvent *event)
 		
 		bool res= isInPaintArea&& event->y() > sqSize[formatType] && event->x() > sqSize[formatType];
 		if (res)
-			lastPositionClikedInDrawArea = (event->y() / sqSize[formatType] - 1)*(ViewSize[formatType][1])+ event->x() / sqSize[formatType]- 1;
+			{
+				lastPositionClikedInDrawArea = (event->y() / sqSize[formatType] - 1)*(ViewSize[formatType][1])+ event->x() / sqSize[formatType]- 1;
+				update();
+				drawclick = true;
+			}
 		else
 			lastPositionClikedInDrawArea = -1;
-		update();
-		drawclick = true;
+
 	}
 	else
 		QWidget::mousePressEvent(event);

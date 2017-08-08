@@ -37,8 +37,13 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	if (decodeSuccessed)
 	{
 		{
+//#if _DEBUG
+		//	std::string cachePath = "C:/Users/Administrator/Documents/GitHub/lmApp/cache/";
+//#else
+			std::string cachePath = "cache/";
+//#endif
 			lmDecInfo *decinfo = lmDecInfo::getInstanceForChange();
-			decinfo->setInfoSoluPath("C:/Users/Administrator/Documents/GitHub/lmApp/cache/", lmParseStreamPro::getDecYUVName());
+			decinfo->setInfoSoluPath(cachePath, lmParseStreamPro::getDecYUVName());
 			decinfo->readDec();
 		}
 		//解码剩余层选项;
@@ -108,13 +113,18 @@ bool lmDecodeThread::preDec(longmanEvt& rEvt)
 		longmanEvt testmsg(EvtTYPE1);
 		testmsg.setParam("CommandName", "show_message");
 		testmsg.setParam("MsgType", 2);
-		testmsg.setParam("info", "decoding failed");
+		testmsg.setParam("info", "pre-decoding failed");
 		testmsg.dispatch();
 		return false;
 	}
 	{
+//#if _DEBUG
+		//std::string cachePath = "C:/Users/Administrator/Documents/GitHub/lmApp/cache/";
+//#else
+		std::string cachePath = "cache/";
+//#endif
 		lmDecInfo *decinfo = lmDecInfo::getInstanceForChange();
-		decinfo->setInfoSoluPath("C:/Users/Administrator/Documents/GitHub/lmApp/cache/");
+		decinfo->setInfoSoluPath(cachePath);
 		decinfo->readDec(true);
 	}
 	//判断预解码是否成功;
@@ -124,7 +134,7 @@ bool lmDecodeThread::preDec(longmanEvt& rEvt)
 		longmanEvt testmsg(EvtTYPE1);
 		testmsg.setParam("CommandName", "show_message");
 		testmsg.setParam("MsgType", 2);
-		testmsg.setParam("info", "pre-decoding failed");
+		testmsg.setParam("info", "readPreDecinfo failed");
 		testmsg.dispatch();
 		return false;
 	}
