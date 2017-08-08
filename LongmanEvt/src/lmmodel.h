@@ -2,7 +2,7 @@
 #define lmmodel_h__
 #include "longmanEvt.h"
 #include "lmmodelD.h"
-#include <iostream>
+#include <QDebug>
 //底层基类,通过组合委托将所有工作交给 lmdodelD
 class lmmodel
 {

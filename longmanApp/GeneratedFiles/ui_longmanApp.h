@@ -15,7 +15,6 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QFormLayout>
-#include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
@@ -26,6 +25,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
@@ -45,8 +45,6 @@ public:
     QWidget *centralWidget;
     QGridLayout *gridLayout_7;
     QGridLayout *gridLayout_8;
-    QFrame *line_2;
-    QGridLayout *gridLayout_9;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuEdit;
@@ -84,33 +82,35 @@ public:
     QLabel *label_format;
     QDockWidget *dockWidget_1;
     QWidget *dockWidgetContents;
-    QVBoxLayout *verticalLayout_2;
+    QFormLayout *formLayout;
     QGroupBox *FucAeraBox;
     QVBoxLayout *verticalLayout_3;
     QGroupBox *groupBox_2;
-    QGridLayout *gridLayout;
-    QFormLayout *formLayout;
-    QPushButton *f1Button;
+    QHBoxLayout *horizontalLayout;
+    QVBoxLayout *verticalLayout_4;
     QPushButton *f2Button;
-    QPushButton *f3Button;
+    QPushButton *f1Button;
     QPushButton *f4Button;
+    QPushButton *f3Button;
     QPushButton *f5Button;
     QPushButton *f6Button;
-    QPushButton *f7Button;
+    QVBoxLayout *verticalLayout_5;
     QPushButton *f8Button;
+    QPushButton *f7Button;
+    QSpacerItem *horizontalSpacer;
     QGroupBox *groupBox;
     QGridLayout *gridLayout_2;
     QGridLayout *gridLayout_6;
-    QFrame *frame;
-    QVBoxLayout *verticalLayout_4;
-    QLabel *label_3;
-    QFrame *line;
+    QDockWidget *dockWidget_3;
+    QWidget *dockWidgetContents_4;
+    QGridLayout *gridLayout_9;
+    QGridLayout *gridLayout_10;
 
     void setupUi(QMainWindow *longmanAppClass)
     {
         if (longmanAppClass->objectName().isEmpty())
             longmanAppClass->setObjectName(QStringLiteral("longmanAppClass"));
-        longmanAppClass->resize(1024, 768);
+        longmanAppClass->resize(1113, 871);
         longmanAppClass->setMinimumSize(QSize(1024, 768));
         actionOpen = new QAction(longmanAppClass);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
@@ -135,25 +135,12 @@ public:
         gridLayout_8->setSpacing(6);
         gridLayout_8->setObjectName(QStringLiteral("gridLayout_8"));
 
-        gridLayout_7->addLayout(gridLayout_8, 1, 0, 1, 1);
-
-        line_2 = new QFrame(centralWidget);
-        line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setFrameShape(QFrame::VLine);
-        line_2->setFrameShadow(QFrame::Sunken);
-
-        gridLayout_7->addWidget(line_2, 1, 1, 1, 1);
-
-        gridLayout_9 = new QGridLayout();
-        gridLayout_9->setSpacing(6);
-        gridLayout_9->setObjectName(QStringLiteral("gridLayout_9"));
-
-        gridLayout_7->addLayout(gridLayout_9, 0, 0, 1, 1);
+        gridLayout_7->addLayout(gridLayout_8, 0, 0, 1, 1);
 
         longmanAppClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(longmanAppClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1024, 23));
+        menuBar->setGeometry(QRect(0, 0, 1113, 23));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuEdit = new QMenu(menuBar);
@@ -166,8 +153,8 @@ public:
         longmanAppClass->setStatusBar(statusBar);
         dockWidget_2 = new QDockWidget(longmanAppClass);
         dockWidget_2->setObjectName(QStringLiteral("dockWidget_2"));
-        dockWidget_2->setFeatures(QDockWidget::DockWidgetVerticalTitleBar);
-        dockWidget_2->setAllowedAreas(Qt::NoDockWidgetArea);
+        dockWidget_2->setFeatures(QDockWidget::DockWidgetFeatureMask);
+        dockWidget_2->setAllowedAreas(Qt::TopDockWidgetArea);
         dockWidgetContents_2 = new QWidget();
         dockWidgetContents_2->setObjectName(QStringLiteral("dockWidgetContents_2"));
         horizontalLayout_6 = new QHBoxLayout(dockWidgetContents_2);
@@ -343,17 +330,17 @@ public:
         horizontalLayout_6->addWidget(groupBox_3);
 
         dockWidget_2->setWidget(dockWidgetContents_2);
-        longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(8), dockWidget_2);
+        longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(4), dockWidget_2);
         dockWidget_1 = new QDockWidget(longmanAppClass);
         dockWidget_1->setObjectName(QStringLiteral("dockWidget_1"));
-        dockWidget_1->setFeatures(QDockWidget::DockWidgetVerticalTitleBar);
+        dockWidget_1->setFeatures(QDockWidget::DockWidgetFeatureMask);
         dockWidget_1->setAllowedAreas(Qt::NoDockWidgetArea);
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
-        verticalLayout_2 = new QVBoxLayout(dockWidgetContents);
-        verticalLayout_2->setSpacing(6);
-        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        formLayout = new QFormLayout(dockWidgetContents);
+        formLayout->setSpacing(6);
+        formLayout->setContentsMargins(11, 11, 11, 11);
+        formLayout->setObjectName(QStringLiteral("formLayout"));
         FucAeraBox = new QGroupBox(dockWidgetContents);
         FucAeraBox->setObjectName(QStringLiteral("FucAeraBox"));
         QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Preferred);
@@ -369,60 +356,73 @@ public:
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         groupBox_2 = new QGroupBox(FucAeraBox);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        gridLayout = new QGridLayout(groupBox_2);
-        gridLayout->setSpacing(6);
-        gridLayout->setContentsMargins(11, 11, 11, 11);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        formLayout = new QFormLayout();
-        formLayout->setSpacing(6);
-        formLayout->setObjectName(QStringLiteral("formLayout"));
-        f1Button = new QPushButton(groupBox_2);
-        f1Button->setObjectName(QStringLiteral("f1Button"));
-
-        formLayout->setWidget(0, QFormLayout::LabelRole, f1Button);
-
+        horizontalLayout = new QHBoxLayout(groupBox_2);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         f2Button = new QPushButton(groupBox_2);
         f2Button->setObjectName(QStringLiteral("f2Button"));
 
-        formLayout->setWidget(0, QFormLayout::FieldRole, f2Button);
+        verticalLayout_4->addWidget(f2Button);
 
-        f3Button = new QPushButton(groupBox_2);
-        f3Button->setObjectName(QStringLiteral("f3Button"));
+        f1Button = new QPushButton(groupBox_2);
+        f1Button->setObjectName(QStringLiteral("f1Button"));
 
-        formLayout->setWidget(1, QFormLayout::LabelRole, f3Button);
+        verticalLayout_4->addWidget(f1Button);
 
         f4Button = new QPushButton(groupBox_2);
         f4Button->setObjectName(QStringLiteral("f4Button"));
 
-        formLayout->setWidget(1, QFormLayout::FieldRole, f4Button);
+        verticalLayout_4->addWidget(f4Button);
+
+        f3Button = new QPushButton(groupBox_2);
+        f3Button->setObjectName(QStringLiteral("f3Button"));
+
+        verticalLayout_4->addWidget(f3Button);
 
         f5Button = new QPushButton(groupBox_2);
         f5Button->setObjectName(QStringLiteral("f5Button"));
 
-        formLayout->setWidget(2, QFormLayout::LabelRole, f5Button);
+        verticalLayout_4->addWidget(f5Button);
 
         f6Button = new QPushButton(groupBox_2);
         f6Button->setObjectName(QStringLiteral("f6Button"));
 
-        formLayout->setWidget(2, QFormLayout::FieldRole, f6Button);
+        verticalLayout_4->addWidget(f6Button);
+
+
+        horizontalLayout->addLayout(verticalLayout_4);
+
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setSpacing(6);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        f8Button = new QPushButton(groupBox_2);
+        f8Button->setObjectName(QStringLiteral("f8Button"));
+
+        verticalLayout_5->addWidget(f8Button);
 
         f7Button = new QPushButton(groupBox_2);
         f7Button->setObjectName(QStringLiteral("f7Button"));
 
-        formLayout->setWidget(3, QFormLayout::LabelRole, f7Button);
-
-        f8Button = new QPushButton(groupBox_2);
-        f8Button->setObjectName(QStringLiteral("f8Button"));
-
-        formLayout->setWidget(3, QFormLayout::FieldRole, f8Button);
+        verticalLayout_5->addWidget(f7Button);
 
 
-        gridLayout->addLayout(formLayout, 0, 0, 1, 1);
+        horizontalLayout->addLayout(verticalLayout_5);
 
 
         verticalLayout_3->addWidget(groupBox_2);
 
-        groupBox = new QGroupBox(FucAeraBox);
+
+        formLayout->setWidget(0, QFormLayout::LabelRole, FucAeraBox);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        formLayout->setItem(0, QFormLayout::FieldRole, horizontalSpacer);
+
+        groupBox = new QGroupBox(dockWidgetContents);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         gridLayout_2 = new QGridLayout(groupBox);
         gridLayout_2->setSpacing(6);
@@ -435,36 +435,29 @@ public:
         gridLayout_2->addLayout(gridLayout_6, 0, 0, 1, 1);
 
 
-        verticalLayout_3->addWidget(groupBox);
-
-        frame = new QFrame(FucAeraBox);
-        frame->setObjectName(QStringLiteral("frame"));
-        frame->setFrameShape(QFrame::StyledPanel);
-        frame->setFrameShadow(QFrame::Raised);
-        verticalLayout_4 = new QVBoxLayout(frame);
-        verticalLayout_4->setSpacing(6);
-        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
-        label_3 = new QLabel(frame);
-        label_3->setObjectName(QStringLiteral("label_3"));
-
-        verticalLayout_4->addWidget(label_3);
-
-
-        verticalLayout_3->addWidget(frame);
-
-        line = new QFrame(FucAeraBox);
-        line->setObjectName(QStringLiteral("line"));
-        line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout_3->addWidget(line);
-
-
-        verticalLayout_2->addWidget(FucAeraBox);
+        formLayout->setWidget(1, QFormLayout::LabelRole, groupBox);
 
         dockWidget_1->setWidget(dockWidgetContents);
         longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget_1);
+        dockWidget_3 = new QDockWidget(longmanAppClass);
+        dockWidget_3->setObjectName(QStringLiteral("dockWidget_3"));
+        dockWidget_3->setFloating(false);
+        dockWidget_3->setFeatures(QDockWidget::DockWidgetFeatureMask);
+        dockWidget_3->setAllowedAreas(Qt::LeftDockWidgetArea);
+        dockWidgetContents_4 = new QWidget();
+        dockWidgetContents_4->setObjectName(QStringLiteral("dockWidgetContents_4"));
+        gridLayout_9 = new QGridLayout(dockWidgetContents_4);
+        gridLayout_9->setSpacing(6);
+        gridLayout_9->setContentsMargins(11, 11, 11, 11);
+        gridLayout_9->setObjectName(QStringLiteral("gridLayout_9"));
+        gridLayout_10 = new QGridLayout();
+        gridLayout_10->setSpacing(6);
+        gridLayout_10->setObjectName(QStringLiteral("gridLayout_10"));
+
+        gridLayout_9->addLayout(gridLayout_10, 0, 0, 1, 1);
+
+        dockWidget_3->setWidget(dockWidgetContents_4);
+        longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget_3);
 
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuEdit->menuAction());
@@ -515,16 +508,16 @@ public:
         label_format->setText(QApplication::translate("longmanAppClass", "420", 0));
         dockWidget_1->setWindowTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
         groupBox_2->setTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
-        f1Button->setText(QApplication::translate("longmanAppClass", "show Pixel", 0));
         f2Button->setText(QApplication::translate("longmanAppClass", "open yuv", 0));
-        f3Button->setText(QApplication::translate("longmanAppClass", "save image", 0));
+        f1Button->setText(QApplication::translate("longmanAppClass", "show Pixel", 0));
         f4Button->setText(QApplication::translate("longmanAppClass", "open bitstr", 0));
-        f5Button->setText(QApplication::translate("longmanAppClass", "f5", 0));
+        f3Button->setText(QApplication::translate("longmanAppClass", "save image", 0));
+        f5Button->setText(QApplication::translate("longmanAppClass", "history", 0));
         f6Button->setText(QApplication::translate("longmanAppClass", "f6", 0));
-        f7Button->setText(QApplication::translate("longmanAppClass", "f7", 0));
         f8Button->setText(QApplication::translate("longmanAppClass", "f8", 0));
+        f7Button->setText(QApplication::translate("longmanAppClass", "f7", 0));
         groupBox->setTitle(QApplication::translate("longmanAppClass", "List Area", 0));
-        label_3->setText(QApplication::translate("longmanAppClass", "wait dev...", 0));
+        dockWidget_3->setWindowTitle(QApplication::translate("longmanAppClass", "Message", 0));
     } // retranslateUi
 
 };

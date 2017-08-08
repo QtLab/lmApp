@@ -6,7 +6,8 @@
 #include"appGUI\norwegianwoodstyle.h"
 int main(int argc, char *argv[])
 {
-	
+	//将debug信息输出句柄与某个函数连接;
+	qInstallMessageHandler(longmanApp::xMessageOutput);
 	QApplication a(argc, argv);
 	//QApplication::setStyle(new NorwegianWoodStyle);
 	QIcon icon;

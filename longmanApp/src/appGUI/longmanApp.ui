@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>1113</width>
+    <height>871</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -27,18 +27,8 @@
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout_7">
-    <item row="1" column="0">
-     <layout class="QGridLayout" name="gridLayout_8"/>
-    </item>
-    <item row="1" column="1">
-     <widget class="Line" name="line_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="0">
-     <layout class="QGridLayout" name="gridLayout_9"/>
+     <layout class="QGridLayout" name="gridLayout_8"/>
     </item>
    </layout>
   </widget>
@@ -47,7 +37,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1113</width>
      <height>23</height>
     </rect>
    </property>
@@ -78,16 +68,16 @@
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget_2">
    <property name="features">
-    <set>QDockWidget::DockWidgetVerticalTitleBar</set>
+    <set>QDockWidget::DockWidgetFeatureMask</set>
    </property>
    <property name="allowedAreas">
-    <set>Qt::NoDockWidgetArea</set>
+    <set>Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
     <string>Player Area</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>8</number>
+    <number>4</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
     <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -326,7 +316,7 @@
   </widget>
   <widget class="QDockWidget" name="dockWidget_1">
    <property name="features">
-    <set>QDockWidget::DockWidgetVerticalTitleBar</set>
+    <set>QDockWidget::DockWidgetFeatureMask</set>
    </property>
    <property name="allowedAreas">
     <set>Qt::NoDockWidgetArea</set>
@@ -338,8 +328,8 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
       <widget class="QGroupBox" name="FucAeraBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -359,62 +349,66 @@
           <property name="title">
            <string>Function Area</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0">
-            <layout class="QFormLayout" name="formLayout">
-             <item row="0" column="0">
-              <widget class="QPushButton" name="f1Button">
-               <property name="text">
-                <string>show Pixel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
               <widget class="QPushButton" name="f2Button">
                <property name="text">
                 <string>open yuv</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="f3Button">
+             <item>
+              <widget class="QPushButton" name="f1Button">
                <property name="text">
-                <string>save image</string>
+                <string>show Pixel</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item>
               <widget class="QPushButton" name="f4Button">
                <property name="text">
                 <string>open bitstr</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="f5Button">
+             <item>
+              <widget class="QPushButton" name="f3Button">
                <property name="text">
-                <string>f5</string>
+                <string>save image</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
+             <item>
+              <widget class="QPushButton" name="f5Button">
+               <property name="text">
+                <string>history</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="f6Button">
                <property name="text">
                 <string>f6</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="f7Button">
-               <property name="text">
-                <string>f7</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
               <widget class="QPushButton" name="f8Button">
                <property name="text">
                 <string>f8</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="f7Button">
+               <property name="text">
+                <string>f7</string>
                </property>
               </widget>
              </item>
@@ -423,46 +417,57 @@
           </layout>
          </widget>
         </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>List Area</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout_6"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QFrame" name="frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>wait dev...</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>List Area</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_6"/>
         </item>
        </layout>
       </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget_3">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFeatureMask</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Message</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QGridLayout" name="gridLayout_9">
+     <item row="0" column="0">
+      <layout class="QGridLayout" name="gridLayout_10"/>
      </item>
     </layout>
    </widget>

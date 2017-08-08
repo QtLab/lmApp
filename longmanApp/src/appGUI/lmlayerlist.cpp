@@ -60,6 +60,7 @@ bool lmLayerList::getLayer(longmanEvt & pEvt)
 
 void lmLayerList::LayerClicked(QListWidgetItem *pLayer)
 {
+	//这里还有很多bug;
 	QString listtxt = pLayer->text();
 	int itBeSelect = -1;
 	for (size_t i = 0; i < maxLayer + 1; i++)

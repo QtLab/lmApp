@@ -68,11 +68,7 @@ bool lmGraphView::scaleimage(longmanEvt & sacleEvt)
 
 void lmGraphView::xscale(double pscalce)
 {
-	longmanEvt testmsg(EvtTYPE1);
-	testmsg.setParam("CommandName", "show_message");
-	testmsg.setParam("MsgType", 1);
-	testmsg.setParam("info", QStringLiteral("功能尚未完善！"));
-	testmsg.dispatch();
+	qWarning() << QStringLiteral("功能尚未完善！");
 }
 
 bool lmGraphView::xupdate(longmanEvt & rEvt)

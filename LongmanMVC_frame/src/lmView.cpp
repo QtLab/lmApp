@@ -1,4 +1,5 @@
 #include "lmView.h"
+
 #include<iostream>
 lmView::lmView(lmEvtBus *evtBus):lmmodel(evtBus)
 {

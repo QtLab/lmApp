@@ -39,7 +39,5 @@ private:
 	QWaitCondition condition;
 	void xParseinfo();
 	void xParsePreDecinfo();
-	
-	//lmDecInfo decinfo;
 };
 #endif // lmDecodeThread_h__

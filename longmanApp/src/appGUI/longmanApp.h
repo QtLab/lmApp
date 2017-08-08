@@ -10,11 +10,11 @@
 #include "lmGraphView.h"
 #include "src\lmView.h"
 #include "yuvParamSet.h"
-#include "lmMessageBox.h"
+//#include "lmMessageBox.h"
 #include "lmDataView.h"
 #include "lmParserBitConfigure.h"
 #include "lmlayerlist.h"
-//#include "glwidget.h"
+#include "lmmsgview.h"
 //主界面，额外继承了lmView，通过listenParam接口设定响应函数;
 class longmanApp : public QMainWindow ,public lmView
 {
@@ -24,16 +24,19 @@ public:
 	longmanApp(QWidget *parent = 0);
 	bool updatemainwindow(longmanEvt&);
 	bool openyuvFailed(longmanEvt&);
+public:
+	//static;
+	static void xMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &strMsg);
 private:
 	Ui::longmanAppClass ui;
 	lmGraphView *m_imageView;
-	lmMessageBox *msgBox;
+	//lmMessageBox *msgBox;
 	lmDataView* m_DataView;
 	QTimeLine timeLine;
 	QImage* imageSave;
 	lmParserBitConfigure *mBitParseCFG;
 	lmLayerList *mlayerList;
-	//GLWidget *glWidget;
+	lmMsgView *mMsgOutput;
 	void sendEvttoChnagePOC(int ppoc);
 private slots:
 void on_actionOpen_SHVC_bitstream_triggered();
@@ -53,5 +56,6 @@ void on_f1Button_clicked();
 void on_f2Button_clicked();
 void on_f3Button_clicked();
 void on_f4Button_clicked();
+void on_f5Button_clicked();
 };
 #endif // longmanApp_h__

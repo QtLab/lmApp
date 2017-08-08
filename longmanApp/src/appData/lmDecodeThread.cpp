@@ -1,5 +1,5 @@
 #include "lmDecodeThread.h"
-//using std::cout;
+#include <time.h>
 lmDecodeThread::lmDecodeThread(QObject *parent)
 	: QThread(parent)
 {
@@ -12,7 +12,6 @@ lmDecodeThread::~lmDecodeThread()
 bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 {
 	lmParseStreamPro mStreamParse;
-	//std::cout << "解析SHVC码流!" << std::endl;
 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
 	int layerDec = rEvt.getParam("numLayerToDec").toInt();
 	int maxLayerIdx = rEvt.getParam("maxLayerIdx").toInt();
@@ -26,11 +25,12 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 			layerIdxToDec.push_back(i);
 
 	}
-	longmanEvt testmsg(EvtTYPE1);
-	testmsg.setParam("CommandName", "show_message");
-	testmsg.setParam("MsgType", 0);
-	testmsg.setParam("info", "waiting decoding...");
-	testmsg.dispatch();
+	qInfo() << "waiting decoding...";
+	//longmanEvt testmsg(EvtTYPE1);
+	//testmsg.setParam("CommandName", "show_message");
+	//testmsg.setParam("MsgType", 0);
+	//testmsg.setParam("info", "waiting decoding...");
+	//testmsg.dispatch();
 	bool decodeSuccessed = false;
 	//调用解码,不管解码多少层，最大层级解码必须调用，从而获得各层级PS信息;
 	decodeSuccessed = mStreamParse.decoderBitstream(bitstream, maxLayerIdx);
@@ -54,8 +54,9 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 				mStreamParse.decoderBitstream(bitstream, i);
 			}
 		}
+		//关闭消息窗口;
 		longmanEvt testmsg(EvtTYPE1);
-		testmsg.setParam("CommandName", "show_message");
+		testmsg.setParam("CommandName", "outputMsg");
 		testmsg.setParam("isHide", true);
 		testmsg.dispatch();
 		//发送openyuvfile事件，刷新显示的yuv,打开最高层级;
@@ -84,11 +85,12 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 	}
 	else
 	{
-		longmanEvt testmsg(EvtTYPE1);
-		testmsg.setParam("CommandName", "show_message");
-		testmsg.setParam("MsgType", 2);
-		testmsg.setParam("info", "decoding failed");
-		testmsg.dispatch();
+		qWarning() << "decoding failed";
+		//longmanEvt testmsg(EvtTYPE1);
+		//testmsg.setParam("CommandName", "show_message");
+		//testmsg.setParam("MsgType", 2);
+		//testmsg.setParam("info", "decoding failed");
+		//testmsg.dispatch();
 		return decodeSuccessed;
 	}
 	
@@ -97,7 +99,7 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 bool lmDecodeThread::preDec(longmanEvt& rEvt)
 {
 	lmParseStreamPro mStreamParse;
-	//std::cout << "解析SHVC码流!" << std::endl;
+	qDebug() << "PreDecoding...";
 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
 	//预解码,获得最大编码层;
 	bool bPreDecSuccessed = mStreamParse.preDec(bitstream);
@@ -110,11 +112,12 @@ bool lmDecodeThread::preDec(longmanEvt& rEvt)
 	//}
 	//else
 	{
-		longmanEvt testmsg(EvtTYPE1);
-		testmsg.setParam("CommandName", "show_message");
-		testmsg.setParam("MsgType", 2);
-		testmsg.setParam("info", "pre-decoding failed");
-		testmsg.dispatch();
+		qWarning() << "pre-decoding failed";
+		//longmanEvt testmsg(EvtTYPE1);
+		//testmsg.setParam("CommandName", "show_message");
+		//testmsg.setParam("MsgType", 2);
+		//testmsg.setParam("info", "pre-decoding failed");
+		//testmsg.dispatch();
 		return false;
 	}
 	{
@@ -131,11 +134,12 @@ bool lmDecodeThread::preDec(longmanEvt& rEvt)
 	const lmDecInfo *constdecinfo = lmDecInfo::getInstanceForReadonly();
 	if (constdecinfo->preDecFailed())
 	{
-		longmanEvt testmsg(EvtTYPE1);
-		testmsg.setParam("CommandName", "show_message");
-		testmsg.setParam("MsgType", 2);
-		testmsg.setParam("info", "readPreDecinfo failed");
-		testmsg.dispatch();
+		qWarning() << "readPreDecinfo failed";
+		//longmanEvt testmsg(EvtTYPE1);
+		//testmsg.setParam("CommandName", "show_message");
+		//testmsg.setParam("MsgType", 2);
+		//testmsg.setParam("info", "readPreDecinfo failed");
+		//testmsg.dispatch();
 		return false;
 	}
 	lmPSData mvps(lmPSData::getPSTypeInString(paraTYPE::vps));
@@ -154,11 +158,12 @@ bool lmDecodeThread::addCommandHandle(const std::string& rpCmdName, CallBackFunc
 	miter = _commandTable.find(rpCmdName);
 	if (miter != _commandTable.end())
 	{
-		longmanEvt testmsg(EvtTYPE1);
-		testmsg.setParam("CommandName", "show_message");
-		testmsg.setParam("MsgType", 1);
-		testmsg.setParam("info", QStringLiteral("正在解码！"));
-		testmsg.dispatch();
+		qInfo() << QStringLiteral("正在解码！");
+		//longmanEvt testmsg(EvtTYPE1);
+		//testmsg.setParam("CommandName", "show_message");
+		//testmsg.setParam("MsgType", 1);
+		//testmsg.setParam("info", QStringLiteral("正在解码！"));
+		//testmsg.dispatch();
 		return false;
 	}
 	_commandTable.insert(CallBackFuncList::value_type(rpCmdName, pcCmdHandle));
@@ -175,7 +180,13 @@ void lmDecodeThread::run()
 	longmanEvt *pEvt = evtue.front();
 	evtue.pop_front();
 	mutex.unlock();
+	double dResult;
+	clock_t lBefore = clock();
 	handleCmd(*pEvt);
+	dResult = (double)(clock() - lBefore);
+	QString mstrmsg = "Command named <" + pEvt->getParam("CommandName").toString() + ">";
+	mstrmsg += " spends " + QString::fromStdString(std::to_string(int(dResult))) + " ms,this in Dedcode Thread!";
+	qDebug() << mstrmsg;
 	delete pEvt;
 	}
 }
@@ -187,11 +198,12 @@ void lmDecodeThread::handleCmd(longmanEvt& requstCmd)
 	paramlist::const_iterator paramEnd;
 	if (!(requstCmd.getParamIter(paramBeg, paramEnd)) || paramBeg->first != "CommandName")
 	{
-		longmanEvt testmsg(EvtTYPE1);
-		testmsg.setParam("CommandName", "show_message");
-		testmsg.setParam("MsgType", 1);
-		testmsg.setParam("info", QStringLiteral("Event的参数列表设置错误！"));
-		testmsg.dispatch();
+		qCritical() << QStringLiteral("Event的参数列表设置错误！");
+// 		longmanEvt testmsg(EvtTYPE1);
+// 		testmsg.setParam("CommandName", "show_message");
+// 		testmsg.setParam("MsgType", 1);
+// 		testmsg.setParam("info", QStringLiteral("Event的参数列表设置错误！"));
+// 		testmsg.dispatch();
 		return;
 	}
 	std::string &m_cmdName = (paramBeg->second).toString().toStdString();

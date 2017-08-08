@@ -13,18 +13,18 @@ longmanApp::longmanApp(QWidget *parent)
 	: QMainWindow(parent),
 	lmView(nullptr),
 	m_imageView(new lmGraphView(this)),
-	msgBox(new lmMessageBox(this)),
 	imageSave(nullptr),
 	m_DataView(new lmDataView(this)),
 	mBitParseCFG(new lmParserBitConfigure(this)),
-	mlayerList(new lmLayerList(this))/*,
-	glWidget(new GLWidget(nullptr))*/
+	mlayerList(new lmLayerList(this)),
+	mMsgOutput(new lmMsgView(this))
 {
 	timeLine.stop();
 	ui.setupUi(this);
 	ui.gridLayout_8->addWidget(m_imageView);
-	//ui.gridLayout_9->addWidget(glWidget);
+	
 	ui.gridLayout_6->addWidget(mlayerList,0,0, Qt::AlignTop);
+	ui.gridLayout_10->addWidget(mMsgOutput);
 	CallBackFunc pcupdate = std::bind(&longmanApp::updatemainwindow, this, std::placeholders::_1);
 	listenParam("update_mainwindow", pcupdate);
 	CallBackFunc pcupdate1 = std::bind(&longmanApp::openyuvFailed, this, std::placeholders::_1);
@@ -71,6 +71,33 @@ bool longmanApp::openyuvFailed(longmanEvt&)
 	//ui.FrameIdxSlider->setValue(-1);
 	OpenNum = -1;
 	return true;
+}
+
+void longmanApp::xMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &strMsg)
+{
+// 	QByteArray localMsg = strMsg.toLocal8Bit();
+// 	switch (type) {
+// 	case QtDebugMsg:
+// 		fprintf(stdout, "[Debug]: %s\n", localMsg.constData());
+// 		break;
+// 	case QtWarningMsg:
+// 		fprintf(stderr, "[Warn]: %s\n", localMsg.constData());
+// 		break;
+// 	case QtCriticalMsg:
+// 		fprintf(stderr, "[Crit]: %s\n", localMsg.constData());
+// 		break;
+// 	case QtFatalMsg:
+// 		fprintf(stderr, "[Fata]: %s\n", localMsg.constData());
+// 	}
+// 	fflush(stdout);
+// 	fflush(stderr);
+	longmanEvt msg(EvtTYPE1);
+	msg.setParam("CommandName", "outputMsg");
+	msg.setParam("MsgType", (int)type);
+	msg.setParam("info", strMsg);
+	msg.dispatch();
+	if (type == QtFatalMsg)
+		abort();
 }
 
 void longmanApp::sendEvttoChnagePOC(int ppoc)
@@ -151,11 +178,12 @@ void longmanApp::on_actionOpen_triggered()
 		return;
 	if (paramselect.getyuvwidth()%2!=0|| paramselect.getyuvheight() % 2 != 0)
 	{
-		longmanEvt paramWarning(EvtTYPE1);
-		paramWarning.setParam("CommandName", "show_message");
-		paramWarning.setParam("MsgType", 2);
-		paramWarning.setParam("info", QStringLiteral("尺寸不能为奇数！"));
-		paramWarning.dispatch();
+		qCritical() << QStringLiteral("尺寸不能为奇数！");
+// 		longmanEvt paramWarning(EvtTYPE1);
+// 		paramWarning.setParam("CommandName", "show_message");
+// 		paramWarning.setParam("MsgType", 2);
+// 		paramWarning.setParam("info", QStringLiteral("尺寸不能为奇数！"));
+// 		paramWarning.dispatch();
 		return;
 	}
 	longmanEvt openyuv(EvtTYPE2);
@@ -312,5 +340,14 @@ void longmanApp::on_f3Button_clicked()
 void longmanApp::on_f4Button_clicked()
 {
 	on_actionOpen_SHVC_bitstream_triggered();
+}
+
+void longmanApp::on_f5Button_clicked()
+{
+	//显示并操作，已经打开成功的yuv;
+	//这些yuv信息位于cmdProcessThread对象中;
+	//计划的功能有:列出所有yuv,临时查看窗口,将信息保存为文件等等;
+	qInfo()<< QStringLiteral("显示并操作已经打开成功的yuv;这些yuv信息位于cmdProcessThread对象中;计划的功能有:列出所有yuv,临时查看窗口,将信息保存为文件等;");
+
 }
 

@@ -1,7 +1,7 @@
 #include "lmMessageBox.h"
 #include <QIcon>
 //
-const QMessageBox::Icon msgType[] = { QMessageBox::Information,
+const QMessageBox::Icon msgType[] = { QMessageBox::NoIcon,QMessageBox::Information,
 QMessageBox::Warning,QMessageBox::Critical };
 lmMessageBox::lmMessageBox(QWidget *parent):
 lmView(nullptr)

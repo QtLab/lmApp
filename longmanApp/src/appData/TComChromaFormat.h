@@ -2,7 +2,6 @@
 #define __TCOMCHROMAFORMAT__
 
 #include "CommonDef.h"
-#include <iostream>
 #include <vector>
 #include <assert.h>
 
@@ -37,7 +36,7 @@ static inline UInt getTotalSamples(const UInt width, const UInt height, const Ch
     case CHROMA_422: return  samplesPerChannel * 2;       break;
     case CHROMA_444: return  samplesPerChannel * 3;       break;
     default:
-      std::cerr << "ERROR: Unrecognised chroma format in getTotalSamples()" << std::endl;
+     // std::cerr << "ERROR: Unrecognised chroma format in getTotalSamples()" << std::endl;
       exit(1);
       break;
   }
@@ -58,7 +57,7 @@ static inline UInt getTotalBits(const UInt width, const UInt height, const Chrom
     case CHROMA_422: return  samplesPerChannel * (bitDepths[CHANNEL_TYPE_LUMA]   +   bitDepths[CHANNEL_TYPE_CHROMA]);        break;
     case CHROMA_444: return  samplesPerChannel * (bitDepths[CHANNEL_TYPE_LUMA]   + 2*bitDepths[CHANNEL_TYPE_CHROMA]);        break;
     default:
-      std::cerr << "ERROR: Unrecognised chroma format in getTotalSamples()" << std::endl;
+      //std::cerr << "ERROR: Unrecognised chroma format in getTotalSamples()" << std::endl;
       exit(1);
       break;
   }

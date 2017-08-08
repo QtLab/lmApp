@@ -7,7 +7,7 @@ lmParserBitConfigure::lmParserBitConfigure(QWidget *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
-	setWindowTitle(tr("Bitstream set"));
+	setWindowTitle(tr("Bitstream"));
 	Qt::WindowFlags flags = Qt::Dialog;
 	flags |= Qt::WindowCloseButtonHint;
 	setWindowFlags(flags);
@@ -43,11 +43,7 @@ bool lmParserBitConfigure::getcfg(QString & bitstreampath)
 	std::ofstream tryRead(cpppath,std::ios::in);
 	if (tryRead.fail())
 	{
-		longmanEvt openstbitstream(EvtTYPE1);
-		openstbitstream.setParam("CommandName", "show_message");
-		openstbitstream.setParam("MsgType", 2);
-		openstbitstream.setParam("info", QStringLiteral("bitstream open failed!"));
-		openstbitstream.dispatch();
+		qWarning() << QStringLiteral("bitstream open failed!");
 		openBitsreamnum = 0;
 		ui.lineEdit->setText(lastbsf);
 		return false;

@@ -1,5 +1,4 @@
 #include "cmdProcessThread.h"
-#include <iostream>
 #include <time.h>
 	static bool enableShowYuvData = false;//
 	static bool firstrunChangePOC = true;
@@ -9,35 +8,13 @@ cmdProcessThread::cmdProcessThread(QObject *parent):QThread(parent), mImageDraw(
 cmdProcessThread::~cmdProcessThread()
 {
 }
-
-//bool cmdProcessThread::pushcmd(longmanEvt* cEvt)
-//{
-//	QMutexLocker locker(&mutex);
-//	if (evtue.size() > maxQue)
-//		{
-//			msgSend("waiting...");
-//			EvtQueFull = true;
-//			return false;//排队事件过多;
-//		}
-//	evtue.push_back(cEvt);
-//	if (!isRunning()) 
-//		start();
-//	else 
-//		condition.wakeOne();
-//	return true;
-//}
-
 bool cmdProcessThread::addCommandHandle(const std::string& rpCmdName, CallBackFunc& pcCmdHandle)
 {
 	CallBackFuncList::iterator miter;
 	miter = _commandTable.find(rpCmdName);
 	if (miter!=_commandTable.end())
 		{
-			longmanEvt testmsg(EvtTYPE1);
-			testmsg.setParam("CommandName", "show_message");
-			testmsg.setParam("MsgType", 1);
-			testmsg.setParam("info", QStringLiteral("命令已存在！"));
-			testmsg.dispatch();
+			qWarning() << QStringLiteral("Event命令已存在！");
 			return false;
 		}
 	_commandTable.insert(CallBackFuncList::value_type(rpCmdName, pcCmdHandle));
@@ -55,23 +32,21 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	int openSt=dataModel.openyuv_r(filePath, false, mformattype, mWidth, mHeight);
 	if (openSt<0)
 	{
-		longmanEvt openstyuv(EvtTYPE1);
-		openstyuv.setParam("CommandName", "show_message");
-		openstyuv.setParam("MsgType", 1);
+		QString in;
 		switch (openSt)
 		{
-		case -1:openstyuv.setParam("info", QStringLiteral("Cannot write a yuv file of bit depth greater than 16 , output will be right-shifted down to 16-bit precision!")); break;
-		case -2:openstyuv.setParam("info", QStringLiteral("Cannot read a yuv file of bit depth greater than 16!")); break;
-		case -3:openstyuv.setParam("info", QStringLiteral("failed to write output YUV file!")); break;
-		case -4:openstyuv.setParam("info", QStringLiteral("failed to open Input YUV file!")); break;
-		case -5:openstyuv.setParam("info", QStringLiteral("Sorry,Not enough data in this file!\nReturn last file！")); break;
-		case -6:openstyuv.setParam("info", QStringLiteral("Wrong format!")); break;
-		
-		default:
+		case -1:in = QStringLiteral("Cannot write a yuv file of bit depth greater than 16 , output will be right-shifted down to 16-bit precision!"); break;
+		case -2:in = QStringLiteral("Cannot read a yuv file of bit depth greater than 16!"); break;
+		case -3:in = QStringLiteral("failed to write output YUV file!"); break;
+		case -4:in = QStringLiteral("failed to open Input YUV file!"); break;
+		case -5:in =QStringLiteral("Sorry,Not enough data in this file!\nReturn last file！"); break;
+		case -6:in = QStringLiteral("Wrong format!"); break;
+		default:in = QStringLiteral("something happened");
 			break;
 		}
+		
+		qCritical() << in;
 		//通知主窗口，打开失败;
-		openstyuv.dispatch();
 		longmanEvt openstyuvtoMainW(EvtTYPE1);
 		openstyuvtoMainW.setParam("CommandName", "fail_openyuv");
 		openstyuvtoMainW.dispatch();
@@ -221,17 +196,6 @@ bool cmdProcessThread::parseLayerFromList(longmanEvt& rEvt)
 	openyuvfile(openyuv);
 	return true;
 }
-
-// bool cmdProcessThread::parseSHVCBitBtream(longmanEvt& rEvt)
-// {
-// 	std::cout << "解析SHVC码流!" << std::endl;
-// 	std::string bitstream = rEvt.getParam("bitstream_path").toString().toStdString();
-// 	int layerNum = rEvt.getParam("layer_num").toInt();
-// 	bool decodesuccessed = false;
-// 	decodesuccessed= mStreamParse->decoderBitstream(bitstream, layerNum);
-// 	return true;
-// }
-
 void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 {
 	CallBackFuncList::iterator m_cmdHandlef;
@@ -239,11 +203,7 @@ void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 	paramlist::const_iterator paramEnd;
 	if (!(requstCmd.getParamIter(paramBeg, paramEnd)) || paramBeg->first != "CommandName")
 	{
-		longmanEvt testmsg(EvtTYPE1);
-		testmsg.setParam("CommandName", "show_message");
-		testmsg.setParam("MsgType", 1);
-		testmsg.setParam("info", QStringLiteral("Event的参数列表设置错误！"));
-		testmsg.dispatch();
+		qCritical() << QStringLiteral("Event的参数列表设置错误！");
 		return;
 	}
 	std::string &m_cmdName = (paramBeg->second).toString().toStdString();
@@ -254,12 +214,6 @@ void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 	}
 	return;
 }
-
-//void cmdProcessThread::xOpenYUVFile(longmanEvt& rpevt, int layer)
-//{
-//	if (openyuvfile(rpevt))
-//		myuvlist.getlast().setPOC(layer);
-//}
 
 void cmdProcessThread::run()
 {
@@ -274,9 +228,10 @@ void cmdProcessThread::run()
 	evtue.pop_front();
 	mutex.unlock();
 	handleCmd(*pEvt);
-	dResult = (Double)(clock() - lBefore) / CLOCKS_PER_SEC;
-	if(pEvt->getEvtTYPE()==EvtTYPE2)
-	std::cout << "EXE处理时间："<<dResult <<"s" << std::endl;
+	dResult = (Double)(clock() - lBefore);
+	QString mstrmsg ="Command named <"+ pEvt->getParam("CommandName").toString()+">";
+	mstrmsg += " spends "+QString::fromStdString(std::to_string(int(dResult))) + " ms, this is in workThread!";
+	qDebug() << mstrmsg;
 	delete pEvt;
 	}
 }

@@ -15,14 +15,6 @@
 #include "..\lmDecInfoData\src\lmDecInfo.h"
 //（目前）作用:在工作线程中处理EvtTYPE2类型的Event,建立简单的Event缓冲机制;
 //
-// struct cyuvParam
-// {
-// 	int mWidth = 0;
-// 	int mHeight = 0;
-// 	int mFormat = 1;
-// 	int mcurPOC = 0;
-// 	std::string yuvPath;
-// };
 typedef std::function<void(lmYUVInfoList&)> normalCallbacfun;
 class cmdProcessThread : public QThread
 {
@@ -60,11 +52,7 @@ public:
 	bool changeimagepoc(longmanEvt&);
 	bool showyuvData(longmanEvt&);
 	bool parseLayerFromList(longmanEvt&);
-	//bool parseSHVCBitBtream(longmanEvt&);
-	//void setParseEXE(lmParseStreamPro *pStreamParse) { mStreamParse = pStreamParse; };
-//private:
-	//lmParseStreamPro *mStreamParse = nullptr;
-	//成功打开的yuv信息;
+private:
 	lmYUVInfoList myuvlist;
 };
 #endif // cmdProcessThread_h__

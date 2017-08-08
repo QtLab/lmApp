@@ -1,7 +1,6 @@
 #include "lmDataView.h"
 #include <QMouseEvent>
 #include <QPainter>
-#include <iostream>
 #include <string>
 #include<time.h>
 //不同格式的表格尺寸;
@@ -53,7 +52,7 @@ bool lmDataView::setdataview(longmanEvt & rEvt)
 	setMinimumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
 	setMaximumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
 	update();
-	std::cout << "inti data view\n";
+	qDebug() << "inti data view";
 	return true;
 }
 
@@ -109,8 +108,8 @@ void lmDataView::paintEvent(QPaintEvent * event)
 		drawContain(mcpainter);
 		//drawcontain = false;
 	}
-	double dResult = (double)(clock() - lBefore) / CLOCKS_PER_SEC;
-	std::cout << "dataview绘制处理时间：" << dResult << "s" << std::endl;
+	double dResult = (double)(clock() - lBefore);
+	qDebug() << QString::fromStdString("<Draw View> spends " + std::to_string(int(dResult)) + " ms!");
 }
 //绘制黑框;
 void lmDataView::drawBackGround(QPainter& cpainter)
@@ -270,7 +269,7 @@ void lmDataView::drawContain(QPainter& cpainter)
 	cpainter.setFont(displayFont);
 	QFontMetrics fontMetrics(displayFont);
 	cpainter.setPen(QPen(Qt::black));
-	std::cout << "更新数据内容" << std::endl;
+	qDebug() << "update data!";
 	for (int row = 0; row < ViewSize[formatType][0] + 1; ++row)
 	{
 		for (int column = 0; column < ViewSize[formatType][1] + 1; ++column)
