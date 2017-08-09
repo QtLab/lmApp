@@ -20,7 +20,9 @@ public:
 private:
     Ui::lmLayerList *ui;
 	int maxLayer = 0;
-	std::vector<QListWidgetItem *> allLayer{};
+	//Layer组件和对应层级索引;
+	std::map< QListWidgetItem * ,int> allLayer{};
+	void clearAllListitem();
 private slots :
 	void LayerClicked(QListWidgetItem *);
 	

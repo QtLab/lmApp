@@ -1,6 +1,7 @@
 #include "lmlayerlist.h"
 //命令构造说明;
 //1.("CommandName","addressLayer_list")+("maxLayer",int);
+const static std::string prefixLayer = "Layer";
 lmLayerList::lmLayerList(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::lmLayerList),
@@ -22,15 +23,7 @@ lmLayerList::~lmLayerList()
 
 bool lmLayerList::getLayer(longmanEvt & pEvt)
 {
-	//ui->listWidget->clear();
-	if (!allLayer.empty())
-	{
-		for (size_t i = 0; i < allLayer.size(); i++)
-		{
-			delete allLayer[i];
-		}
-	allLayer.clear();
-	}
+	clearAllListitem();
 	maxLayer = pEvt.getParam("maxLayer").toInt();
 	int layerDec = pEvt.getParam("decLayer").toInt();
 	//获得需要显示的层级;
@@ -44,13 +37,25 @@ bool lmLayerList::getLayer(longmanEvt & pEvt)
 			layerIdxToDec.push_back(i);
 	}
 	QListWidgetItem* tLayer = nullptr;
+	QString itemName;
 	for (size_t i = 0; i < layerIdxToDec.size(); i++)
 	{
-		tLayer = new QListWidgetItem(QString("Layer%1").arg(layerIdxToDec[i]));
-		allLayer.push_back(tLayer);
+		itemName = QString("%1_%2").arg(QString::fromStdString(prefixLayer)).arg(layerIdxToDec[i]);
+		tLayer = new QListWidgetItem(itemName);
 		ui->listWidget->addItem(tLayer);
+		allLayer.insert({ tLayer,layerIdxToDec[i] });
 	}
 	return true;
+}
+
+void lmLayerList::clearAllListitem()
+{
+	if (!allLayer.empty())
+	{
+		for (auto i = allLayer.begin(); i != allLayer.end(); ++i)
+			delete i->first;
+		allLayer.clear();
+	}
 }
 
 // bool lmLayerList::addOpenedYUV(longmanEvt & pEvt)
@@ -60,29 +65,30 @@ bool lmLayerList::getLayer(longmanEvt & pEvt)
 
 void lmLayerList::LayerClicked(QListWidgetItem *pLayer)
 {
-	//这里还有很多bug;
 	QString listtxt = pLayer->text();
-	int itBeSelect = -1;
-	for (size_t i = 0; i < maxLayer + 1; i++)
+	QString temStr;
+	auto pLayerit = allLayer.find(pLayer);
+	if (pLayerit==allLayer.end())
+		return;
+	for (auto i = allLayer.begin(); i != allLayer.end(); ++i)
 	{
-		if (listtxt == QString("Layer%1<-").arg(i))
-			return;
-		if (listtxt == QString("Layer%1").arg(i))
-			{
-				itBeSelect = i;
-				pLayer->setText(listtxt + "<-");
-			}
-		else
+		temStr = QString("%1_%2").arg(QString::fromStdString(prefixLayer)).arg(i->second);
+		if (i==pLayerit)
 		{
-			allLayer[i]->setText(QString("Layer%1").arg(i));
+			if (listtxt == temStr + "<-")
+			{
+				return;
+			}
+			else
+			{
+				pLayer->setText(temStr+ "<-");
+			}
+			continue;
 		}
-	}
-	if (itBeSelect==-1)
-	{
-		int x = 0;
+		i->first->setText(temStr);
 	}
 	longmanEvt layer(EvtTYPE2);
 	layer.setParam("CommandName", "parse_LayerToshow");
-	layer.setParam("layerIdx", itBeSelect);
+	layer.setParam("layerIdx", pLayerit->second);
 	layer.dispatch();
 }
