@@ -28,31 +28,26 @@ class Ui_lmMsgView
 {
 public:
     QVBoxLayout *verticalLayout;
-    QLabel *label;
-    QTextBrowser *textBrowser;
     QHBoxLayout *horizontalLayout;
+    QLabel *label;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButton;
+    QTextBrowser *textBrowser;
 
     void setupUi(QWidget *lmMsgView)
     {
         if (lmMsgView->objectName().isEmpty())
             lmMsgView->setObjectName(QStringLiteral("lmMsgView"));
-        lmMsgView->resize(172, 138);
+        lmMsgView->resize(203, 138);
         verticalLayout = new QVBoxLayout(lmMsgView);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         label = new QLabel(lmMsgView);
         label->setObjectName(QStringLiteral("label"));
 
-        verticalLayout->addWidget(label);
+        horizontalLayout->addWidget(label);
 
-        textBrowser = new QTextBrowser(lmMsgView);
-        textBrowser->setObjectName(QStringLiteral("textBrowser"));
-
-        verticalLayout->addWidget(textBrowser);
-
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
@@ -64,6 +59,11 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout);
+
+        textBrowser = new QTextBrowser(lmMsgView);
+        textBrowser->setObjectName(QStringLiteral("textBrowser"));
+
+        verticalLayout->addWidget(textBrowser);
 
 
         retranslateUi(lmMsgView);

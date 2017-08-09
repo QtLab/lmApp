@@ -14,8 +14,10 @@
 - [ ] 码流信息可视化
 - [ ] 其他解码器如HEVC、3D-HEVC等
 
-
+## 测试版本下载
+[lmSHVCBitStreamPlayer_0.9.0下载](http://download.csdn.net/detail/li651138628/9926455)
 ## 功能演示
+* 提示：处于开发状态，以下介绍仅供参考.
 ### 主界面
 ![](/doc/C0.png)
 

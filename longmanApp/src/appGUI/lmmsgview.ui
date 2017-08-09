@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>172</width>
+    <width>203</width>
     <height>138</height>
    </rect>
   </property>
@@ -15,17 +15,14 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>MessageOuput</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextBrowser" name="textBrowser"/>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>MessageOuput</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -47,6 +44,9 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QTextBrowser" name="textBrowser"/>
    </item>
   </layout>
  </widget>

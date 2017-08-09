@@ -71,7 +71,7 @@
     <set>QDockWidget::DockWidgetFeatureMask</set>
    </property>
    <property name="allowedAreas">
-    <set>Qt::TopDockWidgetArea</set>
+    <set>Qt::BottomDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
     <string>Player Area</string>
@@ -82,233 +82,273 @@
    <widget class="QWidget" name="dockWidgetContents_2">
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
-      <widget class="QGroupBox" name="YUVgroupBox">
-       <property name="enabled">
-        <bool>true</bool>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="tabShape">
+        <enum>QTabWidget::Triangular</enum>
        </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+       <property name="currentIndex">
+        <number>0</number>
        </property>
-       <property name="title">
-        <string>Player Control</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QPushButton" name="playButton">
-            <property name="statusTip">
-             <string>快捷键“Space”</string>
-            </property>
-            <property name="text">
-             <string>Paly</string>
-            </property>
-            <property name="shortcut">
-             <string>Space</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="stopButton">
-            <property name="text">
-             <string>Stop</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="nextButton">
-            <property name="text">
-             <string>Next</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="backButton">
-            <property name="text">
-             <string>Back</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="beginButton">
-            <property name="text">
-             <string>Home</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="endButton">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>End</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="0" column="1">
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QSlider" name="FrameIdxSlider">
-            <property name="minimum">
-             <number>-1</number>
-            </property>
-            <property name="pageStep">
-             <number>30</number>
-            </property>
-            <property name="value">
-             <number>-1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QLabel" name="label">
-              <property name="text">
-               <string>Current Frame:</string>
-              </property>
-             </widget>
+       <widget class="QWidget" name="tab_1">
+        <attribute name="title">
+         <string>msg</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_11">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout_10"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_5">
+        <attribute name="title">
+         <string>yuv player</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QGroupBox" name="YUVgroupBox">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Player Control</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="0" column="4">
+               <widget class="QPushButton" name="beginButton">
+                <property name="text">
+                 <string>Home</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="playButton">
+                <property name="statusTip">
+                 <string>快捷键“Space”</string>
+                </property>
+                <property name="text">
+                 <string>Paly</string>
+                </property>
+                <property name="shortcut">
+                 <string>Space</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="stopButton">
+                <property name="text">
+                 <string>Stop</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="nextButton">
+                <property name="text">
+                 <string>Next</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="backButton">
+                <property name="text">
+                 <string>Back</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QPushButton" name="endButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>End</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
-            <item>
-             <widget class="QSpinBox" name="FrameIdxBox">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimum">
-               <number>-1</number>
-              </property>
-              <property name="maximum">
-               <number>999999</number>
-              </property>
-              <property name="value">
-               <number>-1</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label1_2">
-              <property name="text">
-               <string>Total Frame:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="MaxFraBox">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimum">
-               <number>-1</number>
-              </property>
-              <property name="maximum">
-               <number>999999</number>
-              </property>
-              <property name="value">
-               <number>-1</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label1">
-              <property name="text">
-               <string>Frame Rate:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="FrameRateBox">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>50</number>
-              </property>
-              <property name="value">
-               <number>30</number>
-              </property>
-             </widget>
+            <item row="0" column="1">
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <item>
+               <widget class="QSlider" name="FrameIdxSlider">
+                <property name="minimum">
+                 <number>-1</number>
+                </property>
+                <property name="pageStep">
+                 <number>30</number>
+                </property>
+                <property name="value">
+                 <number>-1</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>Current Frame:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="FrameIdxBox">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimum">
+                   <number>-1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>999999</number>
+                  </property>
+                  <property name="value">
+                   <number>-1</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label1_2">
+                  <property name="text">
+                   <string>Total Frame:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="MaxFraBox">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimum">
+                   <number>-1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>999999</number>
+                  </property>
+                  <property name="value">
+                   <number>-1</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label1">
+                  <property name="text">
+                   <string>Frame Rate:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="FrameRateBox">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>50</number>
+                  </property>
+                  <property name="value">
+                   <number>30</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
             </item>
            </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="title">
-        <string>Image Info</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>height</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBoxwid">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="maximum">
-             <number>2560</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>width</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxhei">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="maximum">
-             <number>1600</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>format</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="label_format">
-            <property name="text">
-             <string>420</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_3">
+           <property name="title">
+            <string>Image Info</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <layout class="QGridLayout" name="gridLayout_4">
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="text">
+                 <string>height</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="spinBoxwid">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="maximum">
+                 <number>2560</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>width</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="spinBoxhei">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="maximum">
+                 <number>1600</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>format</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QLabel" name="label_format">
+                <property name="text">
+                 <string>420</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -444,30 +484,6 @@
         </item>
        </layout>
       </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="dockWidget_3">
-   <property name="floating">
-    <bool>false</bool>
-   </property>
-   <property name="features">
-    <set>QDockWidget::DockWidgetFeatureMask</set>
-   </property>
-   <property name="allowedAreas">
-    <set>Qt::LeftDockWidgetArea</set>
-   </property>
-   <property name="windowTitle">
-    <string>Message</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4">
-    <layout class="QGridLayout" name="gridLayout_9">
-     <item row="0" column="0">
-      <layout class="QGridLayout" name="gridLayout_10"/>
      </item>
     </layout>
    </widget>

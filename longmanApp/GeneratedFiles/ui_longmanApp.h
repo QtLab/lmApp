@@ -28,6 +28,7 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -53,14 +54,20 @@ public:
     QDockWidget *dockWidget_2;
     QWidget *dockWidgetContents_2;
     QHBoxLayout *horizontalLayout_6;
+    QTabWidget *tabWidget;
+    QWidget *tab_1;
+    QGridLayout *gridLayout_11;
+    QGridLayout *gridLayout_10;
+    QWidget *tab_5;
+    QHBoxLayout *horizontalLayout_2;
     QGroupBox *YUVgroupBox;
     QGridLayout *gridLayout_3;
-    QHBoxLayout *horizontalLayout_2;
+    QGridLayout *gridLayout;
+    QPushButton *beginButton;
     QPushButton *playButton;
     QPushButton *stopButton;
     QPushButton *nextButton;
     QPushButton *backButton;
-    QPushButton *beginButton;
     QPushButton *endButton;
     QVBoxLayout *verticalLayout;
     QSlider *FrameIdxSlider;
@@ -80,6 +87,7 @@ public:
     QSpinBox *spinBoxhei;
     QLabel *label_2;
     QLabel *label_format;
+    QSpacerItem *horizontalSpacer_2;
     QDockWidget *dockWidget_1;
     QWidget *dockWidgetContents;
     QFormLayout *formLayout;
@@ -101,10 +109,6 @@ public:
     QGroupBox *groupBox;
     QGridLayout *gridLayout_2;
     QGridLayout *gridLayout_6;
-    QDockWidget *dockWidget_3;
-    QWidget *dockWidgetContents_4;
-    QGridLayout *gridLayout_9;
-    QGridLayout *gridLayout_10;
 
     void setupUi(QMainWindow *longmanAppClass)
     {
@@ -154,14 +158,36 @@ public:
         dockWidget_2 = new QDockWidget(longmanAppClass);
         dockWidget_2->setObjectName(QStringLiteral("dockWidget_2"));
         dockWidget_2->setFeatures(QDockWidget::DockWidgetFeatureMask);
-        dockWidget_2->setAllowedAreas(Qt::TopDockWidgetArea);
+        dockWidget_2->setAllowedAreas(Qt::BottomDockWidgetArea|Qt::TopDockWidgetArea);
         dockWidgetContents_2 = new QWidget();
         dockWidgetContents_2->setObjectName(QStringLiteral("dockWidgetContents_2"));
         horizontalLayout_6 = new QHBoxLayout(dockWidgetContents_2);
         horizontalLayout_6->setSpacing(6);
         horizontalLayout_6->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        YUVgroupBox = new QGroupBox(dockWidgetContents_2);
+        tabWidget = new QTabWidget(dockWidgetContents_2);
+        tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        tabWidget->setTabShape(QTabWidget::Triangular);
+        tab_1 = new QWidget();
+        tab_1->setObjectName(QStringLiteral("tab_1"));
+        gridLayout_11 = new QGridLayout(tab_1);
+        gridLayout_11->setSpacing(6);
+        gridLayout_11->setContentsMargins(11, 11, 11, 11);
+        gridLayout_11->setObjectName(QStringLiteral("gridLayout_11"));
+        gridLayout_10 = new QGridLayout();
+        gridLayout_10->setSpacing(6);
+        gridLayout_10->setObjectName(QStringLiteral("gridLayout_10"));
+
+        gridLayout_11->addLayout(gridLayout_10, 0, 0, 1, 1);
+
+        tabWidget->addTab(tab_1, QString());
+        tab_5 = new QWidget();
+        tab_5->setObjectName(QStringLiteral("tab_5"));
+        horizontalLayout_2 = new QHBoxLayout(tab_5);
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        YUVgroupBox = new QGroupBox(tab_5);
         YUVgroupBox->setObjectName(QStringLiteral("YUVgroupBox"));
         YUVgroupBox->setEnabled(true);
         QSizePolicy sizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
@@ -173,33 +199,33 @@ public:
         gridLayout_3->setSpacing(6);
         gridLayout_3->setContentsMargins(11, 11, 11, 11);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        gridLayout = new QGridLayout();
+        gridLayout->setSpacing(6);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        beginButton = new QPushButton(YUVgroupBox);
+        beginButton->setObjectName(QStringLiteral("beginButton"));
+
+        gridLayout->addWidget(beginButton, 0, 4, 1, 1);
+
         playButton = new QPushButton(YUVgroupBox);
         playButton->setObjectName(QStringLiteral("playButton"));
 
-        horizontalLayout_2->addWidget(playButton);
+        gridLayout->addWidget(playButton, 0, 0, 1, 1);
 
         stopButton = new QPushButton(YUVgroupBox);
         stopButton->setObjectName(QStringLiteral("stopButton"));
 
-        horizontalLayout_2->addWidget(stopButton);
+        gridLayout->addWidget(stopButton, 1, 0, 1, 1);
 
         nextButton = new QPushButton(YUVgroupBox);
         nextButton->setObjectName(QStringLiteral("nextButton"));
 
-        horizontalLayout_2->addWidget(nextButton);
+        gridLayout->addWidget(nextButton, 0, 1, 1, 1);
 
         backButton = new QPushButton(YUVgroupBox);
         backButton->setObjectName(QStringLiteral("backButton"));
 
-        horizontalLayout_2->addWidget(backButton);
-
-        beginButton = new QPushButton(YUVgroupBox);
-        beginButton->setObjectName(QStringLiteral("beginButton"));
-
-        horizontalLayout_2->addWidget(beginButton);
+        gridLayout->addWidget(backButton, 1, 1, 1, 1);
 
         endButton = new QPushButton(YUVgroupBox);
         endButton->setObjectName(QStringLiteral("endButton"));
@@ -209,10 +235,10 @@ public:
         sizePolicy1.setHeightForWidth(endButton->sizePolicy().hasHeightForWidth());
         endButton->setSizePolicy(sizePolicy1);
 
-        horizontalLayout_2->addWidget(endButton);
+        gridLayout->addWidget(endButton, 1, 4, 1, 1);
 
 
-        gridLayout_3->addLayout(horizontalLayout_2, 0, 0, 1, 1);
+        gridLayout_3->addLayout(gridLayout, 0, 0, 1, 1);
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(6);
@@ -278,9 +304,9 @@ public:
         gridLayout_3->addLayout(verticalLayout, 0, 1, 1, 1);
 
 
-        horizontalLayout_6->addWidget(YUVgroupBox);
+        horizontalLayout_2->addWidget(YUVgroupBox);
 
-        groupBox_3 = new QGroupBox(dockWidgetContents_2);
+        groupBox_3 = new QGroupBox(tab_5);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         gridLayout_5 = new QGridLayout(groupBox_3);
         gridLayout_5->setSpacing(6);
@@ -327,7 +353,15 @@ public:
         gridLayout_5->addLayout(gridLayout_4, 0, 0, 1, 1);
 
 
-        horizontalLayout_6->addWidget(groupBox_3);
+        horizontalLayout_2->addWidget(groupBox_3);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_2);
+
+        tabWidget->addTab(tab_5, QString());
+
+        horizontalLayout_6->addWidget(tabWidget);
 
         dockWidget_2->setWidget(dockWidgetContents_2);
         longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(4), dockWidget_2);
@@ -439,25 +473,6 @@ public:
 
         dockWidget_1->setWidget(dockWidgetContents);
         longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget_1);
-        dockWidget_3 = new QDockWidget(longmanAppClass);
-        dockWidget_3->setObjectName(QStringLiteral("dockWidget_3"));
-        dockWidget_3->setFloating(false);
-        dockWidget_3->setFeatures(QDockWidget::DockWidgetFeatureMask);
-        dockWidget_3->setAllowedAreas(Qt::LeftDockWidgetArea);
-        dockWidgetContents_4 = new QWidget();
-        dockWidgetContents_4->setObjectName(QStringLiteral("dockWidgetContents_4"));
-        gridLayout_9 = new QGridLayout(dockWidgetContents_4);
-        gridLayout_9->setSpacing(6);
-        gridLayout_9->setContentsMargins(11, 11, 11, 11);
-        gridLayout_9->setObjectName(QStringLiteral("gridLayout_9"));
-        gridLayout_10 = new QGridLayout();
-        gridLayout_10->setSpacing(6);
-        gridLayout_10->setObjectName(QStringLiteral("gridLayout_10"));
-
-        gridLayout_9->addLayout(gridLayout_10, 0, 0, 1, 1);
-
-        dockWidget_3->setWidget(dockWidgetContents_4);
-        longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget_3);
 
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuEdit->menuAction());
@@ -470,6 +485,9 @@ public:
 
         retranslateUi(longmanAppClass);
         QObject::connect(FrameIdxSlider, SIGNAL(valueChanged(int)), FrameIdxBox, SLOT(setValue(int)));
+
+        tabWidget->setCurrentIndex(0);
+
 
         QMetaObject::connectSlotsByName(longmanAppClass);
     } // setupUi
@@ -487,7 +505,9 @@ public:
         menuEdit->setTitle(QApplication::translate("longmanAppClass", "edit", 0));
         menuAbout->setTitle(QApplication::translate("longmanAppClass", "about", 0));
         dockWidget_2->setWindowTitle(QApplication::translate("longmanAppClass", "Player Area", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_1), QApplication::translate("longmanAppClass", "msg", 0));
         YUVgroupBox->setTitle(QApplication::translate("longmanAppClass", "Player Control", 0));
+        beginButton->setText(QApplication::translate("longmanAppClass", "Home", 0));
 #ifndef QT_NO_STATUSTIP
         playButton->setStatusTip(QApplication::translate("longmanAppClass", "\345\277\253\346\215\267\351\224\256\342\200\234Space\342\200\235", 0));
 #endif // QT_NO_STATUSTIP
@@ -496,7 +516,6 @@ public:
         stopButton->setText(QApplication::translate("longmanAppClass", "Stop", 0));
         nextButton->setText(QApplication::translate("longmanAppClass", "Next", 0));
         backButton->setText(QApplication::translate("longmanAppClass", "Back", 0));
-        beginButton->setText(QApplication::translate("longmanAppClass", "Home", 0));
         endButton->setText(QApplication::translate("longmanAppClass", "End", 0));
         label->setText(QApplication::translate("longmanAppClass", "Current Frame:", 0));
         label1_2->setText(QApplication::translate("longmanAppClass", "Total Frame:", 0));
@@ -506,6 +525,7 @@ public:
         label_6->setText(QApplication::translate("longmanAppClass", "width", 0));
         label_2->setText(QApplication::translate("longmanAppClass", "format", 0));
         label_format->setText(QApplication::translate("longmanAppClass", "420", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("longmanAppClass", "yuv player", 0));
         dockWidget_1->setWindowTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
         groupBox_2->setTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
         f2Button->setText(QApplication::translate("longmanAppClass", "open yuv", 0));
@@ -517,7 +537,6 @@ public:
         f8Button->setText(QApplication::translate("longmanAppClass", "f8", 0));
         f7Button->setText(QApplication::translate("longmanAppClass", "f7", 0));
         groupBox->setTitle(QApplication::translate("longmanAppClass", "List Area", 0));
-        dockWidget_3->setWindowTitle(QApplication::translate("longmanAppClass", "Message", 0));
     } // retranslateUi
 
 };
