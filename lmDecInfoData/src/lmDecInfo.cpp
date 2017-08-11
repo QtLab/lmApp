@@ -1,6 +1,11 @@
 #include "lmDecInfo.h"
 static std::string gAbsPath("/");
 static std::string gyuvprefix;
+const std::string mOutPreDec = "predec.txt";
+const std::string mOutTxtpath = "dec.txt";
+const std::vector<std::string> mOutTxtFrame = {
+	"dec_frame_CU_Split.txt",
+	"dec_frame_CTU_Bit.txt" };
 lmDecInfo * lmDecInfo::_instance = nullptr;
 lmDecInfo::lmDecInfo()
 {
@@ -114,6 +119,12 @@ std::string lmDecInfo::getyuvPath(int iLayerIdx)const
 	return str;
 }
 
+void lmDecInfo::read_FrameInfo()
+{
+	//把所有信息读取进来;
+	xReadBityInfo();
+}
+
 void lmDecInfo::insertps(const lmPSData &pp, bool isPerDec)
 {
 	if (pp.getType() == paraTYPE::psnum)
@@ -182,6 +193,11 @@ void lmDecInfo::clearPSList(lmPSList& rpsl)
 	{
 		i->clear();
 	}
+}
+
+void lmDecInfo::xReadBityInfo()
+{
+	std::ifstream pf(mOutTxtFrame[1], std::ifstream::in);
 }
 
 lmYUVInfoList& lmYUVInfoList::operator<<(const lmYUVInfo& pyuv)

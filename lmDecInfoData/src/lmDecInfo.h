@@ -37,6 +37,7 @@ public:
 	bool preDecFailed() const { return mPSPreDec[paraTYPE::vps].empty(); };
 	void getPS(lmPSData &ps,int pl,bool ispre=false)const;
 	std::string getyuvPath(int iLayerIdx)const;
+	void read_FrameInfo();
 public:
 	void insertps(const lmPSData &pp, bool isPerDec = false);
 private:
@@ -44,10 +45,9 @@ private:
 	static lmDecInfo* _instance;
 	lmPSList mPSDec;
 	lmPSList mPSPreDec;
-	std::string mOutPreDec = "predec.txt";
-	std::string mOutTxtpath = "dec.txt";
 	void readPS(lmPSData &pp,std::ifstream& pf);
 	void clearPSList(lmPSList& rpsl);
+	void xReadBityInfo();
 };
 #endif // lmDecInfo_h__
 

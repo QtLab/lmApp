@@ -3,18 +3,19 @@
 #include <fstream>
 const std::string mOutPreDec = "predec.txt";
 const std::string mOutTxtpath = "dec.txt";
-const std::string mOutTxtFrame = "dec_frame.txt";
+const std::vector<std::string> mOutTxtFrame = { "dec_frame_CU_Split.txt","dec_frame_CTU_Bit.txt" };
 static int outflag = 0;
 lmAllDecInfo::lmAllDecInfo() 
 {
 		for (int i = 0; i < paraTYPE::psnum;i++)
 			mpsdec.push_back({});
-		std::ofstream printTXTclear(mOutTxtFrame, std::ofstream::out);
+		for (size_t i = 0; i < mOutTxtFrame.size(); i++)
+			std::ofstream tf2(mOutTxtFrame[i], std::ofstream::out);
 };
 
 lmAllDecInfo* lmAllDecInfo::_instance = nullptr;
 
-void lmAllDecInfo::xoutCtus(std::ofstream& po, TComPic *mpc)
+void lmAllDecInfo::xoutCtus(std::ofstream& po,TComPic *mpc,int idx)
 {
 	TComSlice* pcSlice = mpc->getSlice(mpc->getCurrSliceIdx());
 
@@ -22,7 +23,6 @@ void lmAllDecInfo::xoutCtus(std::ofstream& po, TComPic *mpc)
 	const Int  startCtuRsAddr = mpc->getPicSym()->getCtuTsToRsAddrMap(startCtuTsAddr);
 	const UInt numCtusInFrame = mpc->getNumberOfCtusInFrame();
 	const UInt frameWidthInCtus = mpc->getPicSym()->getFrameWidthInCtus();
-
 	for (UInt ctuTsAddr = startCtuTsAddr;ctuTsAddr < numCtusInFrame; ctuTsAddr++)
 	{
 		const UInt ctuRsAddr = mpc->getPicSym()->getCtuTsToRsAddrMap(ctuTsAddr);
@@ -32,28 +32,53 @@ void lmAllDecInfo::xoutCtus(std::ofstream& po, TComPic *mpc)
 		const UInt tileYPosInCtus = firstCtuRsAddrOfTile / frameWidthInCtus;
 		const UInt ctuXPosInCtus = ctuRsAddr % frameWidthInCtus;
 		const UInt ctuYPosInCtus = ctuRsAddr / frameWidthInCtus;
-
 		TComDataCU* pCtu = mpc->getCtu(ctuRsAddr);
-		//pCtu->initCtu(mpc, ctuRsAddr);
-		for (size_t i = 0; i < pCtu->getTotalNumPart(); i++)
+		std::vector<std::vector<int>> CU_split{ {} ,{},{},{} };
+		std::vector<int> CTU_Bit{};
+		switch (idx)
 		{
-			int td = int(pCtu->getDepth(i));
-			switch (td)
-			{
-			case 0:break;
-			case 1:break;
-			case 2:break;
-			case 3:break;
-			default:
-				break;
-			}
-			
-			po <<int(pCtu->getDepth(i))<<" ";
-			
+		case 0:xoutCtu_split(po,pCtu, CU_split); break;
+		case 1:po<<pCtu->getBytes()<<" "; break;
+		default:
+			break;
 		}
-		po <<"\n";
+
 	}
+	switch (idx)
+	{
+	case 0: break;
+	case 1:po << "\n"; break;
+	default:
+		break;
+	}
+
 }
+
+void lmAllDecInfo::xoutCtu_split(std::ofstream& pfo, TComDataCU* mCtu, std::vector<std::vector<int>>& c)
+{
+	int td = 0;
+	int skippos = 0;
+	int rasPos = 0;
+	for (size_t i = 0; i < mCtu->getTotalNumPart();)
+	{
+		td = int(mCtu->getDepth(i));
+		skippos = pow(4, 4 - td);
+		rasPos = g_auiZscanToRaster[i];
+		c[0].push_back(i);
+		c[1].push_back(td);
+		c[2].push_back(g_auiRasterToPelX[rasPos]);
+		c[3].push_back(g_auiRasterToPelY[rasPos]);
+		i += skippos;
+
+	}
+	pfo << mCtu->getCtuRsAddr() << '\n';
+	for (size_t i = 0; i < c[0].size(); i++)
+	{
+		pfo << "(" << c[2][i] << " " << c[3][i] << " " << c[1][i] << ")";
+	}
+	pfo << '\n';
+}
+
 
 //CHROMA_400 = 0,
 //CHROMA_420 = 1,
@@ -119,13 +144,17 @@ void lmAllDecInfo::output(TComPic *mpc)
 	int poc = mpcPic->getPOC();
 	int layerId = mpcPic->getLayerId();
 	//以追加方式打开;
-	std::ofstream printTXTappend(mOutTxtFrame, std::ofstream::out | std::ofstream::app);
-	printTXTappend << "[Frame_Begin]" << '\n';
-	//帧层信息;
-	printTXTappend << mpcPic->getPOC() << '\n';
-	printTXTappend << mpcPic->getLayerId() << '\n';
-	xoutCtus(printTXTappend, mpcPic);
-	printTXTappend << "[Frame_End]" << '\n';
+	for (size_t i = 0; i < mOutTxtFrame.size(); i++)
+	{
+		std::ofstream printTXTappend(mOutTxtFrame[i], std::ofstream::out | std::ofstream::app);
+		printTXTappend << "[Frame_Begin]" << '\n';
+		//帧层信息;
+		printTXTappend << mpcPic->getPOC() << '\n';
+		printTXTappend << mpcPic->getLayerId() << '\n';
+		xoutCtus(printTXTappend, mpcPic,i);
+
+		printTXTappend << "[Frame_End]" << '\n';
+	}
 
 }
 
