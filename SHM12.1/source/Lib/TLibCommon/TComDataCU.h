@@ -155,7 +155,13 @@ private:
   UInt          m_uiTotalBins;                          ///< sum of partition bins
   SChar         m_codedQP;
   UChar*        m_explicitRdpcmMode[MAX_NUM_COMPONENT]; ///< Stores the explicit RDPCM mode for all TUs belonging to this CU
-
+  
+#if 1//Longman，用于记录当前CTU的比特,，直接通过码流文件的读写指针变化来得到;
+  unsigned int mBytes = 0;
+public:
+	int getBytes() { return mBytes; };
+	void setBytes(int pi) { mBytes = pi; };
+#endif
 protected:
 
   /// adds a single possible motion vector predictor candidate

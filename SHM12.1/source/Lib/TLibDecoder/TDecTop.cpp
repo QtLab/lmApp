@@ -353,7 +353,8 @@ Void TDecTop::executeLoopFilters(Int& poc, TComList<TComPic*>*& rpcListPic)
   }
 
   TComPic*   pcPic         = m_pcPic;
-
+  lmAllDecInfo* lmdec = lmAllDecInfo::getInstance();
+  lmdec->output(pcPic);
   // Execute Deblock + Cleanup
 
   m_cGopDecoder.filterPicture(pcPic);
@@ -1396,6 +1397,7 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
   }
 
   // actual decoding starts here
+  //下面这个函数功能有：1.构造TComPic
   xActivateParameterSets();
   //运行到这里，应该所有参数集合都正式解码完了;
 #if 1//&& m_layerId ==MaxLayerId;

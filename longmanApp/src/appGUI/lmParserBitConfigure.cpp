@@ -148,8 +148,8 @@ void lmParserBitConfigure::on_toolButton_clicked()
 	QFileDialog dialog(this, QStringLiteral("open bitstream"));
 	if (openBitsreamnum == -1) 
 	{
-		const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-		dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
+		const QString defaultLocations = QDir::currentPath() + "/cache";
+		dialog.setDirectory(defaultLocations.isEmpty() ? QDir::currentPath() : defaultLocations);
 	}
 	dialog.setNameFilter(QStringLiteral("bitstream file (*.bin)"));
 	if (dialog.exec()== QDialog::Accepted&& !dialog.selectedFiles().isEmpty())

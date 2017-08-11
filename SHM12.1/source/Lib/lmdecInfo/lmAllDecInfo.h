@@ -2,6 +2,7 @@
 #define lmAllDecInfo_h__
 #include "../../../lmDecInfoData/src/lmPSData.h"
 class ParameterSetManager;
+class TComPic;
 class lmAllDecInfo
 {
 public:
@@ -15,12 +16,12 @@ public:
 public:
 	lmAllDecInfo& operator<<(const lmPSData& rps);
 	int hasOutputDec();
+	void output(TComPic *mpc);
 private:
 	lmAllDecInfo();
 	static lmAllDecInfo* _instance;
-	const std::string mOutPreDec = "predec.txt";
-	const std::string mOutTxtpath = "dec.txt";
 	lmPSList mpsdec;
+	void xoutCtus(std::ofstream& po, TComPic *mpc);
 };
 #endif // lmAllDecInfo_h__
 

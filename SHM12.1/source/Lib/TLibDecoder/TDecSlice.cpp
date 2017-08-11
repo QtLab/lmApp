@@ -134,9 +134,9 @@ Void TDecSlice::decompressSlice(TComInputBitstream** ppcSubstreams, TComPic* pcP
     const UInt uiSubStrm=pcPic->getSubstreamForCtuAddr(ctuRsAddr, true, pcSlice)-subStreamOffset;
     TComDataCU* pCtu = pcPic->getCtu( ctuRsAddr );
     pCtu->initCtu( pcPic, ctuRsAddr );
-
+	//可以考虑在这里获得每个CTU的比特;
     m_pcEntropyDecoder->setBitstream( ppcSubstreams[uiSubStrm] );
-
+	auto ctuByte = ppcSubstreams[uiSubStrm]->getByteLocation();
     // set up CABAC contexts' state for this CTU
     if (ctuRsAddr == firstCtuRsAddrOfTile)
     {
@@ -206,7 +206,8 @@ Void TDecSlice::decompressSlice(TComInputBitstream** ppcSubstreams, TComPic* pcP
 
     m_pcCuDecoder->decodeCtu     ( pCtu, isLastCtuOfSliceSegment );
     m_pcCuDecoder->decompressCtu ( pCtu );
-
+	ctuByte = ppcSubstreams[uiSubStrm]->getByteLocation()- ctuByte;
+	pCtu->setBytes(ctuByte);
 #if ENC_DEC_TRACE
     g_bJustDoIt = g_bEncDecTraceDisable;
 #endif

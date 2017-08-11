@@ -317,7 +317,10 @@ Void TAppDecTop::decode()
     {
       if (!loopFiltered[curLayerId] || bitstreamFile)
       {
+		  //输出了编码信息，但没有码率信息,在CTU中增加一个变量mByte存储CTU比特;
         m_apcTDecTop[curLayerId]->executeLoopFilters(poc, pcListPic);
+		
+
       }
       loopFiltered[curLayerId] = (nalu.m_nalUnitType == NAL_UNIT_EOS);
 

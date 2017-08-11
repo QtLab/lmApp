@@ -36,7 +36,7 @@ public://operator
 	//暂时使用合成的复制赋值函数;
 	//const lmPSData& operator=(lmPSData& ps) { mType = ps.mType; return *this; };
 public://static;
-	//返回txt文件中类型标志位对应的类型;
+	//返回txt文件中类型标志位对应的类型; 
 	//主要用于txt的读取;
 	static paraTYPE PSTypeIdxByflag(const std::string& strptype);
 	//返回某个类型PS的第n个参数名

@@ -102,3 +102,4 @@ $RECYCLE.BIN/
 *.vsd
 *.~vsd
 doc/.Archive
+*.bin

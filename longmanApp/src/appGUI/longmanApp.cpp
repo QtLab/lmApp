@@ -153,6 +153,7 @@ void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
 
 void longmanApp::on_actionOpen_triggered()
 {
+	//这里还有BUG，20170810;
 	if (OpenNum==-1)
 	{
 		ui.FrameIdxSlider->setMinimum(-1);
@@ -160,8 +161,8 @@ void longmanApp::on_actionOpen_triggered()
 	}
 	QFileDialog dialog(this, QStringLiteral("open yuv file"));
 	if (OpenNum == -1) {
-		const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-		dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
+		const QString defaultLocations = QDir::currentPath()+"/cache";
+		dialog.setDirectory(defaultLocations.isEmpty() ? QDir::currentPath() : defaultLocations);
 	}
 	dialog.setNameFilter(QStringLiteral("YUV file (*.yuv)"));//文件格式设置;
 	QString FliePath; //QString YuvName("v");
