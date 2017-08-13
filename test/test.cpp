@@ -13,6 +13,7 @@ int main()
 	//
 	//ylist << myuv1;
 	//lmYUVInfo myuvt = ylist.getByPath("c//you.yuv");
+	lmStructure xs;
 	lmDecInfo *mDec=lmDecInfo::getInstanceForChange();
 	mDec->read_FrameInfo();
     return 0;

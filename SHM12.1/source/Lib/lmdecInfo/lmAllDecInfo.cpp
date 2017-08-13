@@ -62,7 +62,7 @@ void lmAllDecInfo::xoutCtu_split(std::ofstream& pfo, TComDataCU* mCtu, std::vect
 	for (size_t i = 0; i < mCtu->getTotalNumPart();)
 	{
 		td = int(mCtu->getDepth(i));
-		skippos = pow(4, 4 - td);
+		skippos = static_cast<int>( pow(4, 4 - td));
 		rasPos = g_auiZscanToRaster[i];
 		c[0].push_back(i);
 		c[1].push_back(td);
@@ -74,7 +74,10 @@ void lmAllDecInfo::xoutCtu_split(std::ofstream& pfo, TComDataCU* mCtu, std::vect
 	pfo << mCtu->getCtuRsAddr() << '\n';
 	for (size_t i = 0; i < c[0].size(); i++)
 	{
-		pfo << "(" << c[2][i] << " " << c[3][i] << " " << c[1][i] << ")";
+		//pfo << /*"(" <<*/ c[2][i] << " " << c[3][i]/* << " " << c[1][i]*/ << " ";
+		//仅传输Z扫描索引,采用前向差分;
+		int outV = (i == 0) ? c[0][i] : c[0][i] - c[0][i - 1];
+		pfo << outV << " ";
 	}
 	pfo << '\n';
 }

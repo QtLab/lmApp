@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClInclude Include="src\lmDecInfo.h" />
     <ClInclude Include="src\lmPSData.h" />
+    <ClInclude Include="src\lmStructure.h" />
     <ClInclude Include="src\lmTydef.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lmDecInfo.cpp" />
     <ClCompile Include="src\lmPSData.cpp" />
+    <ClCompile Include="src\lmStructure.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EE2AB675-A480-4CDF-8DC6-3ABBF3ABD1F1}</ProjectGuid>

@@ -1,7 +1,7 @@
 #ifndef lmDecInfo_h__
 #define lmDecInfo_h__
 #include "lmPSData.h"
-
+#include "lmStructure.h"
 
 //yuv文件信息列表，以yuv文件完整路径为关键字;
 class lmYUVInfoList
