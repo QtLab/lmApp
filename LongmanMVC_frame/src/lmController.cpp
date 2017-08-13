@@ -118,10 +118,10 @@ lmController* lmController::getInstance()
 	return _mInstance;
 }
 //通知工作线程重新读取上次成功的yuv文件;
-void lmController::recoverhandle(lmYUVInfoList& yuvParam)
+void lmController::recoverhandle(lmYUVInfo& yuvParam)
 {
 	//cyuvParam yuvParam = workThread.getlastyuvParam();
-	auto mit = yuvParam.getlast();
+	auto mit = yuvParam;
 	QString filepath = QString::fromStdString(mit.absyuvPath());
 	longmanEvt openyuv(EvtTYPE2);
 	openyuv.setParam("CommandName", "open_yuvfile");

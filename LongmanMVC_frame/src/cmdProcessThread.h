@@ -15,7 +15,7 @@
 #include "..\lmDecInfoData\src\lmDecInfo.h"
 //（目前）作用:在工作线程中处理EvtTYPE2类型的Event,建立简单的Event缓冲机制;
 //
-typedef std::function<void(lmYUVInfoList&)> normalCallbacfun;
+typedef std::function<void(lmYUVInfo&)> normalCallbacfun;
 class cmdProcessThread : public QThread
 {
 	Q_OBJECT
@@ -54,5 +54,6 @@ public:
 	bool parseLayerFromList(longmanEvt&);
 private:
 	lmYUVInfoList myuvlist;
+	lmYUVInfo curyuv;
 };
 #endif // cmdProcessThread_h__

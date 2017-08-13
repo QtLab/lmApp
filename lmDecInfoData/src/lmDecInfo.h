@@ -2,7 +2,7 @@
 #define lmDecInfo_h__
 #include "lmPSData.h"
 #include "lmStructure.h"
-
+typedef std::vector< std::vector<std::vector<std::vector<int>>>> depthtype;
 //yuv文件信息列表，以yuv文件完整路径为关键字;
 class lmYUVInfoList
 {
@@ -47,7 +47,8 @@ private:
 	lmPSList mPSPreDec;
 	void readPS(lmPSData &pp,std::ifstream& pf);
 	void clearPSList(lmPSList& rpsl);
-	void xReadBityInfo();
+	void xReadDepthInfo(int layernum);
+	depthtype mDepth;
 };
 #endif // lmDecInfo_h__
 

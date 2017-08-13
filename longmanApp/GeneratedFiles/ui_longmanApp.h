@@ -98,13 +98,11 @@ public:
     QVBoxLayout *verticalLayout_4;
     QPushButton *f2Button;
     QPushButton *f1Button;
+    QPushButton *f6Button;
+    QVBoxLayout *verticalLayout_5;
     QPushButton *f4Button;
     QPushButton *f3Button;
     QPushButton *f5Button;
-    QPushButton *f6Button;
-    QVBoxLayout *verticalLayout_5;
-    QPushButton *f8Button;
-    QPushButton *f7Button;
     QSpacerItem *horizontalSpacer;
     QGroupBox *groupBox;
     QGridLayout *gridLayout_2;
@@ -277,6 +275,11 @@ public:
         MaxFraBox = new QSpinBox(YUVgroupBox);
         MaxFraBox->setObjectName(QStringLiteral("MaxFraBox"));
         MaxFraBox->setEnabled(false);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(MaxFraBox->sizePolicy().hasHeightForWidth());
+        MaxFraBox->setSizePolicy(sizePolicy2);
         MaxFraBox->setMinimum(-1);
         MaxFraBox->setMaximum(999999);
         MaxFraBox->setValue(-1);
@@ -355,7 +358,7 @@ public:
 
         horizontalLayout_2->addWidget(groupBox_3);
 
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer_2);
 
@@ -377,11 +380,11 @@ public:
         formLayout->setObjectName(QStringLiteral("formLayout"));
         FucAeraBox = new QGroupBox(dockWidgetContents);
         FucAeraBox->setObjectName(QStringLiteral("FucAeraBox"));
-        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Preferred);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(FucAeraBox->sizePolicy().hasHeightForWidth());
-        FucAeraBox->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy3(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(FucAeraBox->sizePolicy().hasHeightForWidth());
+        FucAeraBox->setSizePolicy(sizePolicy3);
         FucAeraBox->setAlignment(Qt::AlignCenter);
         FucAeraBox->setFlat(true);
         verticalLayout_3 = new QVBoxLayout(FucAeraBox);
@@ -407,21 +410,6 @@ public:
 
         verticalLayout_4->addWidget(f1Button);
 
-        f4Button = new QPushButton(groupBox_2);
-        f4Button->setObjectName(QStringLiteral("f4Button"));
-
-        verticalLayout_4->addWidget(f4Button);
-
-        f3Button = new QPushButton(groupBox_2);
-        f3Button->setObjectName(QStringLiteral("f3Button"));
-
-        verticalLayout_4->addWidget(f3Button);
-
-        f5Button = new QPushButton(groupBox_2);
-        f5Button->setObjectName(QStringLiteral("f5Button"));
-
-        verticalLayout_4->addWidget(f5Button);
-
         f6Button = new QPushButton(groupBox_2);
         f6Button->setObjectName(QStringLiteral("f6Button"));
 
@@ -433,15 +421,20 @@ public:
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setSpacing(6);
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        f8Button = new QPushButton(groupBox_2);
-        f8Button->setObjectName(QStringLiteral("f8Button"));
+        f4Button = new QPushButton(groupBox_2);
+        f4Button->setObjectName(QStringLiteral("f4Button"));
 
-        verticalLayout_5->addWidget(f8Button);
+        verticalLayout_5->addWidget(f4Button);
 
-        f7Button = new QPushButton(groupBox_2);
-        f7Button->setObjectName(QStringLiteral("f7Button"));
+        f3Button = new QPushButton(groupBox_2);
+        f3Button->setObjectName(QStringLiteral("f3Button"));
 
-        verticalLayout_5->addWidget(f7Button);
+        verticalLayout_5->addWidget(f3Button);
+
+        f5Button = new QPushButton(groupBox_2);
+        f5Button->setObjectName(QStringLiteral("f5Button"));
+
+        verticalLayout_5->addWidget(f5Button);
 
 
         horizontalLayout->addLayout(verticalLayout_5);
@@ -486,7 +479,7 @@ public:
         retranslateUi(longmanAppClass);
         QObject::connect(FrameIdxSlider, SIGNAL(valueChanged(int)), FrameIdxBox, SLOT(setValue(int)));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(longmanAppClass);
@@ -530,12 +523,10 @@ public:
         groupBox_2->setTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
         f2Button->setText(QApplication::translate("longmanAppClass", "open yuv", 0));
         f1Button->setText(QApplication::translate("longmanAppClass", "show Pixel", 0));
+        f6Button->setText(QApplication::translate("longmanAppClass", "f6", 0));
         f4Button->setText(QApplication::translate("longmanAppClass", "open bitstr", 0));
         f3Button->setText(QApplication::translate("longmanAppClass", "save image", 0));
         f5Button->setText(QApplication::translate("longmanAppClass", "history", 0));
-        f6Button->setText(QApplication::translate("longmanAppClass", "f6", 0));
-        f8Button->setText(QApplication::translate("longmanAppClass", "f8", 0));
-        f7Button->setText(QApplication::translate("longmanAppClass", "f7", 0));
         groupBox->setTitle(QApplication::translate("longmanAppClass", "List Area", 0));
     } // retranslateUi
 

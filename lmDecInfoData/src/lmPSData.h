@@ -5,10 +5,11 @@
 //PS类型;
 enum paraTYPE
 {
-	psnum = 3,
+	psnum = 4,
 	vps = 0,
 	sps = 1,
-	pps = 2
+	pps = 2,
+	frame=3
 
 };
 
@@ -28,6 +29,8 @@ public:
 	const lmVarTYPE getValueTypeByName(const std::string& pstr)const;
 	//返回当前PS的某个参数的参数值;
 	const lmVar& getValueByName(const std::string& pstr)const;
+	bool isempty() { return mparalist.empty(); };
+	void clearps() { mparalist.clear(); };
 public://operator
 	//存入一对参数和参数值;
 	lmPSData& operator<<(sParam &p) { addParam(p.first, p.second); return *this; };

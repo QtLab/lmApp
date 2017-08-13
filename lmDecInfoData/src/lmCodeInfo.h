@@ -8,6 +8,10 @@ void gRunlength_coding(std::vector<int> &pIn, std::vector<int> &pOut);
 //两个数合并为一个Int;
 void gMerge2int(std::vector<int> &pIn, std::vector<int> &pOut, int p);
 void gCode_zIdx(std::vector<int> &pIn, std::vector<int> &pOut, int p = 7);
+void gdeCode_zIdx(std::vector<int> &pIn, std::vector<int> &pOut);
+void gdeMerge2int(std::vector<int> &pIn, std::vector<int> &pOut, int p);
+void gdeRunlength_coding(std::vector<int> &pIn, std::vector<int> &pOut);
+void gdePre_differential_encoding(std::vector<int> &pIn, std::vector<int> &pOut);
 //class lmCodeInfo
 //{
 //public:

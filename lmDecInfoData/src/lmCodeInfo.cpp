@@ -60,3 +60,49 @@ void gCode_zIdx(std::vector<int> &pIn, std::vector<int> &pOut, int p /*= 7*/)
 	gRunlength_coding(tempvec, tempvec1);
 	gMerge2int(tempvec1,pOut,p);
 }
+
+void gdeMerge2int(std::vector<int> &pIn, std::vector<int> &pOut, int p)
+{
+	int trs = 1;
+	for (int i = 0; i < p-1; i++)
+	{
+		trs = (trs << 1) + 1;
+	}
+	for (int i = 0; i < pIn.size(); i++)
+	{
+		pOut.push_back((pIn[i] >> p) & trs);
+		pOut.push_back(pIn[i] & trs);
+	}
+}
+
+void gdeRunlength_coding(std::vector<int> &pIn, std::vector<int> &pOut)
+{
+	int num = pIn.size();
+	for (int i = 0; i < num; i += 2)
+	{
+		for (size_t j = 0; j < pIn[i+1]; j++)
+		{
+			pOut.push_back(pIn[i]);
+		}
+	}
+}
+
+void gdePre_differential_encoding(std::vector<int> &pIn, std::vector<int> &pOut)
+{
+	for (int i = 0; i < pIn.size(); i++)
+	{
+		if (i == 0)
+			pOut.push_back(pIn[i]);
+		else
+			pOut.push_back(pOut[i-1]+ pIn[i]);
+	}
+}
+
+void gdeCode_zIdx(std::vector<int> &pIn, std::vector<int> &pOut)
+{
+	std::vector<int> tempv;
+	gdeMerge2int(pIn, tempv, 7);
+	std::vector<int> tempv2;
+	gdeRunlength_coding(tempv, tempv2);
+	gdePre_differential_encoding(tempv2, pOut);
+}

@@ -15,7 +15,9 @@ int main()
 	//lmYUVInfo myuvt = ylist.getByPath("c//you.yuv");
 	lmStructure xs;
 	lmDecInfo *mDec=lmDecInfo::getInstanceForChange();
-	mDec->read_FrameInfo();
+	mDec->readDec(true);
+	if (!mDec->preDecFailed())
+		mDec->read_FrameInfo();
     return 0;
 }
 

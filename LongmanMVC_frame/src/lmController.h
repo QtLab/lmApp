@@ -15,7 +15,7 @@ public:
 	bool handlevt(longmanEvt&);
 	void registerCommand(const std::string &, const CallBackFunc&);
 	static lmController* getInstance();
-	void recoverhandle(lmYUVInfoList&);
+	void recoverhandle(lmYUVInfo&);
 	bool callDecodeTread(longmanEvt& rEvt);
 	//bool preDecode(longmanEvt& rEvt);
 private:

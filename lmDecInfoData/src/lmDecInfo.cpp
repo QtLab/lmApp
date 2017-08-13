@@ -1,5 +1,6 @@
 #include "lmDecInfo.h"
-static std::string gAbsPath("/");
+#include "lmCodeInfo.h"
+static std::string gAbsPath;
 static std::string gyuvprefix;
 const std::string mOutPreDec = "predec.txt";
 const std::string mOutTxtpath = "dec.txt";
@@ -122,7 +123,10 @@ std::string lmDecInfo::getyuvPath(int iLayerIdx)const
 void lmDecInfo::read_FrameInfo()
 {
 	//把所有信息读取进来;
-	xReadBityInfo();
+	lmPSData mvps(lmPSData::getPSTypeInString(paraTYPE::vps));
+	getPS(mvps, 0,true);
+	int mLayerNum = mvps.getValueByName(mvps.getParamName(0)).toInt();
+	xReadDepthInfo(mLayerNum);
 }
 
 void lmDecInfo::insertps(const lmPSData &pp, bool isPerDec)
@@ -144,6 +148,10 @@ void lmDecInfo::readPS(lmPSData &pp, std::ifstream& pf)
 
 	while (getline(pf, ts)&&ts != "[" + lmPSData::getPSTypeInString(pp.getType()) + "_End]")
 	{
+		if (ts== "[" + lmPSData::getPSTypeInString(pp.getType()) + "_Begin]")
+		{
+			continue;
+		}
 		std::string sparaname;
 		std::string sparavalue;
 		bool isvalue = false;
@@ -195,9 +203,60 @@ void lmDecInfo::clearPSList(lmPSList& rpsl)
 	}
 }
 
-void lmDecInfo::xReadBityInfo()
+void lmDecInfo::xReadDepthInfo(int layernum)
 {
-	std::ifstream pf(mOutTxtFrame[1], std::ifstream::in);
+	std::ifstream pf(gAbsPath + mOutTxtFrame[0], std::ifstream::in);
+	if (pf.fail())
+		return;
+	for (size_t i = 0; i < layernum; i++)
+	{
+		//为每层分配空间;
+		mDepth.push_back({});
+	}
+	lmPSData mfps(lmPSData::getPSTypeInString(paraTYPE::frame));
+	int layerIdx = 0;
+	int ValRead = 0;
+	std::string str;
+	std::string str1;
+	int frmeIdx[2] = {0,0};
+	readPS(mfps, pf);
+	
+	while (!mfps.isempty())
+	{
+
+		layerIdx =mfps.getValueByName(mfps.getParamName(1)).toInt();
+		int poc = mfps.getValueByName(mfps.getParamName(0)).toInt();
+		//为帧分配空间;
+		mDepth[layerIdx].push_back({});
+		int ctuNUm = 0;
+		std::vector<int> ctu;
+		while(getline(pf, str) && str[0] == '1')
+			{
+				//为CTU分配空间;
+				mDepth[layerIdx][frmeIdx[layerIdx]].push_back({});
+				for (size_t i = 0; i < str.size(); i++)
+				{
+
+						if (str[i] != ' ')
+							str1 += str[i];
+						else
+						{
+							ctu.push_back(std::stoi(str1));
+							str1.clear();
+						}
+				}
+				auto &out = mDepth[layerIdx][frmeIdx[layerIdx]][ctuNUm];
+				gdeCode_zIdx(ctu, out);
+				
+				out[0] = poc;
+				ctuNUm++;
+				ctu.clear();
+
+			}
+		frmeIdx[layerIdx]++;
+		mfps.clearps();
+		readPS(mfps, pf);
+	}
 }
 
 lmYUVInfoList& lmYUVInfoList::operator<<(const lmYUVInfo& pyuv)

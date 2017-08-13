@@ -55,6 +55,7 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	//保存成功打开的yuv信息;
 	lmYUVInfo tyuvinfo(filePath, dataModel.getimageWidth(), dataModel.getimageHeight(), dataModel.getformat());
 	tyuvinfo.setLayer(mLayer);
+	curyuv = tyuvinfo;
 	myuvlist << tyuvinfo;
 	//给datamodel中的图片存储空间套上QImage类头;
 	const unsigned char* imageptr = dataModel.getcurrimage();
@@ -87,7 +88,7 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 	//打开文件失败的回退处理;
 	if (openst)
 		{
-			recoverhandle(myuvlist);
+			recoverhandle(curyuv);
 			return false;
 		}
 	int mpoc=rpevt.getParam("yuv_POC").toInt();

@@ -151,13 +151,17 @@ void lmAllDecInfo::output(TComPic *mpc)
 	for (size_t i = 0; i < mOutTxtFrame.size(); i++)
 	{
 		std::ofstream printTXTappend(mOutTxtFrame[i], std::ofstream::out | std::ofstream::app);
-		printTXTappend << "[Frame_Begin]" << '\n';
+		//printTXTappend << "[Frame_Begin]" << '\n';
 		//Ö¡²ãÐÅÏ¢;
-		printTXTappend << mpcPic->getPOC() << '\n';
-		printTXTappend << mpcPic->getLayerId() << '\n';
+		lmPSData mfPS(lmPSData::getPSTypeInString(paraTYPE::frame));
+		mfPS << sParam(mfPS.getParamName(0), mpcPic->getPOC())
+			<< sParam(mfPS.getParamName(1), int(mpcPic->getLayerId()));
+// 		printTXTappend << mpcPic->getPOC() << '\n';
+// 		printTXTappend << mpcPic->getLayerId() << '\n';
+		mfPS >> printTXTappend;
 		xoutCtus(printTXTappend, mpcPic,i);
 
-		printTXTappend << "[Frame_End]" << '\n';
+	//	printTXTappend << "[Frame_End]" << '\n';
 	}
 
 }
