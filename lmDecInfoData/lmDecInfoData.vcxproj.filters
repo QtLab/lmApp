@@ -27,6 +27,9 @@
     <ClInclude Include="src\lmStructure.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\lmCodeInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lmPSData.cpp">
@@ -36,6 +39,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\lmStructure.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lmCodeInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

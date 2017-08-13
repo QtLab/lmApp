@@ -1,5 +1,6 @@
 #include "lmAllDecInfo.h"
 #include "../TLibCommon/TComPic.h"
+#include "../../../../lmDecInfoData/src/lmCodeInfo.h"
 #include <fstream>
 const std::string mOutPreDec = "predec.txt";
 const std::string mOutTxtpath = "dec.txt";
@@ -59,6 +60,8 @@ void lmAllDecInfo::xoutCtu_split(std::ofstream& pfo, TComDataCU* mCtu, std::vect
 	int td = 0;
 	int skippos = 0;
 	int rasPos = 0;
+	int ctuRidx= mCtu->getCtuRsAddr();
+	//获取Z索引，跳过第一个数;
 	for (size_t i = 0; i < mCtu->getTotalNumPart();)
 	{
 		td = int(mCtu->getDepth(i));
@@ -71,13 +74,11 @@ void lmAllDecInfo::xoutCtu_split(std::ofstream& pfo, TComDataCU* mCtu, std::vect
 		i += skippos;
 
 	}
-	pfo << mCtu->getCtuRsAddr() << '\n';
-	for (size_t i = 0; i < c[0].size(); i++)
+	std::vector<int> dzIsx;
+	gCode_zIdx(c[0], dzIsx);
+	for (size_t i = 0; i < dzIsx.size(); i++)
 	{
-		//pfo << /*"(" <<*/ c[2][i] << " " << c[3][i]/* << " " << c[1][i]*/ << " ";
-		//仅传输Z扫描索引,采用前向差分;
-		int outV = (i == 0) ? c[0][i] : c[0][i] - c[0][i - 1];
-		pfo << outV << " ";
+		pfo << dzIsx[i] << " ";
 	}
 	pfo << '\n';
 }

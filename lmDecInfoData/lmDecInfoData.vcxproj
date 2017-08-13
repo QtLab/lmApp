@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\lmCodeInfo.h" />
     <ClInclude Include="src\lmDecInfo.h" />
     <ClInclude Include="src\lmPSData.h" />
     <ClInclude Include="src\lmStructure.h" />
     <ClInclude Include="src\lmTydef.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\lmCodeInfo.cpp" />
     <ClCompile Include="src\lmDecInfo.cpp" />
     <ClCompile Include="src\lmPSData.cpp" />
     <ClCompile Include="src\lmStructure.cpp" />
