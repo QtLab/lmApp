@@ -13,6 +13,7 @@
 #include "..\longmanApp\src\appData\lmImageDraw.h"
 #include "..\longmanApp\src\appData\lmNormalDraw.h"
 #include "..\lmDecInfoData\src\lmDecInfo.h"
+#include "..\longmanApp\src\appData\lmDrawManage.h"
 //（目前）作用:在工作线程中处理EvtTYPE2类型的Event,建立简单的Event缓冲机制;
 //
 typedef std::function<void(lmYUVInfo&)> normalCallbacfun;
@@ -42,6 +43,7 @@ private:
 	QImage mImage;	
 	//绘制模块,使用了简单的装饰模式,以便后续功能的扩展和叠加;
 	lmImageDrawBase *mImageDraw;
+	lmDrawManage mdraw;
 	//SHVC码流解析模块;
 	//lmParseStreamPro *mparsestream;
 	QMutex mutex;
@@ -52,6 +54,7 @@ public:
 	bool changeimagepoc(longmanEvt&);
 	bool showyuvData(longmanEvt&);
 	bool parseLayerFromList(longmanEvt&);
+	bool draw(longmanEvt&);
 private:
 	lmYUVInfoList myuvlist;
 	lmYUVInfo curyuv;

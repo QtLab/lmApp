@@ -14,7 +14,7 @@ public:
 	lmGraphView(QWidget *parent = Q_NULLPTR);
 	~lmGraphView();
 public:
-	bool setimage(longmanEvt &);
+//	bool setimage(longmanEvt &);
 	bool scaleimage(longmanEvt &);
 	bool xupdate(longmanEvt &);
 private:

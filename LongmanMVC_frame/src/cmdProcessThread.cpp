@@ -72,12 +72,12 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	updatemainwin.setParam("image", QVariant::fromValue((void*)(&mImage)));
 	updatemainwin.dispatch();
 	//通知显示模块
-	longmanEvt lmgraphview(EvtTYPE1);
-	lmgraphview.setParam("CommandName", "set_image");
-	lmgraphview.setParam("width", dataModel.getimageWidth());
-	lmgraphview.setParam("height", dataModel.getimageHeight());
-	lmgraphview.setParam("format", dataModel.getformat());
-	lmgraphview.dispatch();
+// 	longmanEvt lmgraphview(EvtTYPE1);
+// 	lmgraphview.setParam("CommandName", "set_image");
+// 	lmgraphview.setParam("width", dataModel.getimageWidth());
+// 	lmgraphview.setParam("height", dataModel.getimageHeight());
+// 	lmgraphview.setParam("format", dataModel.getformat());
+// 	lmgraphview.dispatch();
 	return true;
 }
 
@@ -97,80 +97,49 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 		return false;
 	dataModel.setPOC(mpoc, isforcereadfata);
 	dataModel.readPic();
-	//**转换为适合显示的PixMap类**;
-	//图片内容更新，通知图片显示类;
-	QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
-	longmanEvt lmgraphview(EvtTYPE1);
- 	lmgraphview.setParam("CommandName", "update_image");
-	lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
-	lmgraphview.dispatch();
+	//图片内容更新，通知绘制模块;
+	longmanEvt drawImage(EvtTYPE2);
+ 	drawImage.setParam("CommandName", "draw");
+	drawImage.setParam("Image", QVariant::fromValue((void*)(&mImage)));
+	drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
+	drawImage.dispatch();
 	//存储当前POC;
-	myuvlist.getlast().setPOC(mpoc);
+	curyuv.setPOC(mpoc);
 	return true;
 }
 
 bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 {
 	bool showdataEnableFromAPPWin = rEvt.getParam("enabledByButton").toBool();
-	bool fromGraphView = rEvt.getParam("clickedByGraphView").toBool();
-	//处理主界面按键信号;
 	if (showdataEnableFromAPPWin)
 	{
-			//通知yuv数据显示类(lmDataView);
-			//将yuv数据信息传给lmDataView;
-		if (!enableShowYuvData)
-		{
-				Pel *mYptr = nullptr; Pel *mUptr = nullptr; Pel *mVptr = nullptr;
-				dataModel.getyuvPtr(mYptr, mUptr, mVptr);
-				longmanEvt lmdatahview(EvtTYPE1);
-				lmdatahview.setParam("CommandName", "set_dataview");
-				lmdatahview.setParam("y_ptr", QVariant::fromValue((void*)(mYptr)));
-				lmdatahview.setParam("u_ptr", QVariant::fromValue((void*)(mUptr)));
-				lmdatahview.setParam("v_ptr", QVariant::fromValue((void*)(mVptr)));
-				lmdatahview.setParam("width", dataModel.getimageWidth());
-				lmdatahview.setParam("height", dataModel.getimageHeight());
-				lmdatahview.setParam("format", dataModel.getformat());
-				lmdatahview.dispatch();
-		}
-		enableShowYuvData = !enableShowYuvData;
-	}
-	if (!enableShowYuvData)
-	{
-		//showdata关闭时;
-			if (!fromGraphView)
-			{
-				//来自主界面的关闭信号，调用最普通的绘制函数;
-				QPixmap *mpixmap = mImageDraw->lmDraw(mImage);
-				longmanEvt lmgraphview(EvtTYPE1);
-				lmgraphview.setParam("CommandName", "update_image");
-				lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
-				lmgraphview.dispatch();
-			}
+		Pel *mYptr = nullptr; Pel *mUptr = nullptr; Pel *mVptr = nullptr;
+		dataModel.getyuvPtr(mYptr, mUptr, mVptr);
+		//通知像素显示窗口;
+		longmanEvt lmdatahview(EvtTYPE1);
+		lmdatahview.setParam("CommandName", "set_dataview");
+		lmdatahview.setParam("y_ptr", QVariant::fromValue((void*)(mYptr)));
+		lmdatahview.setParam("u_ptr", QVariant::fromValue((void*)(mUptr)));
+		lmdatahview.setParam("v_ptr", QVariant::fromValue((void*)(mVptr)));
+		lmdatahview.setParam("width", dataModel.getimageWidth());
+		lmdatahview.setParam("height", dataModel.getimageHeight());
+		lmdatahview.setParam("format", dataModel.getformat());
+		lmdatahview.setParam("xIn16", 0);
+		lmdatahview.setParam("yIn16", 0);
+		lmdatahview.dispatch();
+		//通知绘制模块;
+		longmanEvt drawImage(EvtTYPE2);
+		drawImage.setParam("CommandName", "draw");
+		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::yuvdata);
+		drawImage.dispatch();
 	}
 	else
 	{
-		//showdata关闭时;
-		int iXmouse = rEvt.getParam("x").toInt();
-		int iYmouse = rEvt.getParam("y").toInt();
-		//删除上次的绘制结果,重新构建绘制模块;
-		//装饰后的类应该使用局部对象的方式，不对lmImageDrawBase对象进行任何操作;
-		//下边这个绘制大小框的对象会被自动销毁,析构只会涉及到lmImageDrawFuc;
-		//而lmImageDrawFuc是通过指针调用lmImageDrawBase对象，因此应该不会对
-		//本类中的lmImageDrawBase对象产生任何影响;
-		lmNormalDraw mDrawFrame(mImageDraw, iXmouse, iYmouse);
-		//返回的是本类中的lmImageDrawBase对象的成员;
-		QPixmap *mpixmap= mDrawFrame.lmDraw(mImage);
-		//通知图片显示类;
-		longmanEvt lmgraphview(EvtTYPE1);
-		lmgraphview.setParam("CommandName", "update_image");
-		lmgraphview.setParam("Image", QVariant::fromValue((void*)(mpixmap)));
-		lmgraphview.dispatch();
-		//通知dataview模块;
-		longmanEvt dataview(EvtTYPE1);
-		dataview.setParam("CommandName", "update_dataview");
-		dataview.setParam("xIn16", iXmouse);
-		dataview.setParam("yIn16", iYmouse);
-		dataview.dispatch();
+
+		longmanEvt drawImage(EvtTYPE2);
+		drawImage.setParam("CommandName", "draw");
+		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
+		drawImage.dispatch();
 	}
 	return true;
 }
@@ -197,6 +166,12 @@ bool cmdProcessThread::parseLayerFromList(longmanEvt& rEvt)
 	openyuvfile(openyuv);
 	return true;
 }
+
+bool cmdProcessThread::draw(longmanEvt& rEvt)
+{
+	return mdraw.handleEvt(rEvt);
+}
+
 void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 {
 	CallBackFuncList::iterator m_cmdHandlef;

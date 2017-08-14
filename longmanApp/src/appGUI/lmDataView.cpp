@@ -47,12 +47,17 @@ bool lmDataView::setdataview(longmanEvt & rEvt)
 	yuvWidth = rEvt.getParam("width").toInt();
 	yuvHeight = rEvt.getParam("height").toInt();
 	formatType = rEvt.getParam("format").toInt();
+	int xmouseclick = rEvt.getParam("xIn16").toInt();
+	int ymouseclick = rEvt.getParam("yIn16").toInt();
+	mXIn16 = (int)(xmouseclick / 16.0) * 16;
+	mYIn16 = (int)(ymouseclick / 16.0) * 16;
 	drawAreaRange[0] = ViewSize[formatType][0] * sqSize[formatType] +  sqSize[formatType];//height
 	drawAreaRange[1] = ViewSize[formatType][1] * sqSize[formatType] +  sqSize[formatType];//width
 	setMinimumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
 	setMaximumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
-	update();
 	qDebug() << "inti data view";
+	drawcontain = true;
+	update();
 	return true;
 }
 
@@ -63,7 +68,6 @@ bool lmDataView::updatedataview(longmanEvt & rEvt)
 	int ymouseclick = rEvt.getParam("yIn16").toInt();
 	mXIn16 = (int)(xmouseclick / 16.0) * 16;
 	mYIn16 = (int)(ymouseclick / 16.0) * 16;
-	drawcontain = true;
 	update();
 	return true;
 }
@@ -97,17 +101,15 @@ void lmDataView::paintEvent(QPaintEvent * event)
 	clock_t lBefore = clock();
 	QPainter mcpainter(this);
 	drawBackGround(mcpainter);
-	if (drawclick)
-	{
-		drawclicked(mcpainter);
-		drawContain(mcpainter);
-		drawclick = false;
-	}
 	if (drawcontain)
-	{
-		drawContain(mcpainter);
-		//drawcontain = false;
-	}
+		{
+			if (drawclick)
+				{
+					drawclicked(mcpainter);
+					drawclick = false;
+				}
+			drawContain(mcpainter);
+		}
 	double dResult = (double)(clock() - lBefore);
 	qDebug() << QString::fromStdString("<Draw View> spends " + std::to_string(int(dResult)) + " ms!");
 }

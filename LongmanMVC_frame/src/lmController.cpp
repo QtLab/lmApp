@@ -10,7 +10,8 @@ const char *cmdtable[] =
 	"show_yuvdata",//请在整个工程查找该命令，以获取其参数;
 	"parse_shvcbitstream",//解码SHVC码流
 	"preDecode",//预解码;
-	"parse_LayerToshow"
+	"parse_LayerToshow",
+	"draw"//绘制模块，+"Image"+
 };
 ////绑定命令和相应的处理函数,增加命令时必须添加代码;
 void lmController::xcmdInti()
@@ -38,10 +39,12 @@ void lmController::xcmdInti()
 	CallBackFunc pcCmdHandle4_dethread = std::bind(&lmDecodeThread::preDec, &pDecoder, std::placeholders::_1);
 	pDecoder.addCommandHandle(cmdtable[4], pcCmdHandle4_dethread);
 	//普通事件
-	//parse_LayerToshow事件，直接交给workThread处理;
+	//parse_LayerToshow事件，直接交给workThread的parseLayerFromList函数处理;
 	CallBackFunc pcCmdHandle5 = std::bind(&cmdProcessThread::parseLayerFromList, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[5], pcCmdHandle5);
-
+	//draw，直接交给workThread的draw函数处理;
+	CallBackFunc pcCmdHandle6 = std::bind(&cmdProcessThread::draw, &workThread, std::placeholders::_1);
+	workThread.addCommandHandle(cmdtable[6], pcCmdHandle6);
 }
 
 bool lmController::sendMsg(const std::string& iEvtInfo)

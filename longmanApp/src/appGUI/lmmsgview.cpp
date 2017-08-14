@@ -43,6 +43,9 @@ bool lmMsgView::handleMsg(longmanEvt& rEvt)
 		mWarningbox.setText(msgInfo);
 		mWarningbox.show();
 	}
+	if (ui->textBrowser->backwardHistoryCount() > 5)
+		ui->textBrowser->clear();
 	ui->textBrowser->append(msgInfo);
+
 	return true;
 }

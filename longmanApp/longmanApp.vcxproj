@@ -38,6 +38,7 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -D_MBCS "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I.\src\appGUI" "-I.\..\LongmanEvt" "-I.\..\LongmanMVC_frame" "-I.\src\appData"</Command>
     </CustomBuild>
+    <ClInclude Include="src\appData\lmDrawManage.h" />
     <ClInclude Include="src\appData\lmImageDraw.h" />
     <ClInclude Include="src\appData\lmImageDrawBase.h" />
     <ClInclude Include="src\appData\lmImageDrawFuc.h" />
@@ -219,6 +220,7 @@
     </ClCompile>
     <ClCompile Include="src\appData\lmData.cpp" />
     <ClCompile Include="src\appData\lmDecodeThread.cpp" />
+    <ClCompile Include="src\appData\lmDrawManage.cpp" />
     <ClCompile Include="src\appData\lmImageDraw.cpp" />
     <ClCompile Include="src\appData\lmImageDrawBase.cpp" />
     <ClCompile Include="src\appData\lmNormalDraw.cpp" />

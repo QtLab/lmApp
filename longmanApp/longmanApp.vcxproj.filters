@@ -106,6 +106,9 @@
     <ClInclude Include="GeneratedFiles\ui_lmmsgview.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\appData\lmDrawManage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -236,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_lmmsgview.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\appData\lmDrawManage.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

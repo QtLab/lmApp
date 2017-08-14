@@ -53,6 +53,7 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	QVariant vValue = updateWinEvt.getParam("image");
 	imageSave = (QImage*)vValue.value<void *>();
 	ui.FrameIdxSlider->setMaximum(totalfarmes-1);
+	ui.FrameIdxSlider->setMinimum(0);
 	ui.spinBoxhei->setValue(heightImage);
 	ui.spinBoxwid->setValue(widthImage);
 	ui.MaxFraBox->setValue(totalfarmes);
@@ -61,7 +62,7 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	ui.f3Button->setEnabled(true);
 	ui.f1Button->setEnabled(true);
 	//触发更新命令;
-	sendEvttoChnagePOC(curpoc);
+	on_FrameIdxSlider_valueChanged(curpoc);
 	return true;
 }
 
@@ -124,7 +125,7 @@ void longmanApp::sendEvttoChnagePOC(int ppoc)
 		yuvnext.setParam("force_readData", true);
 		yuvnext.setParam("recoverLast", false);
 		OpenNum++;
-		ui.FrameIdxSlider->setMinimum(0);
+		//ui.FrameIdxSlider->setMinimum(0);
 	}
 	yuvnext.dispatch();
 }
@@ -154,11 +155,11 @@ void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
 void longmanApp::on_actionOpen_triggered()
 {
 	//这里还有BUG，20170810;
-	if (OpenNum==-1)
-	{
-		ui.FrameIdxSlider->setMinimum(-1);
-		ui.FrameIdxSlider->setValue(-1);
-	}
+// 	if (OpenNum==-1)
+// 	{
+// 		ui.FrameIdxSlider->setMinimum(-1);
+// 		ui.FrameIdxSlider->setValue(-1);
+// 	}
 	QFileDialog dialog(this, QStringLiteral("open yuv file"));
 	if (OpenNum == -1) {
 		const QString defaultLocations = QDir::currentPath()+"/cache";
@@ -323,7 +324,7 @@ void longmanApp::on_f1Button_clicked()
 	ui.groupBox->setEnabled(showdataEnable);
 	longmanEvt showdata(EvtTYPE2);
 	showdata.setParam("CommandName", "show_yuvdata");
-	showdata.setParam("enabledByButton", true);
+	showdata.setParam("enabledByButton", !showdataEnable);
 	showdata.dispatch();
 	showdataEnable = !showdataEnable;
 }

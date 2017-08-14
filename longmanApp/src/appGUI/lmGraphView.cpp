@@ -23,8 +23,8 @@ lmGraphView::lmGraphView(QWidget *parent)
 	ui.setupUi(this);
 	setModelName("Graph_View_Model");
 	//
-	CallBackFunc pcupdateEvtHandle = std::bind(&lmGraphView::setimage, this, std::placeholders::_1);
-	listenParam("set_image", pcupdateEvtHandle);
+// 	CallBackFunc pcupdateEvtHandle = std::bind(&lmGraphView::setimage, this, std::placeholders::_1);
+// 	listenParam("set_image", pcupdateEvtHandle);
 	CallBackFunc pcscaleEvtHandle = std::bind(&lmGraphView::scaleimage, this, std::placeholders::_1);
 	listenParam("scale", pcscaleEvtHandle);
 	CallBackFunc pcxupdateHandle = std::bind(&lmGraphView::xupdate, this, std::placeholders::_1);
@@ -50,13 +50,13 @@ lmGraphView::~lmGraphView()
 {
 }
 
-bool lmGraphView::setimage(longmanEvt & upimage)
-{
-	imageWidth = upimage.getParam("width").toInt();
-	imageHeight = upimage.getParam("height").toInt();
-	int formattyp = upimage.getParam("format").toInt();
-	return true;
-}
+// bool lmGraphView::setimage(longmanEvt & upimage)
+// {
+// 	imageWidth = upimage.getParam("width").toInt();
+// 	imageHeight = upimage.getParam("height").toInt();
+// 	int formattyp = upimage.getParam("format").toInt();
+// 	return true;
+// }
 
 bool lmGraphView::scaleimage(longmanEvt & sacleEvt)
 {
@@ -77,6 +77,8 @@ bool lmGraphView::xupdate(longmanEvt & rEvt)
 	 	//int iImgY = imagegroup.scenePos().y();
 	QVariant vValue = rEvt.getParam("Image");
 	QPixmap *mcImage = (QPixmap*)vValue.value<void *>();
+	imageWidth=mcImage->width();
+	imageHeight = mcImage->height();
 	imagegroup.setPixmap(*mcImage);
 	m_controlMouse = true;
 	return true;
@@ -126,12 +128,18 @@ void lmGraphView::mousePressEvent(QMouseEvent * event)
 		bool strain2 = mouseInImageY >= 0 && mouseInImageY < imageHeight;
 		if (strain2&&strain1)
 		{
-		longmanEvt showdata(EvtTYPE2);
-		showdata.setParam("CommandName", "show_yuvdata");
-		showdata.setParam("clickedByGraphView", true);
-		showdata.setParam("x", mouseInImageX);
-		showdata.setParam("y", mouseInImageY);
-		showdata.dispatch();
+			//通知绘制模块;
+			longmanEvt showdata(EvtTYPE2);
+			showdata.setParam("CommandName", "draw");
+			showdata.setParam("yuvdata_xmouse", mouseInImageX);
+			showdata.setParam("yuvdata_ymouse", mouseInImageY);
+			showdata.dispatch();
+			//通知像素显示窗口;
+			longmanEvt dataview(EvtTYPE1);
+			dataview.setParam("CommandName", "update_dataview");
+			dataview.setParam("xIn16", mouseInImageX);
+			dataview.setParam("yIn16", mouseInImageY);
+			dataview.dispatch();
 		}
 }
 
