@@ -68,7 +68,7 @@ typedef lmParam::value_type sParam;//一对参数类型;
 class lmYUVInfo
 {
 public:
-	lmYUVInfo(const std::string pa, int pw, int ph, int pf, int pl = 0,int ppco=0) :
+	lmYUVInfo(const std::string pa, int pw, int ph, int pf, int pl = 0,int poc=0) :
 		mWidth(pw),
 		mHeight(ph),
 		mFormat(pf),
@@ -102,6 +102,8 @@ public:
 	const int getPoc()const { return mpoc; };
 	void setPOC(int pc) { mpoc = pc; };
 	void setLayer(int pl) { mLayer = pl; }
+	void setdecoded(bool pb) { isDecoed = pb; };
+	bool getdecoded() { return isDecoed; };
 public:
 	enum yuvFormat
 	{
@@ -118,6 +120,7 @@ private:
 	int mFormat;
 	int mLayer;
 	int mpoc = 0;
+	bool isDecoed = false;
 	std::string mName;
 	std::string lmabsyuvPath;
 	std::string xGetNameFromabsPath(const std::string& pstr) 

@@ -57,5 +57,6 @@ void on_f2Button_clicked();
 void on_f3Button_clicked();
 void on_f4Button_clicked();
 void on_f5Button_clicked();
+void on_f6Button_clicked();
 };
 #endif // longmanApp_h__

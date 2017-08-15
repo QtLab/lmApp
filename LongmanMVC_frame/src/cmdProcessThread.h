@@ -55,6 +55,7 @@ public:
 	bool showyuvData(longmanEvt&);
 	bool parseLayerFromList(longmanEvt&);
 	bool draw(longmanEvt&);
+	bool showcuDepth(longmanEvt&);
 private:
 	lmYUVInfoList myuvlist;
 	lmYUVInfo curyuv;

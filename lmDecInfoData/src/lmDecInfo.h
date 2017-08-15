@@ -13,6 +13,7 @@ public:
 	lmYUVInfoList& operator>>(lmYUVInfo& pyuv);
 	const lmYUVInfo &getByPath(const std::string &pPath)const;
 	 lmYUVInfo &getlast()  {return mInfoList.rbegin()->second;};
+	 bool isempty() { return mInfoList.empty(); };
 private:
 	std::map < std::string, lmYUVInfo > mInfoList;
 

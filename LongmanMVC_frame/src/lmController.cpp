@@ -11,7 +11,8 @@ const char *cmdtable[] =
 	"parse_shvcbitstream",//解码SHVC码流
 	"preDecode",//预解码;
 	"parse_LayerToshow",
-	"draw"//绘制模块，+"Image"+
+	"draw",//绘制模块，+"Image"+
+	"show_cuDepth"
 };
 ////绑定命令和相应的处理函数,增加命令时必须添加代码;
 void lmController::xcmdInti()
@@ -45,6 +46,9 @@ void lmController::xcmdInti()
 	//draw，直接交给workThread的draw函数处理;
 	CallBackFunc pcCmdHandle6 = std::bind(&cmdProcessThread::draw, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[6], pcCmdHandle6);
+	//show_cuDepth，直接交给workThread的showcuDepth函数处理;
+	CallBackFunc pcCmdHandle7 = std::bind(&cmdProcessThread::showcuDepth, &workThread, std::placeholders::_1);
+	workThread.addCommandHandle(cmdtable[7], pcCmdHandle7);
 }
 
 bool lmController::sendMsg(const std::string& iEvtInfo)
@@ -133,6 +137,7 @@ void lmController::recoverhandle(lmYUVInfo& yuvParam)
 	openyuv.setParam("yuv_height", QVariant::fromValue(mit.getHeight()));
 	openyuv.setParam("yuv_format", QVariant::fromValue(mit.getFormat()));
 	openyuv.setParam("yuv_layer", QVariant::fromValue(mit.getLayer()));
+	openyuv.setParam("yuv_decoded", QVariant::fromValue(mit.getdecoded()));
 	openyuv.dispatch();
 }
 

@@ -74,6 +74,7 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 		openyuv.setParam("yuv_height", QVariant::fromValue(mh));
 		openyuv.setParam("yuv_format", QVariant::fromValue(mf));
 		openyuv.setParam("yuv_layer", QVariant::fromValue(maxLayerIdx));
+		openyuv.setParam("yuv_decoded", true);
 		openyuv.dispatch();
 		//发送需要显示的解码层，这个数来自于码流文件配置窗口;
 		longmanEvt lmlistview(EvtTYPE1);

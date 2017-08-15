@@ -28,6 +28,7 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	int mHeight = rpevt.getParam("yuv_height").toInt();
 	int mformattype = rpevt.getParam("yuv_format").toInt();
 	int mLayer = rpevt.getParam("yuv_layer").toInt();
+	bool isdecode = rpevt.getParam("yuv_decoded").toBool();
 	//dataModel.close();
 	int openSt=dataModel.openyuv_r(filePath, false, mformattype, mWidth, mHeight);
 	if (openSt<0)
@@ -55,6 +56,7 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	//保存成功打开的yuv信息;
 	lmYUVInfo tyuvinfo(filePath, dataModel.getimageWidth(), dataModel.getimageHeight(), dataModel.getformat());
 	tyuvinfo.setLayer(mLayer);
+	tyuvinfo.setdecoded(isdecode);
 	curyuv = tyuvinfo;
 	myuvlist << tyuvinfo;
 	//给datamodel中的图片存储空间套上QImage类头;
@@ -127,7 +129,7 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 		lmdatahview.setParam("xIn16", 0);
 		lmdatahview.setParam("yIn16", 0);
 		lmdatahview.dispatch();
-		//通知绘制模块;
+		//通知绘制模块,进行绘制;
 		longmanEvt drawImage(EvtTYPE2);
 		drawImage.setParam("CommandName", "draw");
 		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::yuvdata);
@@ -135,7 +137,7 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 	}
 	else
 	{
-
+		//通知绘制模块,回退正常显示;
 		longmanEvt drawImage(EvtTYPE2);
 		drawImage.setParam("CommandName", "draw");
 		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
@@ -161,7 +163,8 @@ bool cmdProcessThread::parseLayerFromList(longmanEvt& rEvt)
 	openyuv.setParam("yuv_width", QVariant::fromValue(mw));
 	openyuv.setParam("yuv_height", QVariant::fromValue(mh));
 	openyuv.setParam("yuv_format", QVariant::fromValue(mf));
-	openyuv.setParam("yuv_layer", QVariant::fromValue(layerIdx));
+	openyuv.setParam("yuv_layer", QVariant::fromValue(layerIdx)); 
+	openyuv.setParam("yuv_decoded", true);
 	//直接调用xopenyuvfile函数;
 	openyuvfile(openyuv);
 	return true;
@@ -170,6 +173,35 @@ bool cmdProcessThread::parseLayerFromList(longmanEvt& rEvt)
 bool cmdProcessThread::draw(longmanEvt& rEvt)
 {
 	return mdraw.handleEvt(rEvt);
+}
+
+bool cmdProcessThread::showcuDepth(longmanEvt& rEvt)
+{
+	bool showcuDepthEnableFromAPPWin = rEvt.getParam("enabledByButton").toBool();
+	if (myuvlist.isempty())
+		return false;
+	if (!curyuv.getdecoded())
+		return false;
+	if (showcuDepthEnableFromAPPWin)
+	{
+		//通知绘制模块,退回正常显示;
+		longmanEvt drawImage(EvtTYPE2);
+		drawImage.setParam("CommandName", "draw");
+		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
+		drawImage.dispatch();
+	}
+	else
+	{
+		//应该是解码状态下,进入该分支;
+		int l = curyuv.getLayer();
+		int p = curyuv.getPoc();
+		//通知绘制模块,退回正常显示;
+		longmanEvt drawImage(EvtTYPE2);
+		drawImage.setParam("CommandName", "draw");
+		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::cudepth);
+		drawImage.dispatch();
+	}
+	return true;
 }
 
 void cmdProcessThread::handleCmd(longmanEvt& requstCmd)

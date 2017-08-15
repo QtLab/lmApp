@@ -191,6 +191,7 @@ void longmanApp::on_actionOpen_triggered()
 	openyuv.setParam("yuv_height", paramselect.getyuvheight());
 	openyuv.setParam("yuv_format", paramselect.getformattype());
 	openyuv.setParam("yuv_layer", QVariant::fromValue(0));//普通打开yuv，默认layer=0;
+	openyuv.setParam("yuv_decoded", true);
 	openyuv.dispatch();	
 	//OpenNum = -1;
 }
@@ -347,5 +348,14 @@ void longmanApp::on_f5Button_clicked()
 	//计划的功能有:列出所有yuv,临时查看窗口,将信息保存为文件等等;
 	qInfo()<< QStringLiteral("显示并操作已经打开成功的yuv;这些yuv信息位于cmdProcessThread对象中;计划的功能有:列出所有yuv,临时查看窗口,将信息保存为文件等;");
 
+}
+void longmanApp::on_f6Button_clicked()
+{
+	static bool showCUdepthEnable = false;
+	longmanEvt showcuDepth(EvtTYPE2);
+	showcuDepth.setParam("CommandName", "show_cuDepth");
+	showcuDepth.setParam("enabledByButton", !showCUdepthEnable);
+	showcuDepth.dispatch();
+	showCUdepthEnable = !showCUdepthEnable;
 }
 
