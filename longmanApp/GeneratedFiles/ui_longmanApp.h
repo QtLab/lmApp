@@ -243,9 +243,8 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         FrameIdxSlider = new QSlider(YUVgroupBox);
         FrameIdxSlider->setObjectName(QStringLiteral("FrameIdxSlider"));
-        FrameIdxSlider->setMinimum(-1);
         FrameIdxSlider->setPageStep(30);
-        FrameIdxSlider->setValue(-1);
+        FrameIdxSlider->setValue(0);
         FrameIdxSlider->setOrientation(Qt::Horizontal);
 
         verticalLayout->addWidget(FrameIdxSlider);
@@ -261,9 +260,8 @@ public:
         FrameIdxBox = new QSpinBox(YUVgroupBox);
         FrameIdxBox->setObjectName(QStringLiteral("FrameIdxBox"));
         FrameIdxBox->setEnabled(false);
-        FrameIdxBox->setMinimum(-1);
         FrameIdxBox->setMaximum(999999);
-        FrameIdxBox->setValue(-1);
+        FrameIdxBox->setValue(0);
 
         horizontalLayout_3->addWidget(FrameIdxBox);
 
@@ -280,9 +278,8 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(MaxFraBox->sizePolicy().hasHeightForWidth());
         MaxFraBox->setSizePolicy(sizePolicy2);
-        MaxFraBox->setMinimum(-1);
         MaxFraBox->setMaximum(999999);
-        MaxFraBox->setValue(-1);
+        MaxFraBox->setValue(0);
 
         horizontalLayout_3->addWidget(MaxFraBox);
 

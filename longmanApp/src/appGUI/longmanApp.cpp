@@ -7,7 +7,7 @@
 //一般只在成功打开yuv文件成功后执行一次,用于更新主窗体显示的yuv信息,以及当前显示的图片的指针;
 //用于保存为图片;
 const char *formattext[] = { "400","420","444" };
-static int OpenNum = -1;
+static bool openFailed = true;//1：打开失败；0：打开成功;
 static int formattype = 1;
 longmanApp::longmanApp(QWidget *parent)
 	: QMainWindow(parent),
@@ -43,7 +43,7 @@ longmanApp::longmanApp(QWidget *parent)
 
 bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 {
-	OpenNum = OpenNum >= 1 ? 1 : OpenNum + 1;
+	openFailed = false;
 	ui.YUVgroupBox->setEnabled(true);
 	int curpoc = updateWinEvt.getParam("yuv_currentPOC").toInt();
 	int totalfarmes= updateWinEvt.getParam("yuv_totalFrames").toInt();
@@ -53,7 +53,7 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	QVariant vValue = updateWinEvt.getParam("image");
 	imageSave = (QImage*)vValue.value<void *>();
 	ui.FrameIdxSlider->setMaximum(totalfarmes-1);
-	ui.FrameIdxSlider->setMinimum(0);
+
 	ui.spinBoxhei->setValue(heightImage);
 	ui.spinBoxwid->setValue(widthImage);
 	ui.MaxFraBox->setValue(totalfarmes);
@@ -61,8 +61,15 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	ui.actionSave_as_image->setEnabled(true);
 	ui.f3Button->setEnabled(true);
 	ui.f1Button->setEnabled(true);
-	//触发更新命令;
-	on_FrameIdxSlider_valueChanged(curpoc);
+	//修复第二次以后打开没有及时更新内容的问题;
+	//curpoc一般为0;
+	//解决当Slider=0时，打开调用ui.FrameIdxSlider->setValue(curpoc),无法刷新;
+	if (ui.FrameIdxSlider->value() > 0)
+		ui.FrameIdxSlider->setValue(curpoc);
+	else
+		//强制刷新;
+		on_FrameIdxSlider_valueChanged(curpoc);
+	
 	return true;
 }
 
@@ -70,7 +77,9 @@ bool longmanApp::openyuvFailed(longmanEvt&)
 {
 	//ui.FrameIdxSlider->setMinimum(-1);
 	//ui.FrameIdxSlider->setValue(-1);
-	OpenNum = -1;
+	openFailed = true;
+	//强制刷新;
+	sendEvttoChnagePOC(0);
 	return true;
 }
 
@@ -109,24 +118,11 @@ void longmanApp::sendEvttoChnagePOC(int ppoc)
 	longmanEvt yuvnext(EvtTYPE2);
 	yuvnext.setParam("CommandName", "change_imagepoc");
 	yuvnext.setParam("yuv_POC", curpoc);
-	if (OpenNum == -1)//打开失败，回退;
-	{
-		yuvnext.setParam("force_readData", true);
+	if (openFailed)//打开失败，回退;
 		yuvnext.setParam("recoverLast", true);
-		//OpenNum = 1;
-	}
-	else if (OpenNum > 0)//打开成功，已刷新第一帧;
-	{
-		yuvnext.setParam("force_readData", true);
+	else
 		yuvnext.setParam("recoverLast", false);
-	}
-	else if (OpenNum == 0)//打开成功，未刷新第一帧;
-	{
-		yuvnext.setParam("force_readData", true);
-		yuvnext.setParam("recoverLast", false);
-		OpenNum++;
-		//ui.FrameIdxSlider->setMinimum(0);
-	}
+	yuvnext.setParam("force_readData", true);
 	yuvnext.dispatch();
 }
 
@@ -161,7 +157,7 @@ void longmanApp::on_actionOpen_triggered()
 // 		ui.FrameIdxSlider->setValue(-1);
 // 	}
 	QFileDialog dialog(this, QStringLiteral("open yuv file"));
-	if (OpenNum == -1) {
+	if (openFailed) {
 		const QString defaultLocations = QDir::currentPath()+"/cache";
 		dialog.setDirectory(defaultLocations.isEmpty() ? QDir::currentPath() : defaultLocations);
 	}
@@ -196,7 +192,7 @@ void longmanApp::on_actionOpen_triggered()
 	openyuv.setParam("yuv_format", paramselect.getformattype());
 	openyuv.setParam("yuv_layer", QVariant::fromValue(0));//普通打开yuv，默认layer=0;
 	openyuv.dispatch();	
-	OpenNum = -1;
+	//OpenNum = -1;
 }
 
 void longmanApp::on_actionAbout_triggered()
@@ -285,7 +281,7 @@ void longmanApp::on_actionSave_as_image_triggered()
 {
 	QFileDialog dialog(this, QStringLiteral("保存为图片"));
 	dialog.setAcceptMode(QFileDialog::AcceptSave);
-	if (!(OpenNum > 0)) {
+	if (openFailed) {
 		const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 		dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
 	}
