@@ -1,10 +1,10 @@
 #include "lmDrawManage.h"
 #include "lmNormalDraw.h"
-
+#include "lmCUSplitDraw.h"
 
 lmDrawManage::lmDrawManage():
 	mImageDraw(new lmImageDraw()),
-	mdrawtype(drawType::showImage)
+	mdrawtype(drawType::num)
 {
 }
 
@@ -42,14 +42,39 @@ lmDrawManage::~lmDrawManage()
 
 bool lmDrawManage::handleEvt(longmanEvt& rEvt)
 {
-	QVariant vValue = rEvt.getParam("Image");
-	if (vValue != 0)
-		curImage = (QImage*)vValue.value<void *>();
+	//设置绘制模式时，不传递其他参数;
+	//处理绘制模式;
 	int mtypec = rEvt.getParam("drawTypeCode").toInt();
 	if (mtypec > drawType::num)
 		return false;
-	if (mtypec > 0)
-		mdrawtype = drawType( mtypec);
+	//若改变绘制模式,则应该保护参数;
+	if (mtypec!=0)
+	{
+		mdrawtype = drawType(mtypec);
+	}
+	else
+	{
+		//是否是点击图片产生的参数变化;
+		if (rEvt.getParam("from_picture_clicked").toBool())
+		{
+			mousex = rEvt.getParam("yuvdata_xmouse").toInt();
+			mousey = rEvt.getParam("yuvdata_ymouse").toInt();
+		}
+		else
+		{
+			layer = rEvt.getParam("layer").toInt();
+			poc = rEvt.getParam("poc").toInt();
+		}
+
+	}
+	//然后单独处理图片指针;
+	QVariant vValue = rEvt.getParam("Image");
+	if (vValue != 0)
+		curImage = (QImage*)vValue.value<void *>();
+	if (curImage==nullptr)
+		return false;
+
+
 	switch (mdrawtype)
 	{
 	case lmDrawManage::showImage:
@@ -59,6 +84,7 @@ bool lmDrawManage::handleEvt(longmanEvt& rEvt)
 		showyuvdataDraw(rEvt);
 		break;
 	case lmDrawManage::cudepth:
+		showcuDepthDraw(rEvt);
 		break;
 	case lmDrawManage::ctubit:
 		break;
@@ -87,6 +113,15 @@ void lmDrawManage::showyuvdataDraw(longmanEvt& rEvt)
 	QPixmap *mpixmap = mfdraw.lmDraw(*curImage);
 	sendSignal(mpixmap);
 
+}
+
+void lmDrawManage::showcuDepthDraw(longmanEvt& rEvt)
+{
+
+
+	lmCUSplitDraw mdraw(mImageDraw,layer,poc,mousex,mousey);
+	QPixmap *mpixmap = mdraw.lmDraw(*curImage);
+	sendSignal(mpixmap);
 }
 
 void lmDrawManage::sendSignal(QPixmap * pmap)

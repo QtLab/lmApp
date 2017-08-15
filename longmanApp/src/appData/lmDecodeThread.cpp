@@ -45,6 +45,8 @@ bool lmDecodeThread::parseSHVCBitBtream(longmanEvt& rEvt)
 			lmDecInfo *decinfo = lmDecInfo::getInstanceForChange();
 			decinfo->setInfoSoluPath(cachePath, lmParseStreamPro::getDecYUVName());
 			decinfo->readDec();
+			//小bug:解码基本层后会把帧信息文件覆盖;
+			decinfo->read_FrameInfo();
 		}
 		//解码剩余层选项;
 		for (size_t i = 0; i < layerIdxToDec.size(); i++)

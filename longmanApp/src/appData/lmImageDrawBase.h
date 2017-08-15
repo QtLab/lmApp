@@ -4,6 +4,7 @@
 #include <QTGui\QImage>
 #include <QTGui\QPainter>
 #include "..\lmTypeDef.h"
+#include "..\lmDecInfoData\src\lmDecInfo.h"
 //抽象被装饰者;
 class lmImageDrawBase
 {

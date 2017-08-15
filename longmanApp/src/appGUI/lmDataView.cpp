@@ -13,7 +13,7 @@ const unsigned int ViewSize[3][2] =
 	{32,32},
 };
 bool drawclick = false;
-bool drawcontain = false;
+//bool drawcontainflag = false;
 const char *cha[4] = { "Y","U","V","NULL" };
 const QColor color[4] = {Qt::black,QColor(182,64,128,200),QColor(64,64,180,200),QColor(164,192,25,200) };
 const int lRect = 16;
@@ -29,6 +29,9 @@ lmDataView::lmDataView(QWidget *parent)
 	listenParam("set_dataview", pcsetEvtHandle);
 	CallBackFunc pcupdateEvtHandle = std::bind(&lmDataView::updatedataview, this, std::placeholders::_1);
 	listenParam("update_dataview", pcupdateEvtHandle);
+
+// 	CallBackFunc pDrawEvtHandle = std::bind(&lmDataView::setflag, this, std::placeholders::_1);
+// 	listenParam("set_dataview_flag", pDrawEvtHandle);
 	setMouseTracking(true);
 }
 
@@ -56,7 +59,7 @@ bool lmDataView::setdataview(longmanEvt & rEvt)
 	setMinimumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
 	setMaximumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
 	qDebug() << "inti data view";
-	drawcontain = true;
+/*	drawcontainflag = true;*/
 	update();
 	return true;
 }
@@ -71,7 +74,6 @@ bool lmDataView::updatedataview(longmanEvt & rEvt)
 	update();
 	return true;
 }
-
 
 void lmDataView::mousePressEvent(QMouseEvent *event)
 {
@@ -101,15 +103,12 @@ void lmDataView::paintEvent(QPaintEvent * event)
 	clock_t lBefore = clock();
 	QPainter mcpainter(this);
 	drawBackGround(mcpainter);
-	if (drawcontain)
-		{
-			if (drawclick)
-				{
-					drawclicked(mcpainter);
-					drawclick = false;
-				}
-			drawContain(mcpainter);
-		}
+	if (drawclick)
+	{
+		drawclicked(mcpainter);
+		drawclick = false;
+	}
+	drawContain(mcpainter);
 	double dResult = (double)(clock() - lBefore);
 	qDebug() << QString::fromStdString("<Draw View> spends " + std::to_string(int(dResult)) + " ms!");
 }

@@ -1,5 +1,6 @@
 #include "lmDecInfo.h"
 #include "lmCodeInfo.h"
+#include <algorithm>
 static std::string gAbsPath;
 static std::string gyuvprefix;
 const std::string mOutPreDec = "predec.txt";
@@ -253,10 +254,24 @@ void lmDecInfo::xReadDepthInfo(int layernum)
 				ctu.clear();
 
 			}
+		
 		frmeIdx[layerIdx]++;
 		mfps.clearps();
 		readPS(mfps, pf);
 	}
+	for (size_t i = 0; i < mDepth.size(); i++)
+		sortByPOC(mDepth[i]);
+}
+
+void lmDecInfo::sortByPOC(depthtype::value_type& pf)
+{
+	//°´ÕÕPOC½øÐÐÅÅÐò;
+	std::sort(pf.begin(), pf.end(), ::in_front);
+}
+
+bool in_front(const depthtype::value_type::value_type& f1, const depthtype::value_type::value_type& f2)
+{
+	return f1[0] < f2[0];
 }
 
 lmYUVInfoList& lmYUVInfoList::operator<<(const lmYUVInfo& pyuv)
@@ -290,4 +305,9 @@ const lmYUVInfo &lmYUVInfoList::getByPath(const std::string &pPath) const
 		throw std::runtime_error("No this yuvinfo!");
 
 	return mit->second;
+}
+
+const depthtype::value_type::value_type & lmDecInfo::getframeCUSplit(int l, int p) const
+{
+	return mDepth[l][p];
 }

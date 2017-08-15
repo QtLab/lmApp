@@ -16,10 +16,10 @@ void lmStructure::init()
 	g_auiRasterToZscan = new unsigned int[partSize];
 	g_auiRasterToPelX = new unsigned int[partSize];
 	g_auiRasterToPelY = new unsigned int[partSize];
-	//memset(g_auiZscanToRaster,0, sizeof(unsigned int));
-	//memset(g_auiRasterToZscan, 0, partSize*sizeof(unsigned int));
-	//memset(g_auiRasterToPelX, 0, partSize*sizeof(unsigned int));
-	//memset(g_auiRasterToPelY, 0, partSize*sizeof(unsigned int));
+	memset(g_auiZscanToRaster, 0, sizeof(unsigned int));
+	memset(g_auiRasterToZscan, 0, partSize*sizeof(unsigned int));
+	memset(g_auiRasterToPelX, 0, partSize*sizeof(unsigned int));
+	memset(g_auiRasterToPelY, 0, partSize*sizeof(unsigned int));
 	unsigned int *tempData = g_auiZscanToRaster;
 	initZscanToRaster(mMaxDepth, 1, 0, tempData);
 	initRasterToZscan(mLCUSize, mLCUSize, mMaxDepth);

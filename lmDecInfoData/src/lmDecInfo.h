@@ -3,7 +3,10 @@
 #include "lmPSData.h"
 #include "lmStructure.h"
 typedef std::vector< std::vector<std::vector<std::vector<int>>>> depthtype;
+//一个全局函数，用于构建比较函数，供sort算法使用;
+bool in_front(const depthtype::value_type::value_type& f1, const depthtype::value_type::value_type& f2);
 //yuv文件信息列表，以yuv文件完整路径为关键字;
+
 class lmYUVInfoList
 {
 public:
@@ -39,6 +42,7 @@ public:
 	void getPS(lmPSData &ps,int pl,bool ispre=false)const;
 	std::string getyuvPath(int iLayerIdx)const;
 	void read_FrameInfo();
+	const depthtype::value_type::value_type &getframeCUSplit(int l, int p)const;
 public:
 	void insertps(const lmPSData &pp, bool isPerDec = false);
 private:
@@ -50,6 +54,8 @@ private:
 	void clearPSList(lmPSList& rpsl);
 	void xReadDepthInfo(int layernum);
 	depthtype mDepth;
+	//按照POC进行排序;
+	void sortByPOC(depthtype::value_type& pf);
 };
 #endif // lmDecInfo_h__
 

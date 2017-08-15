@@ -191,7 +191,7 @@ void longmanApp::on_actionOpen_triggered()
 	openyuv.setParam("yuv_height", paramselect.getyuvheight());
 	openyuv.setParam("yuv_format", paramselect.getformattype());
 	openyuv.setParam("yuv_layer", QVariant::fromValue(0));//普通打开yuv，默认layer=0;
-	openyuv.setParam("yuv_decoded", true);
+	openyuv.setParam("yuv_decoded", false);
 	openyuv.dispatch();	
 	//OpenNum = -1;
 }
@@ -313,12 +313,12 @@ void longmanApp::on_f1Button_clicked()
 		m_DataView->show();
 	else
 		m_DataView->hide();	
-	ui.YUVgroupBox->setEnabled(showdataEnable);
-	ui.actionOpen->setEnabled(showdataEnable);
-	ui.f2Button->setEnabled(showdataEnable);
-	ui.f4Button->setEnabled(showdataEnable);
-	ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
-	ui.groupBox->setEnabled(showdataEnable);
+// 	ui.YUVgroupBox->setEnabled(showdataEnable);
+// 	ui.actionOpen->setEnabled(showdataEnable);
+// 	ui.f2Button->setEnabled(showdataEnable);
+// 	ui.f4Button->setEnabled(showdataEnable);
+// 	ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
+// 	ui.groupBox->setEnabled(showdataEnable);
 	longmanEvt showdata(EvtTYPE2);
 	showdata.setParam("CommandName", "show_yuvdata");
 	showdata.setParam("enabledByButton", !showdataEnable);

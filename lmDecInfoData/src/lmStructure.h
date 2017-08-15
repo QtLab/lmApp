@@ -12,6 +12,7 @@ public:
 	unsigned int rIdx2zIdx(unsigned int zI) { if (!mstate) throw std::runtime_error("NULL");	 return g_auiRasterToZscan[zI]; };
 	unsigned int rIdx2xPel(unsigned int zI) { if (!mstate) throw std::runtime_error("NULL");	 return g_auiRasterToPelX[zI]; };
 	unsigned int rIdx2yPel(unsigned int zI) { if (!mstate) throw std::runtime_error("NULL");	 return g_auiRasterToPelY[zI]; };
+	int getLCUSize() { return mLCUSize; };
 private:
 	unsigned int mMaxDepth;
 	unsigned int mLCUSize;

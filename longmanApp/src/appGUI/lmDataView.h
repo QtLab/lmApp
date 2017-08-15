@@ -15,6 +15,7 @@ public:
 	~lmDataView();
 	bool setdataview(longmanEvt &rEvt);
 	bool updatedataview(longmanEvt &rEvt);
+	//bool setflag(longmanEvt &rEvt);
 private:
 	Ui::lmDataView ui;
 	Pel *yuvDateptr[3] = { nullptr,nullptr,nullptr };

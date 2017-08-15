@@ -23,12 +23,16 @@ public:
 private:
 	void showimage();
 	void showyuvdataDraw(longmanEvt& rEvt);
+	void showcuDepthDraw(longmanEvt& rEvt);
 	void sendSignal(QPixmap * pmap);
 private:
 	lmImageDrawBase *mImageDraw;
 	QImage* curImage=nullptr;
 	drawType mdrawtype;
-	
+	int layer = 0;
+	int poc = 0;
+	int mousex = 0;
+	int mousey = 0;
 // 	int yuvdata_xmouse = 0;
 // 	int yuvdata_ymouse = 0;
 };

@@ -73,13 +73,11 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	updatemainwin.setParam("yuv_format", dataModel.getformat());
 	updatemainwin.setParam("image", QVariant::fromValue((void*)(&mImage)));
 	updatemainwin.dispatch();
-	//通知显示模块
-// 	longmanEvt lmgraphview(EvtTYPE1);
-// 	lmgraphview.setParam("CommandName", "set_image");
-// 	lmgraphview.setParam("width", dataModel.getimageWidth());
-// 	lmgraphview.setParam("height", dataModel.getimageHeight());
-// 	lmgraphview.setParam("format", dataModel.getformat());
-// 	lmgraphview.dispatch();
+	//修改绘制模式;
+	longmanEvt drawImage(EvtTYPE2);
+	drawImage.setParam("CommandName", "draw");
+	drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
+	drawImage.dispatch();
 	return true;
 }
 
@@ -99,14 +97,31 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 		return false;
 	dataModel.setPOC(mpoc, isforcereadfata);
 	dataModel.readPic();
-	//图片内容更新，通知绘制模块;
+	//存储当前POC;
+	curyuv.setPOC(mpoc);
+	//图片内容更新，通知绘制模块，传输相关信息，除了绘制模式;
 	longmanEvt drawImage(EvtTYPE2);
  	drawImage.setParam("CommandName", "draw");
 	drawImage.setParam("Image", QVariant::fromValue((void*)(&mImage)));
-	drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
+	int l = curyuv.getLayer();
+	int p = curyuv.getPoc();
+	drawImage.setParam("layer", l);
+	drawImage.setParam("poc", p);
 	drawImage.dispatch();
-	//存储当前POC;
-	curyuv.setPOC(mpoc);
+	Pel *mYptr = nullptr; Pel *mUptr = nullptr; Pel *mVptr = nullptr;
+	dataModel.getyuvPtr(mYptr, mUptr, mVptr);
+	//通知dataView像素显示窗口，传输相关参数;
+	longmanEvt lmdatahview(EvtTYPE1);
+	lmdatahview.setParam("CommandName", "set_dataview");
+	lmdatahview.setParam("y_ptr", QVariant::fromValue((void*)(mYptr)));
+	lmdatahview.setParam("u_ptr", QVariant::fromValue((void*)(mUptr)));
+	lmdatahview.setParam("v_ptr", QVariant::fromValue((void*)(mVptr)));
+	lmdatahview.setParam("width", dataModel.getimageWidth());
+	lmdatahview.setParam("height", dataModel.getimageHeight());
+	lmdatahview.setParam("format", dataModel.getformat());
+	lmdatahview.setParam("xIn16", 0);
+	lmdatahview.setParam("yIn16", 0);
+	lmdatahview.dispatch();
 	return true;
 }
 
@@ -115,21 +130,7 @@ bool cmdProcessThread::showyuvData(longmanEvt& rEvt)
 	bool showdataEnableFromAPPWin = rEvt.getParam("enabledByButton").toBool();
 	if (showdataEnableFromAPPWin)
 	{
-		Pel *mYptr = nullptr; Pel *mUptr = nullptr; Pel *mVptr = nullptr;
-		dataModel.getyuvPtr(mYptr, mUptr, mVptr);
-		//通知像素显示窗口;
-		longmanEvt lmdatahview(EvtTYPE1);
-		lmdatahview.setParam("CommandName", "set_dataview");
-		lmdatahview.setParam("y_ptr", QVariant::fromValue((void*)(mYptr)));
-		lmdatahview.setParam("u_ptr", QVariant::fromValue((void*)(mUptr)));
-		lmdatahview.setParam("v_ptr", QVariant::fromValue((void*)(mVptr)));
-		lmdatahview.setParam("width", dataModel.getimageWidth());
-		lmdatahview.setParam("height", dataModel.getimageHeight());
-		lmdatahview.setParam("format", dataModel.getformat());
-		lmdatahview.setParam("xIn16", 0);
-		lmdatahview.setParam("yIn16", 0);
-		lmdatahview.dispatch();
-		//通知绘制模块,进行绘制;
+		//通知绘制模块,传递绘制模式;
 		longmanEvt drawImage(EvtTYPE2);
 		drawImage.setParam("CommandName", "draw");
 		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::yuvdata);
@@ -182,7 +183,7 @@ bool cmdProcessThread::showcuDepth(longmanEvt& rEvt)
 		return false;
 	if (!curyuv.getdecoded())
 		return false;
-	if (showcuDepthEnableFromAPPWin)
+	if (!showcuDepthEnableFromAPPWin)
 	{
 		//通知绘制模块,退回正常显示;
 		longmanEvt drawImage(EvtTYPE2);
@@ -193,9 +194,7 @@ bool cmdProcessThread::showcuDepth(longmanEvt& rEvt)
 	else
 	{
 		//应该是解码状态下,进入该分支;
-		int l = curyuv.getLayer();
-		int p = curyuv.getPoc();
-		//通知绘制模块,退回正常显示;
+		//通知绘制模块,改变绘制模式;
 		longmanEvt drawImage(EvtTYPE2);
 		drawImage.setParam("CommandName", "draw");
 		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::cudepth);

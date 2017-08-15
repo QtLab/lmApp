@@ -409,7 +409,7 @@
              <item>
               <widget class="QPushButton" name="f6Button">
                <property name="text">
-                <string>f6</string>
+                <string>CU Split</string>
                </property>
               </widget>
              </item>

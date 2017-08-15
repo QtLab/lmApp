@@ -109,6 +109,9 @@
     <ClInclude Include="src\appData\lmDrawManage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\appData\lmCUSplitDraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -241,6 +244,9 @@
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="src\appData\lmDrawManage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\appData\lmCUSplitDraw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

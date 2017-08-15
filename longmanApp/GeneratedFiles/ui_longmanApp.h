@@ -520,7 +520,7 @@ public:
         groupBox_2->setTitle(QApplication::translate("longmanAppClass", "Function Area", 0));
         f2Button->setText(QApplication::translate("longmanAppClass", "open yuv", 0));
         f1Button->setText(QApplication::translate("longmanAppClass", "show Pixel", 0));
-        f6Button->setText(QApplication::translate("longmanAppClass", "f6", 0));
+        f6Button->setText(QApplication::translate("longmanAppClass", "CU Split", 0));
         f4Button->setText(QApplication::translate("longmanAppClass", "open bitstr", 0));
         f3Button->setText(QApplication::translate("longmanAppClass", "save image", 0));
         f5Button->setText(QApplication::translate("longmanAppClass", "history", 0));
