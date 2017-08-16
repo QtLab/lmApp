@@ -62,7 +62,6 @@ public:
         yuvParamSet->resize(600, 120);
         yuvParamSet->setMinimumSize(QSize(600, 120));
         yuvParamSet->setMaximumSize(QSize(619, 120));
-        yuvParamSet->setAcceptDrops(false);
         gridLayout_2 = new QGridLayout(yuvParamSet);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);

@@ -1,6 +1,10 @@
 #include "longmanApp.h"
+#include <QMimeData>
+#include <QKeyEvent>
+#include <QFileDialog>
+#include <QStandardPaths> 
+#include <QPushButton>
 #include<QImageWriter>
-
 //命令构造说明;
 //1.("CommandName","update_mainwindow")+("yuv_currentPOC",int)+("yuv_totalFrames",int)+;
 //("yuv_width",int)+("yuv_height",int)+("image",uchar*)+;
@@ -17,7 +21,8 @@ longmanApp::longmanApp(QWidget *parent)
 	m_DataView(new lmDataView(this)),
 	mBitParseCFG(new lmParserBitConfigure(this)),
 	mlayerList(new lmLayerList(this)),
-	mMsgOutput(new lmMsgView(this))
+	mMsgOutput(new lmMsgView(this)),
+	mAbout(new lmAboutDialog(this))
 {
 	timeLine.stop();
 	ui.setupUi(this);
@@ -29,6 +34,8 @@ longmanApp::longmanApp(QWidget *parent)
 	listenParam("update_mainwindow", pcupdate);
 	CallBackFunc pcupdate1 = std::bind(&longmanApp::openyuvFailed, this, std::placeholders::_1);
 	listenParam("fail_openyuv", pcupdate1);
+	CallBackFunc pcupdate2 = std::bind(&longmanApp::saveCurImage, this, std::placeholders::_1);
+	listenParam("save_curImage_mainwindow", pcupdate2);
 	setModelName("MainWindow_View_Model");
 	//
 	//connect(ui.FrameIdxSlider, SIGNAL(ValueChanged(int)), this, SLOT(on_FrameIdxSlider_ValueChanged(int)));
@@ -38,6 +45,8 @@ longmanApp::longmanApp(QWidget *parent)
 	ui.actionSave_as_image->setEnabled(false);
 	ui.f3Button->setEnabled(false);
 	ui.f1Button->setEnabled(false);
+	//允许拖拽文件;
+	setAcceptDrops(true);
 	connect(&timeLine, SIGNAL(frameChanged(int)), this, SLOT(player(int)));
 }
 
@@ -80,6 +89,15 @@ bool longmanApp::openyuvFailed(longmanEvt&)
 	openFailed = true;
 	//强制刷新;
 	sendEvttoChnagePOC(0);
+	return true;
+}
+
+bool longmanApp::saveCurImage(longmanEvt& rEvt)
+{
+	QVariant vValue = rEvt.getParam("image_to_save");
+	QPixmap *mcImage = (QPixmap*)vValue.value<void *>();
+	if (mcImage != nullptr)
+		curImage = mcImage;
 	return true;
 }
 
@@ -150,12 +168,6 @@ void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
 
 void longmanApp::on_actionOpen_triggered()
 {
-	//这里还有BUG，20170810;
-// 	if (OpenNum==-1)
-// 	{
-// 		ui.FrameIdxSlider->setMinimum(-1);
-// 		ui.FrameIdxSlider->setValue(-1);
-// 	}
 	QFileDialog dialog(this, QStringLiteral("open yuv file"));
 	if (openFailed) {
 		const QString defaultLocations = QDir::currentPath()+"/cache";
@@ -198,7 +210,7 @@ void longmanApp::on_actionOpen_triggered()
 
 void longmanApp::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, QStringLiteral("关于程序"), QStringLiteral("这是Longman的测试程序"));
+	mAbout->show();
 }
 
 void longmanApp::on_actionAboutQT_triggered()
@@ -300,8 +312,8 @@ void longmanApp::on_actionSave_as_image_triggered()
 	if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty())
 	{
 		FliePath = dialog.selectedFiles().first();
-		QImageWriter writer(FliePath);
-		writer.write(*imageSave);
+		curImage->save(FliePath,0,100);
+
 	}
 }
 
@@ -357,5 +369,15 @@ void longmanApp::on_f6Button_clicked()
 	showcuDepth.setParam("enabledByButton", !showCUdepthEnable);
 	showcuDepth.dispatch();
 	showCUdepthEnable = !showCUdepthEnable;
+}
+
+void longmanApp::dropEvent(QDropEvent *event)
+{
+	event->acceptProposedAction();
+
+	if (event->mimeData()->urls().empty())
+		return;
+	QString strFilename = event->mimeData()->urls().at(0).toLocalFile();
+	int xx = 0;
 }
 

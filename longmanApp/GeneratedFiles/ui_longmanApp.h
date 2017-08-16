@@ -523,7 +523,7 @@ public:
         f6Button->setText(QApplication::translate("longmanAppClass", "CU Split", 0));
         f4Button->setText(QApplication::translate("longmanAppClass", "open bitstr", 0));
         f3Button->setText(QApplication::translate("longmanAppClass", "save image", 0));
-        f5Button->setText(QApplication::translate("longmanAppClass", "history", 0));
+        f5Button->setText(QApplication::translate("longmanAppClass", "Bit map", 0));
         groupBox->setTitle(QApplication::translate("longmanAppClass", "List Area", 0));
     } // retranslateUi
 

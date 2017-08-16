@@ -42,19 +42,19 @@ lmDrawManage::~lmDrawManage()
 
 bool lmDrawManage::handleEvt(longmanEvt& rEvt)
 {
-	//设置绘制模式时，不传递其他参数;
 	//处理绘制模式;
 	int mtypec = rEvt.getParam("drawTypeCode").toInt();
 	if (mtypec > drawType::num)
 		return false;
 	//处理参数;
+	//mtypec==0表示没有传输模式信息;
 	if (mtypec!=0)
 	{
 		mdrawtype = drawType(mtypec);
 	}
 	else
 	{
-		//是否是点击图片产生的参数变化;
+		//来自图片点击的参数,这里考虑改进为索引的方式;
 		if (rEvt.getParam("from_picture_clicked").toBool())
 		{
 			mousex = rEvt.getParam("yuvdata_xmouse").toInt();

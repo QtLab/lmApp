@@ -55,7 +55,7 @@ void lmCUSplitDraw::lmDrawFuction(QPainter &cPainter)
 			cuPos[0] = trs.rIdx2xPel(rIdx);
 			cuPos[1] = trs.rIdx2yPel(rIdx);
 			cuSize = sqrt(zd)*SIZE_4_4;
-			cPainter.setPen(QColor(0, 0, 255, cuSize*4-1));
+			cPainter.setPen(QColor(0, 0, 255));
 			cPainter.drawRect(ctux+cuPos[0], ctuy+cuPos[1], cuSize, cuSize);
 			//±ê¼ÇCU;
 			if (px>=(ctux + cuPos[0])&& py>=(ctuy + cuPos[1])

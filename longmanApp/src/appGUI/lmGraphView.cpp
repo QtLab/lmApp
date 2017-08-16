@@ -33,7 +33,6 @@ lmGraphView::lmGraphView(QWidget *parent)
 	imagegroup.setTransformationMode(Qt::FastTransformation);
 	msence.addItem(&imagegroup);
 	setScene(&msence);
-	setAcceptDrops(false);
 	setCursor(Qt::CrossCursor);
 	//
 	curScale = 1;
@@ -80,6 +79,11 @@ bool lmGraphView::xupdate(longmanEvt & rEvt)
 	imageWidth=mcImage->width();
 	imageHeight = mcImage->height();
 	imagegroup.setPixmap(*mcImage);
+	//保存当前场景;
+	longmanEvt saveImage(EvtTYPE1);
+	saveImage.setParam("CommandName", "save_curImage_mainwindow");
+	saveImage.setParam("image_to_save", QVariant::fromValue((void*)(mcImage)));
+	saveImage.dispatch();
 	m_controlMouse = true;
 	return true;
 }
