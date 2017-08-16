@@ -76,7 +76,7 @@ bool cmdProcessThread::openyuvfile(longmanEvt& rpevt)
 	//修改绘制模式;
 	longmanEvt drawImage(EvtTYPE2);
 	drawImage.setParam("CommandName", "draw");
-	drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
+	drawImage.setParam("do_draw", true);
 	drawImage.dispatch();
 	return true;
 }
@@ -100,13 +100,14 @@ bool cmdProcessThread::changeimagepoc(longmanEvt& rpevt)
 	//存储当前POC;
 	curyuv.setPOC(mpoc);
 	//图片内容更新，通知绘制模块，传输相关信息，除了绘制模式;
+	int l = curyuv.getLayer();
+	int p = curyuv.getPoc();
 	longmanEvt drawImage(EvtTYPE2);
  	drawImage.setParam("CommandName", "draw");
 	drawImage.setParam("Image", QVariant::fromValue((void*)(&mImage)));
-	int l = curyuv.getLayer();
-	int p = curyuv.getPoc();
 	drawImage.setParam("layer", l);
 	drawImage.setParam("poc", p);
+	drawImage.setParam("do_draw", true);
 	drawImage.dispatch();
 	Pel *mYptr = nullptr; Pel *mUptr = nullptr; Pel *mVptr = nullptr;
 	dataModel.getyuvPtr(mYptr, mUptr, mVptr);
@@ -183,23 +184,17 @@ bool cmdProcessThread::showcuDepth(longmanEvt& rEvt)
 		return false;
 	if (!curyuv.getdecoded())
 		return false;
+	longmanEvt drawImage(EvtTYPE2);
+	drawImage.setParam("CommandName", "draw");
 	if (!showcuDepthEnableFromAPPWin)
-	{
 		//通知绘制模块,退回正常显示;
-		longmanEvt drawImage(EvtTYPE2);
-		drawImage.setParam("CommandName", "draw");
 		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
-		drawImage.dispatch();
-	}
 	else
-	{
 		//应该是解码状态下,进入该分支;
 		//通知绘制模块,改变绘制模式;
-		longmanEvt drawImage(EvtTYPE2);
-		drawImage.setParam("CommandName", "draw");
 		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::cudepth);
-		drawImage.dispatch();
-	}
+	drawImage.setParam("do_draw", true);
+	drawImage.dispatch();
 	return true;
 }
 

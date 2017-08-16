@@ -209,6 +209,7 @@ void lmDecInfo::xReadDepthInfo(int layernum)
 	std::ifstream pf(gAbsPath + mOutTxtFrame[0], std::ifstream::in);
 	if (pf.fail())
 		return;
+	mDepth.clear();
 	for (int i = 0; i < layernum; i++)
 	{
 		//为每层分配空间;

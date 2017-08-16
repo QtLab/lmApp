@@ -364,7 +364,7 @@ public:
         horizontalLayout_6->addWidget(tabWidget);
 
         dockWidget_2->setWidget(dockWidgetContents_2);
-        longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(4), dockWidget_2);
+        longmanAppClass->addDockWidget(static_cast<Qt::DockWidgetArea>(8), dockWidget_2);
         dockWidget_1 = new QDockWidget(longmanAppClass);
         dockWidget_1->setObjectName(QStringLiteral("dockWidget_1"));
         dockWidget_1->setFeatures(QDockWidget::DockWidgetFeatureMask);

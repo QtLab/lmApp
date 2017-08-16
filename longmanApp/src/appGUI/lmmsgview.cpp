@@ -7,6 +7,8 @@ lmMsgView::lmMsgView(QWidget *parent) :
     ui(new Ui::lmMsgView)
 {
     ui->setupUi(this);
+	//ÉèÖÃ×î¶à¶ÎÂä;
+	ui->textBrowser->document()->setMaximumBlockCount(5);
 	mWarningbox.setWindowTitle("Attention");
 	setWindowTitle(tr("lmMsgView"));
 	setModelName("Message_View_Model_inMW");
@@ -43,9 +45,6 @@ bool lmMsgView::handleMsg(longmanEvt& rEvt)
 		mWarningbox.setText(msgInfo);
 		mWarningbox.show();
 	}
-	if (ui->textBrowser->backwardHistoryCount() > 5)
-		ui->textBrowser->clear();
 	ui->textBrowser->append(msgInfo);
-
 	return true;
 }

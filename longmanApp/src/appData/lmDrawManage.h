@@ -22,9 +22,10 @@ public:
 	bool handleEvt(longmanEvt&);
 private:
 	void showimage();
-	void showyuvdataDraw(longmanEvt& rEvt);
-	void showcuDepthDraw(longmanEvt& rEvt);
+	void showyuvdataDraw();
+	void showcuDepthDraw();
 	void sendSignal(QPixmap * pmap);
+	void doDraw();
 private:
 	lmImageDrawBase *mImageDraw;
 	QImage* curImage=nullptr;

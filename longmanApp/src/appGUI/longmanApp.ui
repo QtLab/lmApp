@@ -77,7 +77,7 @@
     <string>Player Area</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>4</number>
+    <number>8</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
     <layout class="QHBoxLayout" name="horizontalLayout_6">

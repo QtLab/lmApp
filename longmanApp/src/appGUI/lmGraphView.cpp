@@ -134,6 +134,7 @@ void lmGraphView::mousePressEvent(QMouseEvent * event)
 			showdata.setParam("from_picture_clicked", true);
 			showdata.setParam("yuvdata_xmouse", mouseInImageX);
 			showdata.setParam("yuvdata_ymouse", mouseInImageY);
+			showdata.setParam("do_draw", true);
 			showdata.dispatch();
 			//通知像素显示窗口;
 			longmanEvt dataview(EvtTYPE1);

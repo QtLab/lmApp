@@ -4,7 +4,7 @@
 
 lmDrawManage::lmDrawManage():
 	mImageDraw(new lmImageDraw()),
-	mdrawtype(drawType::num)
+	mdrawtype(drawType::showImage)
 {
 }
 
@@ -47,7 +47,7 @@ bool lmDrawManage::handleEvt(longmanEvt& rEvt)
 	int mtypec = rEvt.getParam("drawTypeCode").toInt();
 	if (mtypec > drawType::num)
 		return false;
-	//若改变绘制模式,则应该保护参数;
+	//处理参数;
 	if (mtypec!=0)
 	{
 		mdrawtype = drawType(mtypec);
@@ -67,30 +67,17 @@ bool lmDrawManage::handleEvt(longmanEvt& rEvt)
 		}
 
 	}
-	//然后单独处理图片指针;
+	//处理图片指针;
 	QVariant vValue = rEvt.getParam("Image");
 	if (vValue != 0)
 		curImage = (QImage*)vValue.value<void *>();
 	if (curImage==nullptr)
 		return false;
 
-
-	switch (mdrawtype)
-	{
-	case lmDrawManage::showImage:
-		showimage();
-		break;
-	case lmDrawManage::yuvdata:
-		showyuvdataDraw(rEvt);
-		break;
-	case lmDrawManage::cudepth:
-		showcuDepthDraw(rEvt);
-		break;
-	case lmDrawManage::ctubit:
-		break;
-	default:
-		break;
-	}
+	//处理绘制标志;
+	bool dodraw= rEvt.getParam("do_draw").toBool();
+	if (dodraw)
+		doDraw();
 	return true;
 }
 
@@ -100,22 +87,20 @@ void lmDrawManage::showimage()
 	sendSignal(mpixmap);
 }
 
-void lmDrawManage::showyuvdataDraw(longmanEvt& rEvt)
+void lmDrawManage::showyuvdataDraw()
 {
 
-	int yuvdata_xmouse = rEvt.getParam("yuvdata_xmouse").toInt();
-	int yuvdata_ymouse = rEvt.getParam("yuvdata_ymouse").toInt();
 	//装饰后的类应该使用局部对象的方式，不对lmImageDrawBase对象进行任何操作;
 	//下边这个绘制大小框的对象会被自动销毁,析构只会涉及到lmImageDrawFuc;
 	//而lmImageDrawFuc是通过指针调用lmImageDrawBase对象，因此应该不会对
 	//本类中的lmImageDrawBase对象产生任何影响;
-	lmNormalDraw mfdraw(mImageDraw, yuvdata_xmouse, yuvdata_ymouse);
+	lmNormalDraw mfdraw(mImageDraw, mousex, mousey);
 	QPixmap *mpixmap = mfdraw.lmDraw(*curImage);
 	sendSignal(mpixmap);
 
 }
 
-void lmDrawManage::showcuDepthDraw(longmanEvt& rEvt)
+void lmDrawManage::showcuDepthDraw()
 {
 
 
@@ -130,4 +115,24 @@ void lmDrawManage::sendSignal(QPixmap * pmap)
 	lmgraphview.setParam("CommandName", "update_image");
 	lmgraphview.setParam("Image", QVariant::fromValue((void*)(pmap)));
 	lmgraphview.dispatch();
+}
+
+void lmDrawManage::doDraw()
+{
+	switch (mdrawtype)
+	{
+	case lmDrawManage::showImage:
+		showimage();
+		break;
+	case lmDrawManage::yuvdata:
+		showyuvdataDraw();
+		break;
+	case lmDrawManage::cudepth:
+		showcuDepthDraw();
+		break;
+	case lmDrawManage::ctubit:
+		break;
+	default:
+		break;
+	}
 }
