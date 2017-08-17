@@ -13,9 +13,10 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -23,19 +24,26 @@ QT_BEGIN_NAMESPACE
 class Ui_lmLayerList
 {
 public:
-    QGridLayout *gridLayout;
+    QVBoxLayout *verticalLayout;
+    QLabel *label;
     QListWidget *listWidget;
 
     void setupUi(QWidget *lmLayerList)
     {
         if (lmLayerList->objectName().isEmpty())
             lmLayerList->setObjectName(QStringLiteral("lmLayerList"));
-        gridLayout = new QGridLayout(lmLayerList);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        lmLayerList->resize(155, 210);
+        verticalLayout = new QVBoxLayout(lmLayerList);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        label = new QLabel(lmLayerList);
+        label->setObjectName(QStringLiteral("label"));
+
+        verticalLayout->addWidget(label);
+
         listWidget = new QListWidget(lmLayerList);
         listWidget->setObjectName(QStringLiteral("listWidget"));
 
-        gridLayout->addWidget(listWidget, 0, 0, 1, 1);
+        verticalLayout->addWidget(listWidget);
 
 
         retranslateUi(lmLayerList);
@@ -46,6 +54,7 @@ public:
     void retranslateUi(QWidget *lmLayerList)
     {
         lmLayerList->setWindowTitle(QApplication::translate("lmLayerList", "Form", 0));
+        label->setText(QApplication::translate("lmLayerList", "\345\261\202\347\272\247\345\210\227\350\241\250", 0));
     } // retranslateUi
 
 };

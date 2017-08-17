@@ -32,7 +32,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>bitstreampath</string>
+         <string>码流路径</string>
         </property>
        </widget>
       </item>
@@ -43,13 +43,6 @@
        <widget class="QToolButton" name="toolButton">
         <property name="text">
          <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>-b x</string>
         </property>
        </widget>
       </item>
@@ -65,23 +58,23 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>LayertoDec</string>
+         <string>解码层级</string>
         </property>
        </widget>
       </item>
       <item>
        <layout class="QVBoxLayout" name="layer_0">
         <item>
-         <widget class="QCheckBox" name="checkBox_0">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string/>
+           <string>0</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QCheckBox" name="checkBox_0">
           <property name="text">
-           <string>0</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -90,16 +83,16 @@
       <item>
        <layout class="QVBoxLayout" name="layer_1">
         <item>
-         <widget class="QCheckBox" name="checkBox_1">
+         <widget class="QLabel" name="label_7">
           <property name="text">
-           <string/>
+           <string>1</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_7">
+         <widget class="QCheckBox" name="checkBox_1">
           <property name="text">
-           <string>1</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -108,16 +101,16 @@
       <item>
        <layout class="QVBoxLayout" name="layer_2">
         <item>
-         <widget class="QCheckBox" name="checkBox_2">
+         <widget class="QLabel" name="label_8">
           <property name="text">
-           <string/>
+           <string>2</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_8">
+         <widget class="QCheckBox" name="checkBox_2">
           <property name="text">
-           <string>2</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -144,16 +137,16 @@
       <item>
        <layout class="QVBoxLayout" name="layer_4">
         <item>
-         <widget class="QCheckBox" name="checkBox_4">
+         <widget class="QLabel" name="label_10">
           <property name="text">
-           <string/>
+           <string>4</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_10">
+         <widget class="QCheckBox" name="checkBox_4">
           <property name="text">
-           <string>4</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -162,16 +155,16 @@
       <item>
        <layout class="QVBoxLayout" name="layer_5">
         <item>
-         <widget class="QCheckBox" name="checkBox_5">
+         <widget class="QLabel" name="label_5">
           <property name="text">
-           <string/>
+           <string>5</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="QCheckBox" name="checkBox_5">
           <property name="text">
-           <string>5</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -180,16 +173,16 @@
       <item>
        <layout class="QVBoxLayout" name="layer_6">
         <item>
-         <widget class="QCheckBox" name="checkBox_6">
+         <widget class="QLabel" name="label_11">
           <property name="text">
-           <string/>
+           <string>6</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_11">
+         <widget class="QCheckBox" name="checkBox_6">
           <property name="text">
-           <string>6</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -198,16 +191,16 @@
       <item>
        <layout class="QVBoxLayout" name="layer_7">
         <item>
-         <widget class="QCheckBox" name="checkBox_7">
+         <widget class="QLabel" name="label_12">
           <property name="text">
-           <string/>
+           <string>7</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_12">
+         <widget class="QCheckBox" name="checkBox_7">
           <property name="text">
-           <string>7</string>
+           <string/>
           </property>
          </widget>
         </item>

@@ -26,8 +26,7 @@ public:
     {
         if (lmGraphView->objectName().isEmpty())
             lmGraphView->setObjectName(QStringLiteral("lmGraphView"));
-        lmGraphView->resize(1024, 768);
-        lmGraphView->setMinimumSize(QSize(640, 480));
+        lmGraphView->resize(1024, 767);
         QBrush brush(QColor(222, 255, 236, 255));
         brush.setStyle(Qt::NoBrush);
         lmGraphView->setBackgroundBrush(brush);

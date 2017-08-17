@@ -28,7 +28,7 @@ longmanApp::longmanApp(QWidget *parent)
 	ui.setupUi(this);
 	ui.gridLayout_8->addWidget(m_imageView);
 	
-	ui.gridLayout_6->addWidget(mlayerList,0,0, Qt::AlignTop);
+	ui.gridLayout_6->addWidget(mlayerList);
 	ui.gridLayout_10->addWidget(mMsgOutput);
 	CallBackFunc pcupdate = std::bind(&longmanApp::updatemainwindow, this, std::placeholders::_1);
 	listenParam("update_mainwindow", pcupdate);
@@ -168,7 +168,7 @@ void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
 
 void longmanApp::on_actionOpen_triggered()
 {
-	QFileDialog dialog(this, QStringLiteral("open yuv file"));
+	QFileDialog dialog(this, QStringLiteral("yuvÎÄ¼þ"));
 	if (openFailed) {
 		const QString defaultLocations = QDir::currentPath()+"/cache";
 		dialog.setDirectory(defaultLocations.isEmpty() ? QDir::currentPath() : defaultLocations);

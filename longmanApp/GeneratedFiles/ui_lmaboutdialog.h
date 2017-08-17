@@ -32,13 +32,17 @@ public:
     QLabel *label_8;
     QLabel *label_4;
     QLabel *label_5;
+    QLabel *label_6;
+    QLabel *label_7;
+    QLabel *label_9;
+    QLabel *label_10;
     QSpacerItem *verticalSpacer;
 
     void setupUi(QDialog *lmAboutDialog)
     {
         if (lmAboutDialog->objectName().isEmpty())
             lmAboutDialog->setObjectName(QStringLiteral("lmAboutDialog"));
-        lmAboutDialog->resize(329, 211);
+        lmAboutDialog->resize(329, 287);
         verticalLayout = new QVBoxLayout(lmAboutDialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalSpacer_2 = new QSpacerItem(292, 26, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -98,6 +102,40 @@ public:
 
         verticalLayout->addWidget(label_5);
 
+        label_6 = new QLabel(lmAboutDialog);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setFont(font2);
+        label_6->setAlignment(Qt::AlignCenter);
+
+        verticalLayout->addWidget(label_6);
+
+        label_7 = new QLabel(lmAboutDialog);
+        label_7->setObjectName(QStringLiteral("label_7"));
+        QFont font3;
+        font3.setFamily(QString::fromUtf8("\345\256\213\344\275\223"));
+        font3.setPointSize(20);
+        font3.setBold(true);
+        font3.setWeight(75);
+        label_7->setFont(font3);
+        label_7->setTextFormat(Qt::PlainText);
+        label_7->setAlignment(Qt::AlignCenter);
+
+        verticalLayout->addWidget(label_7);
+
+        label_9 = new QLabel(lmAboutDialog);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setFont(font2);
+        label_9->setAlignment(Qt::AlignCenter);
+
+        verticalLayout->addWidget(label_9);
+
+        label_10 = new QLabel(lmAboutDialog);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setFont(font2);
+        label_10->setAlignment(Qt::AlignCenter);
+
+        verticalLayout->addWidget(label_10);
+
         verticalSpacer = new QSpacerItem(292, 26, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -114,9 +152,13 @@ public:
         label->setText(QApplication::translate("lmAboutDialog", "LM SHVC bitstream player", 0));
         label_2->setText(QApplication::translate("lmAboutDialog", "Version 0.9.1", 0));
         label_3->setText(QApplication::translate("lmAboutDialog", "<html><head/><body><p>Author: Longman Lee (\346\235\216\351\207\221\351\276\231)</p></body></html>", 0));
-        label_8->setText(QApplication::translate("lmAboutDialog", "<html><head/><body><p><a href=\"651138628@qq.com\"><span style=\" text-decoration: underline; color:#00007f;\">\344\275\234\350\200\205\351\202\256\347\256\261</span></a></p></body></html>", 0));
+        label_8->setText(QApplication::translate("lmAboutDialog", "<html><head/><body><p><a href=\"651138628@qq.com\">\344\275\234\350\200\205\351\202\256\347\256\261\357\274\232651138628@qq.com</span></a></p></body></html>", 0));
         label_4->setText(QApplication::translate("lmAboutDialog", "Ningbo University, Ningbo", 0));
-        label_5->setText(QApplication::translate("lmAboutDialog", "<html><head/><body><p><a href=\"https://github.com/LongmanLee/lmApp\"><span style=\" text-decoration: underline; color:#0000ff;\">\351\241\271\347\233\256\344\270\273\351\241\265</span></a></p></body></html>", 0));
+        label_5->setText(QApplication::translate("lmAboutDialog", "<html><head/><body><p><a href=\"https://github.com/LongmanLee/lmApp\"><span style=\" text-decoration: underline; color:#000000;\">\351\241\271\347\233\256\344\270\273\351\241\265(\345\217\263\351\224\256\345\244\215\345\210\266)</span></a></p></body></html>", 0));
+        label_6->setText(QApplication::translate("lmAboutDialog", "https://github.com/LongmanLee/lmApp", 0));
+        label_7->setText(QApplication::translate("lmAboutDialog", "\346\263\250\346\204\217", 0));
+        label_9->setText(QApplication::translate("lmAboutDialog", "\350\213\245\345\256\211\350\243\205\345\234\250C\347\233\230\357\274\214\350\257\267\344\273\245\347\256\241\347\220\206\345\221\230\350\272\253\344\273\275\350\277\220\350\241\214", 0));
+        label_10->setText(QApplication::translate("lmAboutDialog", "\346\216\250\350\215\220\345\256\211\350\243\205\345\234\250\351\235\236\347\263\273\347\273\237\347\233\230", 0));
     } // retranslateUi
 
 };

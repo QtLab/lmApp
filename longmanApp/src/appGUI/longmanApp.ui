@@ -7,27 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>1113</width>
-    <height>871</height>
+    <height>853</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>1024</width>
-    <height>768</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>longmanApp</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <property name="minimumSize">
-    <size>
-     <width>768</width>
-     <height>640</height>
-    </size>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_7">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout_6">
+    <item>
      <layout class="QGridLayout" name="gridLayout_8"/>
     </item>
    </layout>
@@ -43,7 +31,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>file</string>
+     <string>文件</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave_as_image"/>
@@ -51,12 +39,12 @@
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>edit</string>
+     <string>编辑</string>
     </property>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>about</string>
+     <string>关于</string>
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQT"/>
@@ -68,13 +56,13 @@
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget_2">
    <property name="features">
-    <set>QDockWidget::DockWidgetFeatureMask</set>
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="allowedAreas">
     <set>Qt::BottomDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Player Area</string>
+    <string>功能窗口</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -91,17 +79,13 @@
        </property>
        <widget class="QWidget" name="tab_1">
         <attribute name="title">
-         <string>msg</string>
+         <string>帧信息</string>
         </attribute>
-        <layout class="QGridLayout" name="gridLayout_11">
-         <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout_10"/>
-         </item>
-        </layout>
+        <layout class="QGridLayout" name="gridLayout_11"/>
        </widget>
        <widget class="QWidget" name="tab_5">
         <attribute name="title">
-         <string>yuv player</string>
+         <string>主要功能</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
@@ -116,7 +100,10 @@
             </sizepolicy>
            </property>
            <property name="title">
-            <string>Player Control</string>
+            <string>yuv 播放</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="0" column="0">
@@ -124,7 +111,7 @@
               <item row="0" column="4">
                <widget class="QPushButton" name="beginButton">
                 <property name="text">
-                 <string>Home</string>
+                 <string>复位</string>
                 </property>
                </widget>
               </item>
@@ -134,7 +121,7 @@
                  <string>快捷键“Space”</string>
                 </property>
                 <property name="text">
-                 <string>Paly</string>
+                 <string>播放</string>
                 </property>
                 <property name="shortcut">
                  <string>Space</string>
@@ -144,21 +131,21 @@
               <item row="1" column="0">
                <widget class="QPushButton" name="stopButton">
                 <property name="text">
-                 <string>Stop</string>
+                 <string>停止</string>
                 </property>
                </widget>
               </item>
               <item row="0" column="1">
                <widget class="QPushButton" name="nextButton">
                 <property name="text">
-                 <string>Next</string>
+                 <string>步进</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
                <widget class="QPushButton" name="backButton">
                 <property name="text">
-                 <string>Back</string>
+                 <string>步退</string>
                 </property>
                </widget>
               </item>
@@ -171,7 +158,7 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>End</string>
+                 <string>末尾</string>
                 </property>
                </widget>
               </item>
@@ -197,7 +184,7 @@
                 <item>
                  <widget class="QLabel" name="label">
                   <property name="text">
-                   <string>Current Frame:</string>
+                   <string>当前帧</string>
                   </property>
                  </widget>
                 </item>
@@ -217,7 +204,7 @@
                 <item>
                  <widget class="QLabel" name="label1_2">
                   <property name="text">
-                   <string>Total Frame:</string>
+                   <string>总帧数</string>
                   </property>
                  </widget>
                 </item>
@@ -243,7 +230,7 @@
                 <item>
                  <widget class="QLabel" name="label1">
                   <property name="text">
-                   <string>Frame Rate:</string>
+                   <string>帧率</string>
                   </property>
                  </widget>
                 </item>
@@ -273,7 +260,10 @@
          <item>
           <widget class="QGroupBox" name="groupBox_3">
            <property name="title">
-            <string>Image Info</string>
+            <string>信息</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="0">
@@ -281,7 +271,7 @@
               <item row="1" column="0">
                <widget class="QLabel" name="label_5">
                 <property name="text">
-                 <string>height</string>
+                 <string>高：</string>
                 </property>
                </widget>
               </item>
@@ -298,7 +288,7 @@
               <item row="0" column="0">
                <widget class="QLabel" name="label_6">
                 <property name="text">
-                 <string>width</string>
+                 <string>宽：</string>
                 </property>
                </widget>
               </item>
@@ -315,14 +305,17 @@
               <item row="0" column="2">
                <widget class="QLabel" name="label_2">
                 <property name="text">
-                 <string>format</string>
+                 <string>采样格式</string>
                 </property>
                </widget>
               </item>
-              <item row="0" column="3">
+              <item row="1" column="2">
                <widget class="QLabel" name="label_format">
                 <property name="text">
                  <string>420</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -332,20 +325,62 @@
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>功能</string>
            </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Minimum</enum>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="f2Button">
+                <property name="text">
+                 <string>打开yuv</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="f6Button">
+                <property name="text">
+                 <string>CU分割</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="f3Button">
+                <property name="text">
+                 <string>保存图片</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="f1Button">
+                <property name="text">
+                 <string>显示像素</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="f4Button">
+                <property name="text">
+                 <string>打开码流</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="f5Button">
+                <property name="text">
+                 <string>比特分布</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -354,139 +389,57 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidget_1">
+  <widget class="QDockWidget" name="dockWidget">
    <property name="features">
-    <set>QDockWidget::DockWidgetFeatureMask</set>
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="allowedAreas">
-    <set>Qt::NoDockWidgetArea</set>
+    <set>Qt::LeftDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Function Area</string>
+    <string>查看窗口</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QGroupBox" name="FucAeraBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string>Function Area</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <widget class="QPushButton" name="f2Button">
-               <property name="text">
-                <string>open yuv</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="f1Button">
-               <property name="text">
-                <string>show Pixel</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="f6Button">
-               <property name="text">
-                <string>CU Split</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <widget class="QPushButton" name="f4Button">
-               <property name="text">
-                <string>open bitstr</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="f3Button">
-               <property name="text">
-                <string>save image</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="f5Button">
-               <property name="text">
-                <string>Bit map</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer">
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QVBoxLayout" name="verticalLayout_7">
+     <item>
+      <widget class="Line" name="line_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="1" column="0">
-      <widget class="QGroupBox" name="groupBox">
-       <property name="title">
-        <string>List Area</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_6"/>
-        </item>
-       </layout>
       </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout_6"/>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout_10"/>
      </item>
     </layout>
    </widget>
   </widget>
   <action name="actionOpen">
    <property name="text">
-    <string>open</string>
+    <string>打开yuv</string>
    </property>
   </action>
   <action name="actionSave_as_image">
    <property name="text">
-    <string>save as image</string>
+    <string>保存为图片</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>about</string>
+    <string>关于</string>
    </property>
   </action>
   <action name="action">
@@ -501,7 +454,7 @@
   </action>
   <action name="actionOpen_SHVC_bitstream">
    <property name="text">
-    <string>open SHVC bitstream</string>
+    <string>打开shvc码流</string>
    </property>
   </action>
  </widget>

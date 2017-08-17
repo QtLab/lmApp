@@ -75,8 +75,8 @@ public:
     void retranslateUi(QWidget *lmMsgView)
     {
         lmMsgView->setWindowTitle(QApplication::translate("lmMsgView", "Form", 0));
-        label->setText(QApplication::translate("lmMsgView", "MessageOuput", 0));
-        pushButton->setText(QApplication::translate("lmMsgView", "clear", 0));
+        label->setText(QApplication::translate("lmMsgView", "\344\277\241\346\201\257\350\276\223\345\207\272", 0));
+        pushButton->setText(QApplication::translate("lmMsgView", "\346\270\205\351\231\244", 0));
     } // retranslateUi
 
 };

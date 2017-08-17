@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>MessageOuput</string>
+        <string>信息输出</string>
        </property>
       </widget>
      </item>
@@ -39,7 +39,7 @@
      <item>
       <widget class="QPushButton" name="pushButton">
        <property name="text">
-        <string>clear</string>
+        <string>清除</string>
        </property>
       </widget>
      </item>
