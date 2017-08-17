@@ -48,8 +48,8 @@ public:
     QLabel *label_8;
     QCheckBox *checkBox_2;
     QVBoxLayout *layer_3;
-    QCheckBox *checkBox_3;
     QLabel *label_9;
+    QCheckBox *checkBox_3;
     QVBoxLayout *layer_4;
     QLabel *label_10;
     QCheckBox *checkBox_4;
@@ -162,15 +162,15 @@ public:
         layer_3 = new QVBoxLayout();
         layer_3->setSpacing(6);
         layer_3->setObjectName(QStringLiteral("layer_3"));
-        checkBox_3 = new QCheckBox(layerSelectArea);
-        checkBox_3->setObjectName(QStringLiteral("checkBox_3"));
-
-        layer_3->addWidget(checkBox_3);
-
         label_9 = new QLabel(layerSelectArea);
         label_9->setObjectName(QStringLiteral("label_9"));
 
         layer_3->addWidget(label_9);
+
+        checkBox_3 = new QCheckBox(layerSelectArea);
+        checkBox_3->setObjectName(QStringLiteral("checkBox_3"));
+
+        layer_3->addWidget(checkBox_3);
 
 
         LayerArea->addLayout(layer_3);
@@ -268,8 +268,8 @@ public:
         checkBox_1->setText(QString());
         label_8->setText(QApplication::translate("lmParserBitConfigure", "2", 0));
         checkBox_2->setText(QString());
-        checkBox_3->setText(QString());
         label_9->setText(QApplication::translate("lmParserBitConfigure", "3", 0));
+        checkBox_3->setText(QString());
         label_10->setText(QApplication::translate("lmParserBitConfigure", "4", 0));
         checkBox_4->setText(QString());
         label_5->setText(QApplication::translate("lmParserBitConfigure", "5", 0));

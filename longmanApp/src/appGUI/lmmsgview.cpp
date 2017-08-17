@@ -8,7 +8,7 @@ lmMsgView::lmMsgView(QWidget *parent) :
 {
     ui->setupUi(this);
 	//ÉèÖÃ×î¶à¶ÎÂä;
-	ui->textBrowser->document()->setMaximumBlockCount(5);
+	ui->textBrowser->document()->setMaximumBlockCount(15);
 	mWarningbox.setWindowTitle("Attention");
 	setWindowTitle(tr("lmMsgView"));
 	setModelName("Message_View_Model_inMW");

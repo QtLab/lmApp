@@ -62,6 +62,7 @@ public:
         yuvParamSet->resize(600, 120);
         yuvParamSet->setMinimumSize(QSize(600, 120));
         yuvParamSet->setMaximumSize(QSize(619, 120));
+        yuvParamSet->setAcceptDrops(false);
         gridLayout_2 = new QGridLayout(yuvParamSet);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -240,8 +241,8 @@ public:
     void retranslateUi(QDialog *yuvParamSet)
     {
         yuvParamSet->setWindowTitle(QApplication::translate("yuvParamSet", "yuvParamSet", 0));
-        label->setText(QApplication::translate("yuvParamSet", "Width:", 0));
-        label_2->setText(QApplication::translate("yuvParamSet", "Height:", 0));
+        label->setText(QApplication::translate("yuvParamSet", "\345\256\275", 0));
+        label_2->setText(QApplication::translate("yuvParamSet", "\351\253\230", 0));
         p832->setText(QApplication::translate("yuvParamSet", "832", 0));
         p1280->setText(QApplication::translate("yuvParamSet", "1280", 0));
         p480->setText(QApplication::translate("yuvParamSet", "480", 0));
@@ -254,7 +255,7 @@ public:
         p1600->setText(QApplication::translate("yuvParamSet", "1600", 0));
         p720->setText(QApplication::translate("yuvParamSet", "720", 0));
         p1080->setText(QApplication::translate("yuvParamSet", "1080", 0));
-        label_3->setText(QApplication::translate("yuvParamSet", "format:", 0));
+        label_3->setText(QApplication::translate("yuvParamSet", "\351\207\207\346\240\267\346\240\274\345\274\217", 0));
         comboBox_fomat->setCurrentText(QString());
     } // retranslateUi
 

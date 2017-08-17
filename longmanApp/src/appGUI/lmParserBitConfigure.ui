@@ -119,16 +119,16 @@
       <item>
        <layout class="QVBoxLayout" name="layer_3">
         <item>
-         <widget class="QCheckBox" name="checkBox_3">
+         <widget class="QLabel" name="label_9">
           <property name="text">
-           <string/>
+           <string>3</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_9">
+         <widget class="QCheckBox" name="checkBox_3">
           <property name="text">
-           <string>3</string>
+           <string/>
           </property>
          </widget>
         </item>
