@@ -19,6 +19,9 @@
 
 ## 测试版本下载
 [lmSHVCBitStreamPlayer_0.9.0下载](http://download.csdn.net/detail/li651138628/9926455)
+
+[lmSHVCBitStreamPlayer_0.9.1下载](http://pan.baidu.com/s/1gfvifWB) 提取码：vzvu
+
 ## 功能演示
 * 提示：处于开发状态，以下介绍仅供参考.
 ### 主界面
