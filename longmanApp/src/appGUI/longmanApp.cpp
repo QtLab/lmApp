@@ -355,11 +355,12 @@ void longmanApp::on_f4Button_clicked()
 
 void longmanApp::on_f5Button_clicked()
 {
-	//显示并操作，已经打开成功的yuv;
-	//这些yuv信息位于cmdProcessThread对象中;
-	//计划的功能有:列出所有yuv,临时查看窗口,将信息保存为文件等等;
-	qInfo()<< QStringLiteral("显示并操作已经打开成功的yuv;这些yuv信息位于cmdProcessThread对象中;计划的功能有:列出所有yuv,临时查看窗口,将信息保存为文件等;");
-
+	static bool showBitEnable = false;
+	longmanEvt showcuDepth(EvtTYPE2);
+	showcuDepth.setParam("CommandName", "show_bit");
+	showcuDepth.setParam("enabledByButton", !showBitEnable);
+	showcuDepth.dispatch();
+	showBitEnable = !showBitEnable;
 }
 void longmanApp::on_f6Button_clicked()
 {

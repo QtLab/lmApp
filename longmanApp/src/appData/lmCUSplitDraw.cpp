@@ -1,5 +1,4 @@
 #include "lmCUSplitDraw.h"
-
 #include "../../../lmDecInfoData/src/lmStructure.h"
 lmCUSplitDraw::~lmCUSplitDraw()
 {

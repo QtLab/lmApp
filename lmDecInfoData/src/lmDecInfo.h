@@ -3,8 +3,9 @@
 #include "lmPSData.h"
 #include "lmStructure.h"
 typedef std::vector< std::vector<std::vector<std::vector<int>>>> depthtype;
-//一个全局函数，用于构建比较函数，供sort算法使用;
-bool in_front(const depthtype::value_type::value_type& f1, const depthtype::value_type::value_type& f2);
+//全局函数，用于构建比较函数，供sort算法使用,实现按POC排序;
+bool in_front_4LayerVec(const depthtype::value_type::value_type& f1, const depthtype::value_type::value_type& f2);
+bool in_front_3LayerVec(const depthtype::value_type::value_type::value_type& f1, const depthtype::value_type::value_type::value_type& f2);
 //yuv文件信息列表，以yuv文件完整路径为关键字;
 
 class lmYUVInfoList
@@ -43,6 +44,7 @@ public:
 	std::string getyuvPath(int iLayerIdx)const;
 	void read_FrameInfo();
 	const depthtype::value_type::value_type &getframeCUSplit(int l, int p)const;
+	const depthtype::value_type::value_type::value_type &getframeBit(int l, int p)const;
 public:
 	void insertps(const lmPSData &pp, bool isPerDec = false);
 private:
@@ -53,9 +55,10 @@ private:
 	void readPS(lmPSData &pp,std::ifstream& pf);
 	void clearPSList(lmPSList& rpsl);
 	void xReadDepthInfo(int layernum);
+	void xReadBitInfo(int layernum);
 	depthtype mDepth;
-	//按照POC进行排序;
-	void sortByPOC(depthtype::value_type& pf);
+	//第一个数存储POC;
+	depthtype::value_type m_Bit;
 };
 #endif // lmDecInfo_h__
 

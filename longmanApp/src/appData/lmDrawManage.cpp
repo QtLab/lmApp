@@ -1,7 +1,7 @@
 #include "lmDrawManage.h"
 #include "lmNormalDraw.h"
 #include "lmCUSplitDraw.h"
-
+#include "lmBitDraw.h"
 lmDrawManage::lmDrawManage():
 	mImageDraw(new lmImageDraw()),
 	mdrawtype(drawType::showImage)
@@ -109,6 +109,13 @@ void lmDrawManage::showcuDepthDraw()
 	sendSignal(mpixmap);
 }
 
+void lmDrawManage::showBitDraw()
+{
+	lmBitDraw mdraw(mImageDraw, layer, poc, mousex, mousey);
+	QPixmap *mpixmap = mdraw.lmDraw(*curImage);
+	sendSignal(mpixmap);
+}
+
 void lmDrawManage::sendSignal(QPixmap * pmap)
 {
 	longmanEvt lmgraphview(EvtTYPE1);
@@ -131,6 +138,7 @@ void lmDrawManage::doDraw()
 		showcuDepthDraw();
 		break;
 	case lmDrawManage::ctubit:
+		showBitDraw();
 		break;
 	default:
 		break;

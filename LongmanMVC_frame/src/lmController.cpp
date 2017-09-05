@@ -12,7 +12,8 @@ const char *cmdtable[] =
 	"preDecode",//预解码;
 	"parse_LayerToshow",
 	"draw",//绘制模块，+"Image"+
-	"show_cuDepth"
+	"show_cuDepth",
+	"show_bit"
 };
 ////绑定命令和相应的处理函数,增加命令时必须添加代码;
 void lmController::xcmdInti()
@@ -49,6 +50,10 @@ void lmController::xcmdInti()
 	//show_cuDepth，直接交给workThread的showcuDepth函数处理;
 	CallBackFunc pcCmdHandle7 = std::bind(&cmdProcessThread::showcuDepth, &workThread, std::placeholders::_1);
 	workThread.addCommandHandle(cmdtable[7], pcCmdHandle7);
+
+	//show_bit，直接交给workThread的showBit函数处理;
+	CallBackFunc pcCmdHandle8 = std::bind(&cmdProcessThread::showBit, &workThread, std::placeholders::_1);
+	workThread.addCommandHandle(cmdtable[8], pcCmdHandle8);
 }
 
 bool lmController::sendMsg(const std::string& iEvtInfo)

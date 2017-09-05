@@ -115,6 +115,9 @@
     <ClInclude Include="GeneratedFiles\ui_lmaboutdialog.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\appData\lmBitDraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -260,6 +263,9 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_lmaboutdialog.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\appData\lmBitDraw.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -128,6 +128,7 @@ void lmDecInfo::read_FrameInfo()
 	getPS(mvps, 0,true);
 	int mLayerNum = mvps.getValueByName(mvps.getParamName(0)).toInt();
 	xReadDepthInfo(mLayerNum);
+	xReadBitInfo(mLayerNum);
 }
 
 void lmDecInfo::insertps(const lmPSData &pp, bool isPerDec)
@@ -220,7 +221,7 @@ void lmDecInfo::xReadDepthInfo(int layernum)
 	int ValRead = 0;
 	std::string str;
 	std::string str1;
-	int frmeIdx[2] = {0,0};
+	int frmeIdx[8] = {0};
 	readPS(mfps, pf);
 	
 	while (!mfps.isempty())
@@ -261,20 +262,65 @@ void lmDecInfo::xReadDepthInfo(int layernum)
 		readPS(mfps, pf);
 	}
 	for (size_t i = 0; i < mDepth.size(); i++)
-		sortByPOC(mDepth[i]);
+		std::sort(mDepth[i].begin(), mDepth[i].end(), ::in_front_4LayerVec);
 }
 
-void lmDecInfo::sortByPOC(depthtype::value_type& pf)
+void lmDecInfo::xReadBitInfo(int layernum)
 {
-	//按照POC进行排序;
-	std::sort(pf.begin(), pf.end(), ::in_front);
-}
+	std::ifstream pf(gAbsPath + mOutTxtFrame[1], std::ifstream::in);
+	if (pf.fail())
+		return;
+	m_Bit.clear();
+	for (int i = 0; i < layernum; i++)
+		//为每层分配空间;
+		m_Bit.push_back({});
+	lmPSData mfps(lmPSData::getPSTypeInString(paraTYPE::frame));
+	int layerIdx = 0;
+	int ValRead = 0;
+	std::string str;
+	std::string str1;
+	int frmeIdx[8] = { 0 };
+	readPS(mfps, pf);
+	while (!mfps.isempty())
+	{
 
-bool in_front(const depthtype::value_type::value_type& f1, const depthtype::value_type::value_type& f2)
+		layerIdx = mfps.getValueByName(mfps.getParamName(1)).toInt();
+		int poc = mfps.getValueByName(mfps.getParamName(0)).toInt();
+		//为帧分配空间;
+		m_Bit[layerIdx].push_back({});
+		m_Bit[layerIdx][frmeIdx[layerIdx]].push_back(poc);
+		int ctuNUm = 0;
+		int  ctu = 0;
+		/*	while (*/getline(pf, str)/*)*/;
+/*		{*/
+			for (size_t i = 0; i < str.size(); i++)
+			{
+
+				if (str[i] != ' ')
+					str1 += str[i];
+				else
+				{
+
+					ctu = std::stoi(str1);
+					m_Bit[layerIdx][frmeIdx[layerIdx]].push_back(ctu);
+					str1.clear();
+				}
+			}
+			frmeIdx[layerIdx]++;
+			mfps.clearps();
+			readPS(mfps, pf);
+	}
+	for (size_t i = 0; i < m_Bit.size(); i++)
+		std::sort(m_Bit[i].begin(), m_Bit[i].end(), ::in_front_3LayerVec);
+}
+bool in_front_4LayerVec(const depthtype::value_type::value_type& f1, const depthtype::value_type::value_type& f2)
 {
 	return f1[0] < f2[0];
 }
-
+bool in_front_3LayerVec(const depthtype::value_type::value_type::value_type& f1, const depthtype::value_type::value_type::value_type& f2)
+{
+	return f1[0] < f2[0];
+}
 lmYUVInfoList& lmYUVInfoList::operator<<(const lmYUVInfo& pyuv)
 {
 	std::string pn = pyuv.absyuvPath();
@@ -311,4 +357,9 @@ const lmYUVInfo &lmYUVInfoList::getByPath(const std::string &pPath) const
 const depthtype::value_type::value_type & lmDecInfo::getframeCUSplit(int l, int p) const
 {
 	return mDepth[l][p];
+}
+
+const depthtype::value_type::value_type::value_type & lmDecInfo::getframeBit(int l, int p) const
+{
+	return m_Bit[l][p];
 }

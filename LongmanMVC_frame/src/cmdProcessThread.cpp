@@ -197,7 +197,26 @@ bool cmdProcessThread::showcuDepth(longmanEvt& rEvt)
 	drawImage.dispatch();
 	return true;
 }
-
+bool cmdProcessThread::showBit(longmanEvt& rEvt) 
+{
+	bool showcuDepthEnableFromAPPWin = rEvt.getParam("enabledByButton").toBool();
+	if (myuvlist.isempty())
+		return false;
+	if (!curyuv.getdecoded())
+		return false;
+	longmanEvt drawImage(EvtTYPE2);
+	drawImage.setParam("CommandName", "draw");
+	if (!showcuDepthEnableFromAPPWin)
+		//通知绘制模块,退回正常显示;
+		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::showImage);
+	else
+		//应该是解码状态下,进入该分支;
+		//通知绘制模块,改变绘制模式;
+		drawImage.setParam("drawTypeCode", lmDrawManage::drawType::ctubit);
+	drawImage.setParam("do_draw", true);
+	drawImage.dispatch();
+	return true;
+}
 void cmdProcessThread::handleCmd(longmanEvt& requstCmd)
 {
 	CallBackFuncList::iterator m_cmdHandlef;

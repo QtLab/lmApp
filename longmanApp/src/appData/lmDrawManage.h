@@ -24,6 +24,7 @@ private:
 	void showimage();
 	void showyuvdataDraw();
 	void showcuDepthDraw();
+	void showBitDraw();
 	void sendSignal(QPixmap * pmap);
 	void doDraw();
 private:
@@ -34,8 +35,6 @@ private:
 	int poc = 0;
 	int mousex = 0;
 	int mousey = 0;
-// 	int yuvdata_xmouse = 0;
-// 	int yuvdata_ymouse = 0;
 };
 #endif // lmDrawManage_h__
 
