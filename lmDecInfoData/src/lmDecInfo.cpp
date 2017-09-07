@@ -233,7 +233,8 @@ void lmDecInfo::xReadDepthInfo(int layernum)
 		mDepth[layerIdx].push_back({});
 		int ctuNUm = 0;
 		std::vector<int> ctu;
-		while(getline(pf, str) && str[0] == '1')
+		std::string fir=std::to_string(static_cast<int>(pow(2, diffBit)));
+		while(getline(pf, str) && str[0] == fir[0])
 			{
 				//ÎªCTU·ÖÅä¿Õ¼ä;
 				mDepth[layerIdx][frmeIdx[layerIdx]].push_back({});

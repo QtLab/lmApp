@@ -12,14 +12,14 @@ void lmStructure::init()
 {
 	
 	int partSize = mLCUSizeIN_4_4*mLCUSizeIN_4_4;
-	g_auiZscanToRaster = new unsigned int[partSize];
-	g_auiRasterToZscan = new unsigned int[partSize];
-	g_auiRasterToPelX = new unsigned int[partSize];
-	g_auiRasterToPelY = new unsigned int[partSize];
-	memset(g_auiZscanToRaster, 0, sizeof(unsigned int));
-	memset(g_auiRasterToZscan, 0, partSize*sizeof(unsigned int));
-	memset(g_auiRasterToPelX, 0, partSize*sizeof(unsigned int));
-	memset(g_auiRasterToPelY, 0, partSize*sizeof(unsigned int));
+	g_auiZscanToRaster = new unsigned int[partSize]();
+	g_auiRasterToZscan = new unsigned int[partSize]();
+	g_auiRasterToPelX = new unsigned int[partSize]();
+	g_auiRasterToPelY = new unsigned int[partSize]();
+	//memset(g_auiZscanToRaster, 0, sizeof(unsigned int));
+	//memset(g_auiRasterToZscan, 0, partSize*sizeof(unsigned int));
+	//memset(g_auiRasterToPelX, 0, partSize*sizeof(unsigned int));
+	//memset(g_auiRasterToPelY, 0, partSize*sizeof(unsigned int));
 	unsigned int *tempData = g_auiZscanToRaster;
 	initZscanToRaster(mMaxDepth, 1, 0, tempData);
 	initRasterToZscan(mLCUSize, mLCUSize, mMaxDepth);

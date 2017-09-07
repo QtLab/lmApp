@@ -34,11 +34,11 @@ void lmAllDecInfo::xoutCtus(std::ofstream& po,TComPic *mpc,int idx)
 		const UInt ctuXPosInCtus = ctuRsAddr % frameWidthInCtus;
 		const UInt ctuYPosInCtus = ctuRsAddr / frameWidthInCtus;
 		TComDataCU* pCtu = mpc->getCtu(ctuRsAddr);
-		std::vector<std::vector<int>> CU_split{ {} ,{},{},{} };
-		std::vector<int> CTU_Bit{};
+		//std::vector<std::vector<int>> CU_split{ {} ,{},{},{} };
+		//std::vector<int> CTU_Bit{};
 		switch (idx)
 		{
-		case 0:xoutCtu_split(po,pCtu, CU_split); break;
+		case 0:xoutCtu_split(po,pCtu); break;
 		case 1:po<<pCtu->getBytes()<<" "; break;
 		default:
 			break;
@@ -55,27 +55,28 @@ void lmAllDecInfo::xoutCtus(std::ofstream& po,TComPic *mpc,int idx)
 
 }
 
-void lmAllDecInfo::xoutCtu_split(std::ofstream& pfo, TComDataCU* mCtu, std::vector<std::vector<int>>& c)
+void lmAllDecInfo::xoutCtu_split(std::ofstream& pfo, TComDataCU* mCtu/*, std::vector<std::vector<int>>& c*/)
 {
 	int td = 0;
 	int skippos = 0;
 	int rasPos = 0;
 	int ctuRidx= mCtu->getCtuRsAddr();
-	//获取Z索引，跳过第一个数;
+	//获取Z索引
+	std::vector<int> c;
 	for (size_t i = 0; i < mCtu->getTotalNumPart();)
 	{
 		td = int(mCtu->getDepth(i));
 		skippos = static_cast<int>( pow(4, 4 - td));
 		rasPos = g_auiZscanToRaster[i];
-		c[0].push_back(i);
-		c[1].push_back(td);
-		c[2].push_back(g_auiRasterToPelX[rasPos]);
-		c[3].push_back(g_auiRasterToPelY[rasPos]);
+		c.push_back(i);
+// 		c[1].push_back(td);
+// 		c[2].push_back(g_auiRasterToPelX[rasPos]);
+// 		c[3].push_back(g_auiRasterToPelY[rasPos]);
 		i += skippos;
 
 	}
 	std::vector<int> dzIsx;
-	gCode_zIdx(c[0], dzIsx);
+	gCode_zIdx(c, dzIsx);
 	for (size_t i = 0; i < dzIsx.size(); i++)
 	{
 		pfo << dzIsx[i] << " ";

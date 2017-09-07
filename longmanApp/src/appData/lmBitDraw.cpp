@@ -42,11 +42,12 @@ void lmBitDraw::lmDrawFuction(QPainter &cPainter)
 		if (px >= ctux && py >= ctuy
 			&& px < (ctux + ctuSize) && py < (ctuy + ctuSize))
 		{
-			QString strrBit = QString::fromStdString(std::to_string(bit));
+			QString strrBit = QString::fromStdString(std::to_string(bit))+"B";
 			cPainter.setPen(Qt::red);
-			cPainter.drawText(ctux + (ctuSize >> 2)-fontMetrics.width(strrBit) / 2, 
+			cPainter.drawText(ctux + (ctuSize >> 2)/*-fontMetrics.width(strrBit) / 2*/, 
 				ctuy + (ctuSize >> 2) +fontMetrics.ascent(),
 				strrBit);
+			cPainter.drawRect(ctux, ctuy, ctuSize, ctuSize);
 		}
 	}
 }
