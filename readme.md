@@ -10,7 +10,7 @@
 - [x] yuv文件查看和播放
 - [x] 帧保存为图片
 - [x] SHVC码流解码
-- [] 码流信息可视化
-- [] 其他解码器如HEVC、3D-HEVC等
+- [ ] 码流信息可视化
+- [ ] 其他解码器如HEVC、3D-HEVC等
 
-### 具体内容请转到 **addDecoder**分支
+[具体内容请转到 addDecoder](https://github.com/LongmanLee/lmApp/tree/addDecoder)

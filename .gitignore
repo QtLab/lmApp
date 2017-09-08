@@ -102,3 +102,6 @@ $RECYCLE.BIN/
 *.vsd
 *.~vsd
 doc/.Archive
+*.bin
+*.ipdb
+*.iobj
