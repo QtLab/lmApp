@@ -42,7 +42,7 @@ private:
 	//当前显示的图片模块;
 	QImage mImage;	
 	//绘制模块,使用了简单的装饰模式,以便后续功能的扩展和叠加;
-	lmImageDrawBase *mImageDraw;
+	//lmImageDrawBase *mImageDraw;
 	lmDrawManage mdraw;
 	//SHVC码流解析模块;
 	//lmParseStreamPro *mparsestream;

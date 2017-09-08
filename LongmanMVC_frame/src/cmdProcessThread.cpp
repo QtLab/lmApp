@@ -2,7 +2,7 @@
 #include <time.h>
 	static bool enableShowYuvData = false;//
 	static bool firstrunChangePOC = true;
-cmdProcessThread::cmdProcessThread(QObject *parent):QThread(parent), mImageDraw(new lmImageDraw)
+cmdProcessThread::cmdProcessThread(QObject *parent):QThread(parent)/*, mImageDraw(new lmImageDraw)*/
 {
 }
 cmdProcessThread::~cmdProcessThread()

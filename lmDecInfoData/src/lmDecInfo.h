@@ -2,6 +2,7 @@
 #define lmDecInfo_h__
 #include "lmPSData.h"
 #include "lmStructure.h"
+#define  MAXLAYERs 8
 typedef std::vector< std::vector<std::vector<std::vector<int>>>> depthtype;
 //全局函数，用于构建比较函数，供sort算法使用,实现按POC排序;
 bool in_front_4LayerVec(const depthtype::value_type::value_type& f1, const depthtype::value_type::value_type& f2);
@@ -59,6 +60,8 @@ private:
 	depthtype mDepth;
 	//第一个数存储POC;
 	depthtype::value_type m_Bit;
+	//存储slice层信息,key为POC，Value：Slice->CTU->CU（z-order）;
+	std::map<int, depthtype::value_type> mSlice_PU[MAXLAYERs];
 };
 #endif // lmDecInfo_h__
 

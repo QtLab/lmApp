@@ -1,15 +1,16 @@
 #ifndef lmPSData_h__
 #define lmPSData_h__
 #include "lmTydef.h"
-//参数集合(PS)类
+//参数集合(PS)类;
 //PS类型;
 enum paraTYPE
 {
-	psnum = 4,
+	psnum = 5,
 	vps = 0,
 	sps = 1,
 	pps = 2,
-	frame=3
+	frame=3,
+	slice=4
 
 };
 

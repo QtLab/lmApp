@@ -4,15 +4,17 @@ const static  std::vector<std::vector<std::string>> gParamName = {
 	{ "0_MaxLayerIdx","1_layerIdx" }, //vps
 	{ "0_idx","1_layerIdx" ,"2_formatId", "3_picWidth","4_picHeight" },//sps
 	{ "0_idx","1_layerIdx" },//pps
-	{"0_poc","1_layerIdx"}//frame
+	{"0_poc","1_layerIdx"},//frame
+	{ "0_poc","1_layerIdx","2_silcetype"}//slice
 };
 const static  std::vector<std::vector<lmVarTYPE>> gParamValueType = {
 	{ lmVarTYPE::intv,lmVarTYPE::intv }, //vps
 	{ lmVarTYPE::intv,lmVarTYPE::intv,lmVarTYPE::intv,lmVarTYPE::intv,lmVarTYPE::intv },//sps
 	{ lmVarTYPE::intv,lmVarTYPE::intv },//pps
-	{ lmVarTYPE::intv,lmVarTYPE::intv }//frame
+	{ lmVarTYPE::intv,lmVarTYPE::intv },//frame
+	{ lmVarTYPE::intv,lmVarTYPE::intv,lmVarTYPE::intv }//slice
 };
-const static std::vector<std::string> lmPStypeInString = { "vps","sps","pps","frame" };
+const static std::vector<std::string> lmPStypeInString = { "vps","sps","pps","frame","slice" };
 std::string  lmPSData::getParamName(const paraTYPE &t, int n)
 {
 	//std::string tr= gParamName[t][n];
@@ -134,6 +136,8 @@ void lmPSData::inti(const std::string& pstr)
 		mType = paraTYPE::pps;
 	else if (pstr == lmPStypeInString[paraTYPE::frame])
 		mType = paraTYPE::frame;
+	else if (pstr == lmPStypeInString[paraTYPE::slice])
+		mType = paraTYPE::slice;
 	else
 	{
 		throw std::runtime_error("unknown PS type!");
