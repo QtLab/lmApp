@@ -16,5 +16,6 @@ int main(int argc, char *argv[])
 	lmController::getInstance();
 	longmanApp w;
 	w.show();
+
 	return a.exec();
 }

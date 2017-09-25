@@ -18,8 +18,13 @@ lmAllDecInfo* lmAllDecInfo::_instance = nullptr;
 
 void lmAllDecInfo::xoutCtus(std::ofstream& po,TComPic *mpc,int idx)
 {
-	TComSlice* pcSlice = mpc->getSlice(mpc->getCurrSliceIdx());
+	//picture层信息;
+	lmPSData mfPS(lmPSData::getPSTypeInString(paraTYPE::frame));
+	mfPS << sParam(mfPS.getParamName(0), mpc->getPOC())
+		<< sParam(mfPS.getParamName(1), int(mpc->getLayerId()));
+	mfPS >> po;
 
+	TComSlice* pcSlice = mpc->getSlice(mpc->getCurrSliceIdx());
 	const Int  startCtuTsAddr = pcSlice->getSliceSegmentCurStartCtuTsAddr();
 	const Int  startCtuRsAddr = mpc->getPicSym()->getCtuTsToRsAddrMap(startCtuTsAddr);
 	const UInt numCtusInFrame = mpc->getNumberOfCtusInFrame();
@@ -146,23 +151,15 @@ int lmAllDecInfo::hasOutputDec()
 void lmAllDecInfo::output(TComPic *mpc)
 {
 	auto mpcPic = mpc;
+	
 	int poc = mpcPic->getPOC();
 	int layerId = mpcPic->getLayerId();
 	//以追加方式打开;
 	for (size_t i = 0; i < mOutTxtFrame.size(); i++)
 	{
 		std::ofstream printTXTappend(mOutTxtFrame[i], std::ofstream::out | std::ofstream::app);
-		//printTXTappend << "[Frame_Begin]" << '\n';
-		//帧层信息;
-		lmPSData mfPS(lmPSData::getPSTypeInString(paraTYPE::frame));
-		mfPS << sParam(mfPS.getParamName(0), mpcPic->getPOC())
-			<< sParam(mfPS.getParamName(1), int(mpcPic->getLayerId()));
-// 		printTXTappend << mpcPic->getPOC() << '\n';
-// 		printTXTappend << mpcPic->getLayerId() << '\n';
-		mfPS >> printTXTappend;
-		xoutCtus(printTXTappend, mpcPic,i);
 
-	//	printTXTappend << "[Frame_End]" << '\n';
+		xoutCtus(printTXTappend, mpcPic,i);
 	}
 
 }
