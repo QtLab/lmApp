@@ -2,11 +2,12 @@
 #define lmmodel_h__
 #include "longmanEvt.h"
 #include "lmmodelD.h"
-//底层基类,通过组合委托
+#include <QDebug>
+//底层基类,通过组合委托将所有工作交给 lmdodelD
 class lmmodel
 {
 public:
-	lmmodel(lmEvtBus *evtBus);
+	explicit lmmodel(lmEvtBus *evtBus);
 	/*~lmmodel();*/
 	void subscribeEvt(const std::string&, const CallBackFunc&);
 	void unsubcribeEvt(const std::string&);

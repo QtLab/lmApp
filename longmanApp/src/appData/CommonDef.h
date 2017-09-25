@@ -6,7 +6,6 @@
 #define __COMMONDEF__
 
 #include <algorithm>
-#include <iostream>
 #include <assert.h>
 #include <limits>
 

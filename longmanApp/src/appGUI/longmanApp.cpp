@@ -1,4 +1,9 @@
 #include "longmanApp.h"
+#include <QMimeData>
+#include <QKeyEvent>
+#include <QFileDialog>
+#include <QStandardPaths> 
+#include <QPushButton>
 #include<QImageWriter>
 //命令构造说明;
 //1.("CommandName","update_mainwindow")+("yuv_currentPOC",int)+("yuv_totalFrames",int)+;
@@ -6,21 +11,31 @@
 //一般只在成功打开yuv文件成功后执行一次,用于更新主窗体显示的yuv信息,以及当前显示的图片的指针;
 //用于保存为图片;
 const char *formattext[] = { "400","420","444" };
-static int OpenNum = -1;
+static bool openFailed = true;//1：打开失败；0：打开成功;
 static int formattype = 1;
 longmanApp::longmanApp(QWidget *parent)
 	: QMainWindow(parent),
 	lmView(nullptr),
 	m_imageView(new lmGraphView(this)),
-	msgBox(new lmMessageBox(this)),
 	imageSave(nullptr),
-	m_DataView(new lmDataView(this))
+	m_DataView(new lmDataView(this)),
+	mBitParseCFG(new lmParserBitConfigure(this)),
+	mlayerList(new lmLayerList(this)),
+	mMsgOutput(new lmMsgView(this)),
+	mAbout(new lmAboutDialog(this))
 {
 	timeLine.stop();
 	ui.setupUi(this);
-	setCentralWidget(m_imageView);
+	ui.gridLayout_8->addWidget(m_imageView);
+	
+	ui.gridLayout_6->addWidget(mlayerList);
+	ui.gridLayout_10->addWidget(mMsgOutput);
 	CallBackFunc pcupdate = std::bind(&longmanApp::updatemainwindow, this, std::placeholders::_1);
 	listenParam("update_mainwindow", pcupdate);
+	CallBackFunc pcupdate1 = std::bind(&longmanApp::openyuvFailed, this, std::placeholders::_1);
+	listenParam("fail_openyuv", pcupdate1);
+	CallBackFunc pcupdate2 = std::bind(&longmanApp::saveCurImage, this, std::placeholders::_1);
+	listenParam("save_curImage_mainwindow", pcupdate2);
 	setModelName("MainWindow_View_Model");
 	//
 	//connect(ui.FrameIdxSlider, SIGNAL(ValueChanged(int)), this, SLOT(on_FrameIdxSlider_ValueChanged(int)));
@@ -28,13 +43,16 @@ longmanApp::longmanApp(QWidget *parent)
 	ui.YUVgroupBox->setEnabled(false);
 	ui.stopButton->setEnabled(false);
 	ui.actionSave_as_image->setEnabled(false);
+	ui.f3Button->setEnabled(false);
 	ui.f1Button->setEnabled(false);
+	//允许拖拽文件;
+	setAcceptDrops(true);
 	connect(&timeLine, SIGNAL(frameChanged(int)), this, SLOT(player(int)));
 }
 
 bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 {
-	++OpenNum;
+	openFailed = false;
 	ui.YUVgroupBox->setEnabled(true);
 	int curpoc = updateWinEvt.getParam("yuv_currentPOC").toInt();
 	int totalfarmes= updateWinEvt.getParam("yuv_totalFrames").toInt();
@@ -44,31 +62,118 @@ bool longmanApp::updatemainwindow(longmanEvt& updateWinEvt)
 	QVariant vValue = updateWinEvt.getParam("image");
 	imageSave = (QImage*)vValue.value<void *>();
 	ui.FrameIdxSlider->setMaximum(totalfarmes-1);
+
 	ui.spinBoxhei->setValue(heightImage);
 	ui.spinBoxwid->setValue(widthImage);
 	ui.MaxFraBox->setValue(totalfarmes);
 	ui.label_format->setText(tr(formattext[formattype]));
 	ui.actionSave_as_image->setEnabled(true);
-	ui.FrameIdxSlider->setValue(curpoc + 1);//触发更新命令;
+	ui.f3Button->setEnabled(true);
 	ui.f1Button->setEnabled(true);
-	//
+	//修复第二次以后打开没有及时更新内容的问题;
+	//curpoc一般为0;
+	//解决当Slider=0时，打开调用ui.FrameIdxSlider->setValue(curpoc),无法刷新;
+	if (ui.FrameIdxSlider->value() > 0)
+		ui.FrameIdxSlider->setValue(curpoc);
+	else
+		//强制刷新;
+		on_FrameIdxSlider_valueChanged(curpoc);
 	
 	return true;
 }
 
+bool longmanApp::openyuvFailed(longmanEvt&)
+{
+	//ui.FrameIdxSlider->setMinimum(-1);
+	//ui.FrameIdxSlider->setValue(-1);
+	openFailed = true;
+	//强制刷新;
+	sendEvttoChnagePOC(0);
+	return true;
+}
+
+bool longmanApp::saveCurImage(longmanEvt& rEvt)
+{
+	QVariant vValue = rEvt.getParam("image_to_save");
+	QPixmap *mcImage = (QPixmap*)vValue.value<void *>();
+	if (mcImage != nullptr)
+		curImage = mcImage;
+	return true;
+}
+
+void longmanApp::xMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &strMsg)
+{
+// 	QByteArray localMsg = strMsg.toLocal8Bit();
+// 	switch (type) {
+// 	case QtDebugMsg:
+// 		fprintf(stdout, "[Debug]: %s\n", localMsg.constData());
+// 		break;
+// 	case QtWarningMsg:
+// 		fprintf(stderr, "[Warn]: %s\n", localMsg.constData());
+// 		break;
+// 	case QtCriticalMsg:
+// 		fprintf(stderr, "[Crit]: %s\n", localMsg.constData());
+// 		break;
+// 	case QtFatalMsg:
+// 		fprintf(stderr, "[Fata]: %s\n", localMsg.constData());
+// 	}
+// 	fflush(stdout);
+// 	fflush(stderr);
+	longmanEvt msg(EvtTYPE1);
+	msg.setParam("CommandName", "outputMsg");
+	msg.setParam("MsgType", (int)type);
+	msg.setParam("info", strMsg);
+	msg.dispatch();
+	if (type == QtFatalMsg)
+		abort();
+}
+
+void longmanApp::sendEvttoChnagePOC(int ppoc)
+{
+	//构建图片更新事件;
+	//由于不再使用窗口存储图片，force_readData参数总为真;
+	int curpoc = ppoc;
+	longmanEvt yuvnext(EvtTYPE2);
+	yuvnext.setParam("CommandName", "change_imagepoc");
+	yuvnext.setParam("yuv_POC", curpoc);
+	if (openFailed)//打开失败，回退;
+		yuvnext.setParam("recoverLast", true);
+	else
+		yuvnext.setParam("recoverLast", false);
+	yuvnext.setParam("force_readData", true);
+	yuvnext.dispatch();
+}
+
+void longmanApp::on_actionOpen_SHVC_bitstream_triggered()
+{
+	QString bspath;
+	//int layertobedecode = 1;
+
+#if 1
+	mBitParseCFG->resetState();
+	if (mBitParseCFG->exec() == QDialog::Accepted&&mBitParseCFG->getcfg(bspath))
+		{
+			longmanEvt parsestream(EvtTYPE2);
+			parsestream.setParam("CommandName", "preDecode");
+			parsestream.setParam("bitstream_path", bspath);
+			parsestream.dispatch();
+		}
+#else
+	longmanEvt parsestream(EvtTYPE2);
+	parsestream.setParam("CommandName", "parse_shvcbitstream");
+	parsestream.setParam("bitstream_path", "C:/Users/Administrator/Documents/str.bin");
+	parsestream.dispatch();
+#endif
+}
+
 void longmanApp::on_actionOpen_triggered()
 {
-	if (OpenNum==-1)
-	{
-		ui.FrameIdxSlider->setMinimum(-1);
-		ui.FrameIdxSlider->setValue(-1);
+	QFileDialog dialog(this, QStringLiteral("yuv文件"));
+	if (openFailed) {
+		const QString defaultLocations = QDir::currentPath()+"/cache";
+		dialog.setDirectory(defaultLocations.isEmpty() ? QDir::currentPath() : defaultLocations);
 	}
-	QFileDialog dialog(this, QStringLiteral("打开YUV文件"));
-	if (OpenNum == -1) {
-		const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-		dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
-	}
-	dialog.setNameFilter(QStringLiteral("YUV 文件 (*.yuv)"));//文件格式设置;
+	dialog.setNameFilter(QStringLiteral("YUV file (*.yuv)"));//文件格式设置;
 	QString FliePath; //QString YuvName("v");
 	if (dialog.exec() != QDialog::Accepted && dialog.selectedFiles().isEmpty())
 		return;
@@ -83,11 +188,12 @@ void longmanApp::on_actionOpen_triggered()
 		return;
 	if (paramselect.getyuvwidth()%2!=0|| paramselect.getyuvheight() % 2 != 0)
 	{
-		longmanEvt paramWarning(EvtTYPE1);
-		paramWarning.setParam("CommandName", "show_message");
-		paramWarning.setParam("MsgType", 2);
-		paramWarning.setParam("info", QStringLiteral("尺寸不能为奇数！"));
-		paramWarning.dispatch();
+		qCritical() << QStringLiteral("尺寸不能为奇数！");
+// 		longmanEvt paramWarning(EvtTYPE1);
+// 		paramWarning.setParam("CommandName", "show_message");
+// 		paramWarning.setParam("MsgType", 2);
+// 		paramWarning.setParam("info", QStringLiteral("尺寸不能为奇数！"));
+// 		paramWarning.dispatch();
 		return;
 	}
 	longmanEvt openyuv(EvtTYPE2);
@@ -96,13 +202,15 @@ void longmanApp::on_actionOpen_triggered()
 	openyuv.setParam("yuv_width", paramselect.getyuvwidth());
 	openyuv.setParam("yuv_height", paramselect.getyuvheight());
 	openyuv.setParam("yuv_format", paramselect.getformattype());
+	openyuv.setParam("yuv_layer", QVariant::fromValue(0));//普通打开yuv，默认layer=0;
+	openyuv.setParam("yuv_decoded", false);
 	openyuv.dispatch();	
-	OpenNum = -1;
+	//OpenNum = -1;
 }
 
 void longmanApp::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, QStringLiteral("关于程序"), QStringLiteral("这是Longman的测试程序"));
+	mAbout->show();
 }
 
 void longmanApp::on_actionAboutQT_triggered()
@@ -126,29 +234,7 @@ void longmanApp::on_backButton_clicked()
 
 void longmanApp::on_FrameIdxSlider_valueChanged(int poc)
 {
-	int curpoc = poc;
-	longmanEvt yuvnext(EvtTYPE2);
-	yuvnext.setParam("CommandName", "change_imagepoc");
-	yuvnext.setParam("yuv_POC", curpoc);
-	if (OpenNum == -1)//打开失败，回退;
-		{
-			yuvnext.setParam("force_readData", true);
-			yuvnext.setParam("recoverLast", true);
-			OpenNum = 1;
-		}
-	else if (OpenNum==1)//打开成功，已刷新第一帧;
-		{
-			yuvnext.setParam("force_readData", true);
-			yuvnext.setParam("recoverLast", false);
-		}
-	else if (OpenNum==0)//打开成功，未刷新第一帧;
-		{
-			yuvnext.setParam("force_readData", true);
-			yuvnext.setParam("recoverLast", false);
-			OpenNum = 1;
-			ui.FrameIdxSlider->setMinimum(0);
-		}
-	yuvnext.dispatch();
+	sendEvttoChnagePOC(poc);
 }
 
 void longmanApp::on_beginButton_clicked()
@@ -208,7 +294,7 @@ void longmanApp::on_actionSave_as_image_triggered()
 {
 	QFileDialog dialog(this, QStringLiteral("保存为图片"));
 	dialog.setAcceptMode(QFileDialog::AcceptSave);
-	if (!(OpenNum > 0)) {
+	if (openFailed) {
 		const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 		dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
 	}
@@ -226,30 +312,73 @@ void longmanApp::on_actionSave_as_image_triggered()
 	if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty())
 	{
 		FliePath = dialog.selectedFiles().first();
-		QImageWriter writer(FliePath);
-		writer.write(*imageSave);
+		curImage->save(FliePath,0,100);
+
 	}
 }
 
 void longmanApp::on_f1Button_clicked()
 {
 	static bool showdataEnable = false;
-
+	//showdataEnable标志，当查看yuv的pixel值功能打开时，禁用部分功能;
 	if (!showdataEnable)
-	{
 		m_DataView->show();
-		ui.YUVgroupBox->setEnabled(showdataEnable);
-		ui.actionOpen->setEnabled(showdataEnable);
-	}
 	else
-	{
 		m_DataView->hide();	
-		ui.YUVgroupBox->setEnabled(showdataEnable);
-		ui.actionOpen->setEnabled(showdataEnable);
-	}
+// 	ui.YUVgroupBox->setEnabled(showdataEnable);
+// 	ui.actionOpen->setEnabled(showdataEnable);
+// 	ui.f2Button->setEnabled(showdataEnable);
+// 	ui.f4Button->setEnabled(showdataEnable);
+// 	ui.actionOpen_SHVC_bitstream->setEnabled(showdataEnable);
+// 	ui.groupBox->setEnabled(showdataEnable);
 	longmanEvt showdata(EvtTYPE2);
 	showdata.setParam("CommandName", "show_yuvdata");
-	showdata.setParam("enabledByButton", true);
+	showdata.setParam("enabledByButton", !showdataEnable);
 	showdata.dispatch();
 	showdataEnable = !showdataEnable;
 }
+
+void longmanApp::on_f2Button_clicked()
+{
+	on_actionOpen_triggered();
+}
+
+void longmanApp::on_f3Button_clicked()
+{
+	on_actionSave_as_image_triggered();
+}
+
+void longmanApp::on_f4Button_clicked()
+{
+	on_actionOpen_SHVC_bitstream_triggered();
+}
+
+void longmanApp::on_f5Button_clicked()
+{
+	static bool showBitEnable = false;
+	longmanEvt showcuDepth(EvtTYPE2);
+	showcuDepth.setParam("CommandName", "show_bit");
+	showcuDepth.setParam("enabledByButton", !showBitEnable);
+	showcuDepth.dispatch();
+	showBitEnable = !showBitEnable;
+}
+void longmanApp::on_f6Button_clicked()
+{
+	static bool showCUdepthEnable = false;
+	longmanEvt showcuDepth(EvtTYPE2);
+	showcuDepth.setParam("CommandName", "show_cuDepth");
+	showcuDepth.setParam("enabledByButton", !showCUdepthEnable);
+	showcuDepth.dispatch();
+	showCUdepthEnable = !showCUdepthEnable;
+}
+
+void longmanApp::dropEvent(QDropEvent *event)
+{
+	event->acceptProposedAction();
+
+	if (event->mimeData()->urls().empty())
+		return;
+	QString strFilename = event->mimeData()->urls().at(0).toLocalFile();
+	int xx = 0;
+}
+

@@ -7,6 +7,7 @@ yuvParamSet::yuvParamSet(QWidget *parent)
 	formatType(1)
 {
 	ui.setupUi(this);
+	setWindowTitle(tr("YUV flie set"));
 	Qt::WindowFlags flags = Qt::Dialog;
 	flags |= Qt::WindowCloseButtonHint;
 	setSizeGripEnabled(true);

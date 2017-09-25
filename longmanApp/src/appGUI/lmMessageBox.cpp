@@ -1,7 +1,7 @@
 #include "lmMessageBox.h"
 #include <QIcon>
 //
-const QMessageBox::Icon msgType[] = { QMessageBox::Information,
+const QMessageBox::Icon msgType[] = { QMessageBox::NoIcon,QMessageBox::Information,
 QMessageBox::Warning,QMessageBox::Critical };
 lmMessageBox::lmMessageBox(QWidget *parent):
 lmView(nullptr)
@@ -16,6 +16,7 @@ lmView(nullptr)
 	setStandardButtons(QMessageBox::Ignore| QMessageBox::Close);
 // 	setMinimumSize(this->size().width() / 4, this->size().height() / 4);
 // 	setMinimumSize(this->size().width() / 2, this->size().height() / 2);
+	//connect(this, SIGNAL(frameChanged(int)), this, SLOT(player(int)));
 }
 
 lmMessageBox::~lmMessageBox()
@@ -27,13 +28,19 @@ bool lmMessageBox::handleMsgEvt(longmanEvt& rMsgEvt)
 	paramlist::const_iterator paramBeg;
 	paramlist::const_iterator paramEnd;
 	rMsgEvt.getParamIter(paramBeg, paramEnd);
+	bool hideFlag = false;
 	for (auto i = paramBeg; i != paramEnd; ++i)
 	{
 		if (i->first== "MsgType")
 			setIcon(msgType[i->second.toInt()]);
 		if (i->first == "info")
 			setText(i->second.toString());
+		if (i->first == "isHide")
+			hideFlag = i->second.toBool();
 	}
-	show();
+	if (!hideFlag)
+		show();
+	else
+		hide();
 	return true;
 }

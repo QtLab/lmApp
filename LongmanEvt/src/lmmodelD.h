@@ -14,7 +14,7 @@ class lmmodelD : public QObject
 	Q_OBJECT
 friend lmmodel;
 private:
-	lmmodelD(lmEvtBus *evtBus);
+	explicit lmmodelD(lmEvtBus *evtBus);
 	void subscribeEvt(const std::string&, const CallBackFunc&);
 	void unsubcribeEvt(const std::string&);
 	void unsubcribeEvt(const longmanEvt&);

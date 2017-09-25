@@ -1,7 +1,6 @@
 #include "lmDataView.h"
 #include <QMouseEvent>
 #include <QPainter>
-#include <iostream>
 #include <string>
 #include<time.h>
 //不同格式的表格尺寸;
@@ -14,11 +13,12 @@ const unsigned int ViewSize[3][2] =
 	{32,32},
 };
 bool drawclick = false;
-bool drawcontain = false;
+//bool drawcontainflag = false;
 const char *cha[4] = { "Y","U","V","NULL" };
-const QColor color[4] = {Qt::black,QColor(182,64,128),QColor(64,64,180),QColor(64,192,64) };
+const QColor color[4] = {Qt::black,QColor(182,64,128,200),QColor(64,64,180,200),QColor(164,192,25,200) };
 const int lRect = 16;
 const int sRect = 8;
+bool isInPaintArea=true;
 lmDataView::lmDataView(QWidget *parent)
 	: QDialog(parent, Qt::CustomizeWindowHint|Qt::WindowTitleHint),
 	lmView(nullptr)
@@ -29,6 +29,9 @@ lmDataView::lmDataView(QWidget *parent)
 	listenParam("set_dataview", pcsetEvtHandle);
 	CallBackFunc pcupdateEvtHandle = std::bind(&lmDataView::updatedataview, this, std::placeholders::_1);
 	listenParam("update_dataview", pcupdateEvtHandle);
+
+// 	CallBackFunc pDrawEvtHandle = std::bind(&lmDataView::setflag, this, std::placeholders::_1);
+// 	listenParam("set_dataview_flag", pDrawEvtHandle);
 	setMouseTracking(true);
 }
 
@@ -47,12 +50,17 @@ bool lmDataView::setdataview(longmanEvt & rEvt)
 	yuvWidth = rEvt.getParam("width").toInt();
 	yuvHeight = rEvt.getParam("height").toInt();
 	formatType = rEvt.getParam("format").toInt();
+	int xmouseclick = rEvt.getParam("xIn16").toInt();
+	int ymouseclick = rEvt.getParam("yIn16").toInt();
+	mXIn16 = (int)(xmouseclick / 16.0) * 16;
+	mYIn16 = (int)(ymouseclick / 16.0) * 16;
 	drawAreaRange[0] = ViewSize[formatType][0] * sqSize[formatType] +  sqSize[formatType];//height
 	drawAreaRange[1] = ViewSize[formatType][1] * sqSize[formatType] +  sqSize[formatType];//width
 	setMinimumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
 	setMaximumSize(drawAreaRange[1] + sqSize[formatType], drawAreaRange[0] + sqSize[formatType]);
+	qDebug() << "inti data view";
+/*	drawcontainflag = true;*/
 	update();
-	std::cout << "inti data view\n";
 	return true;
 }
 
@@ -63,23 +71,25 @@ bool lmDataView::updatedataview(longmanEvt & rEvt)
 	int ymouseclick = rEvt.getParam("yIn16").toInt();
 	mXIn16 = (int)(xmouseclick / 16.0) * 16;
 	mYIn16 = (int)(ymouseclick / 16.0) * 16;
-	drawcontain = true;
 	update();
 	return true;
 }
 
-
 void lmDataView::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton) {
-		bool respond = event->y() <= drawAreaRange[0] && event->x() <= drawAreaRange[1];
-		respond= respond&& event->y() > sqSize[formatType] && event->x() > sqSize[formatType];
-		if (respond)
-			lastPositionClikedInDrawArea = (event->y() / sqSize[formatType] - 1)*(ViewSize[formatType][1])+ event->x() / sqSize[formatType]- 1;
+		isInPaintArea = event->y() <= drawAreaRange[0] && event->x() <= drawAreaRange[1];
+		
+		bool res= isInPaintArea&& event->y() > sqSize[formatType] && event->x() > sqSize[formatType];
+		if (res)
+			{
+				lastPositionClikedInDrawArea = (event->y() / sqSize[formatType] - 1)*(ViewSize[formatType][1])+ event->x() / sqSize[formatType]- 1;
+				update();
+				drawclick = true;
+			}
 		else
 			lastPositionClikedInDrawArea = -1;
-		update();
-		drawclick = true;
+
 	}
 	else
 		QWidget::mousePressEvent(event);
@@ -87,6 +97,8 @@ void lmDataView::mousePressEvent(QMouseEvent *event)
 
 void lmDataView::paintEvent(QPaintEvent * event)
 {
+	//if (!isInPaintArea)
+	//	return;
 	//对于widget对象，Qpainter只能在该函数,或该函数调用的函数内使用;
 	clock_t lBefore = clock();
 	QPainter mcpainter(this);
@@ -94,16 +106,11 @@ void lmDataView::paintEvent(QPaintEvent * event)
 	if (drawclick)
 	{
 		drawclicked(mcpainter);
-		drawContain(mcpainter);
 		drawclick = false;
 	}
-	if (drawcontain)
-	{
-		drawContain(mcpainter);
-		drawcontain = false;
-	}
-	double dResult = (double)(clock() - lBefore) / CLOCKS_PER_SEC;
-	std::cout << "dataview绘制处理时间：" << dResult << "s" << std::endl;
+	drawContain(mcpainter);
+	double dResult = (double)(clock() - lBefore);
+	qDebug() << QString::fromStdString("<Draw View> spends " + std::to_string(int(dResult)) + " ms!");
 }
 //绘制黑框;
 void lmDataView::drawBackGround(QPainter& cpainter)
@@ -201,7 +208,7 @@ int lmDataView::chInfo(int x, int y)
 }
 //计算VU通道在图片中的坐标;
 //输入为ix和iy，为某像素在绘制表格中的坐标位置;
-//输出为px和py，为该像素在图片中相对于16大小块的便宜位置;
+//输出为px和py，为该像素在图片中相对于16大小块的偏移位置;
 void lmDataView::chInfo(int ix, int iy, int &px, int &py)
 {
 	int chType = chInfo(ix, iy);
@@ -263,7 +270,7 @@ void lmDataView::drawContain(QPainter& cpainter)
 	cpainter.setFont(displayFont);
 	QFontMetrics fontMetrics(displayFont);
 	cpainter.setPen(QPen(Qt::black));
-	std::cout << "更新数据内容" << std::endl;
+	qDebug() << "update data!";
 	for (int row = 0; row < ViewSize[formatType][0] + 1; ++row)
 	{
 		for (int column = 0; column < ViewSize[formatType][1] + 1; ++column)
@@ -296,6 +303,7 @@ void lmDataView::drawContain(QPainter& cpainter)
 				int ipelVlaue = yuvDateptr[ch][offsetImage];
 				QString V = QString::fromStdString(std::to_string(ipelVlaue));
 				cpainter.drawText(column*sqSize[formatType] + (sqSize[formatType] / 2) - fontMetrics.width(V) / 2, row*sqSize[formatType] + sqSize[formatType] / 2 + fontMetrics.ascent()/2, V);
+				cpainter.fillRect(column*sqSize[formatType], row*sqSize[formatType], sqSize[formatType], sqSize[formatType], QBrush(QColor(ipelVlaue, ipelVlaue, ipelVlaue,128)));
 			}
 		}
 	}

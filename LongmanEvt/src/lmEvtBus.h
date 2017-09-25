@@ -2,7 +2,7 @@
 #define lmEvtBus_h__
 
 #include <QObject>
-#include"src\lmTYPE.h"
+#include"src\lmTYPE.h"//从这里包含Evt头文件;
 class lmmodelD;
 
 class lmEvtBus : public QObject

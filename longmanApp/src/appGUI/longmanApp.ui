@@ -6,44 +6,45 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>1113</width>
+    <height>853</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>1024</width>
-    <height>768</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>longmanApp</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout_6">
+    <item>
+     <layout class="QGridLayout" name="gridLayout_8"/>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1113</width>
      <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>file</string>
+     <string>文件</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave_as_image"/>
+    <addaction name="actionOpen_SHVC_bitstream"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>edit</string>
+     <string>编辑</string>
     </property>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>about</string>
+     <string>关于</string>
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQT"/>
@@ -55,13 +56,13 @@
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget_2">
    <property name="features">
-    <set>QDockWidget::DockWidgetVerticalTitleBar</set>
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="allowedAreas">
-    <set>Qt::NoDockWidgetArea</set>
+    <set>Qt::BottomDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Player Area</string>
+    <string>功能窗口</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -69,365 +70,376 @@
    <widget class="QWidget" name="dockWidgetContents_2">
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
-      <widget class="QGroupBox" name="YUVgroupBox">
-       <property name="enabled">
-        <bool>true</bool>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="tabShape">
+        <enum>QTabWidget::Triangular</enum>
        </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+       <property name="currentIndex">
+        <number>1</number>
        </property>
-       <property name="title">
-        <string>Player Control</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QPushButton" name="playButton">
-            <property name="statusTip">
-             <string>快捷键“Space”</string>
-            </property>
-            <property name="text">
-             <string>Paly</string>
-            </property>
-            <property name="shortcut">
-             <string>Space</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="stopButton">
-            <property name="text">
-             <string>Stop</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="nextButton">
-            <property name="text">
-             <string>Next</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="backButton">
-            <property name="text">
-             <string>Back</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="beginButton">
-            <property name="text">
-             <string>Home</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="endButton">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>End</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="0" column="1">
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QSlider" name="FrameIdxSlider">
-            <property name="minimum">
-             <number>-1</number>
-            </property>
-            <property name="pageStep">
-             <number>30</number>
-            </property>
-            <property name="value">
-             <number>-1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QLabel" name="label">
-              <property name="text">
-               <string>Current Frame:</string>
-              </property>
-             </widget>
+       <widget class="QWidget" name="tab_1">
+        <attribute name="title">
+         <string>帧信息</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_11"/>
+       </widget>
+       <widget class="QWidget" name="tab_5">
+        <attribute name="title">
+         <string>主要功能</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QGroupBox" name="YUVgroupBox">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>yuv 播放</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="0" column="4">
+               <widget class="QPushButton" name="beginButton">
+                <property name="text">
+                 <string>复位</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="playButton">
+                <property name="statusTip">
+                 <string>快捷键“Space”</string>
+                </property>
+                <property name="text">
+                 <string>播放</string>
+                </property>
+                <property name="shortcut">
+                 <string>Space</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="stopButton">
+                <property name="text">
+                 <string>停止</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="nextButton">
+                <property name="text">
+                 <string>步进</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="backButton">
+                <property name="text">
+                 <string>步退</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QPushButton" name="endButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>末尾</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
-            <item>
-             <widget class="QSpinBox" name="FrameIdxBox">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimum">
-               <number>-1</number>
-              </property>
-              <property name="maximum">
-               <number>999999</number>
-              </property>
-              <property name="value">
-               <number>-1</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label1_2">
-              <property name="text">
-               <string>Total Frame:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="MaxFraBox">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimum">
-               <number>-1</number>
-              </property>
-              <property name="maximum">
-               <number>999999</number>
-              </property>
-              <property name="value">
-               <number>-1</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label1">
-              <property name="text">
-               <string>Frame Rate:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="FrameRateBox">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>50</number>
-              </property>
-              <property name="value">
-               <number>30</number>
-              </property>
-             </widget>
+            <item row="0" column="1">
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <item>
+               <widget class="QSlider" name="FrameIdxSlider">
+                <property name="pageStep">
+                 <number>30</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>当前帧</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="FrameIdxBox">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="maximum">
+                   <number>999999</number>
+                  </property>
+                  <property name="value">
+                   <number>0</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label1_2">
+                  <property name="text">
+                   <string>总帧数</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="MaxFraBox">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximum">
+                   <number>999999</number>
+                  </property>
+                  <property name="value">
+                   <number>0</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label1">
+                  <property name="text">
+                   <string>帧率</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="FrameRateBox">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>50</number>
+                  </property>
+                  <property name="value">
+                   <number>30</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
             </item>
            </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="title">
-        <string>Image Info</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>height</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBoxwid">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="maximum">
-             <number>2560</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>width</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxhei">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="maximum">
-             <number>1600</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>format</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="label_format">
-            <property name="text">
-             <string>420</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_3">
+           <property name="title">
+            <string>信息</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <layout class="QGridLayout" name="gridLayout_4">
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="text">
+                 <string>高：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="spinBoxwid">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="maximum">
+                 <number>2560</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>宽：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="spinBoxhei">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="maximum">
+                 <number>1600</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>采样格式</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="label_format">
+                <property name="text">
+                 <string>420</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>功能</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="f2Button">
+                <property name="text">
+                 <string>打开yuv</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="f6Button">
+                <property name="text">
+                 <string>CU分割</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="f3Button">
+                <property name="text">
+                 <string>保存图片</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="f1Button">
+                <property name="text">
+                 <string>显示像素</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="f4Button">
+                <property name="text">
+                 <string>打开码流</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="f5Button">
+                <property name="text">
+                 <string>比特分布</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidget_1">
+  <widget class="QDockWidget" name="dockWidget">
    <property name="features">
-    <set>QDockWidget::DockWidgetVerticalTitleBar</set>
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="allowedAreas">
-    <set>Qt::NoDockWidgetArea</set>
+    <set>Qt::LeftDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Function Area</string>
+    <string>查看窗口</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QVBoxLayout" name="verticalLayout_7">
      <item>
-      <widget class="QGroupBox" name="FucAeraBox">
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string>Function Area</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0">
-            <layout class="QFormLayout" name="formLayout">
-             <item row="0" column="0">
-              <widget class="QPushButton" name="f1Button">
-               <property name="text">
-                <string>f1</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="f2Button">
-               <property name="text">
-                <string>f2</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="f3Button">
-               <property name="text">
-                <string>f3</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QPushButton" name="f4Button">
-               <property name="text">
-                <string>f4</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="f5Button">
-               <property name="text">
-                <string>f5</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QPushButton" name="f6Button">
-               <property name="text">
-                <string>f6</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="f7Button">
-               <property name="text">
-                <string>f7</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QPushButton" name="f8Button">
-               <property name="text">
-                <string>f8</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>List Area</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_2"/>
-         </widget>
-        </item>
-        <item>
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout_6"/>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout_10"/>
      </item>
     </layout>
    </widget>
   </widget>
   <action name="actionOpen">
    <property name="text">
-    <string>open</string>
+    <string>打开yuv</string>
    </property>
   </action>
   <action name="actionSave_as_image">
    <property name="text">
-    <string>save as image</string>
+    <string>保存为图片</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>about</string>
+    <string>关于</string>
    </property>
   </action>
   <action name="action">
@@ -438,6 +450,11 @@
   <action name="actionAboutQT">
    <property name="text">
     <string>aboutQT</string>
+   </property>
+  </action>
+  <action name="actionOpen_SHVC_bitstream">
+   <property name="text">
+    <string>打开shvc码流</string>
    </property>
   </action>
  </widget>

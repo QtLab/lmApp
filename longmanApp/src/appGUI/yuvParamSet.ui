@@ -36,7 +36,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Width:</string>
+          <string>宽</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -46,7 +46,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Height:</string>
+          <string>高</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -202,7 +202,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>format:</string>
+        <string>采样格式</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

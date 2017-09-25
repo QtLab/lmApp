@@ -23,8 +23,8 @@ lmGraphView::lmGraphView(QWidget *parent)
 	ui.setupUi(this);
 	setModelName("Graph_View_Model");
 	//
-	CallBackFunc pcupdateEvtHandle = std::bind(&lmGraphView::setimage, this, std::placeholders::_1);
-	listenParam("set_image", pcupdateEvtHandle);
+// 	CallBackFunc pcupdateEvtHandle = std::bind(&lmGraphView::setimage, this, std::placeholders::_1);
+// 	listenParam("set_image", pcupdateEvtHandle);
 	CallBackFunc pcscaleEvtHandle = std::bind(&lmGraphView::scaleimage, this, std::placeholders::_1);
 	listenParam("scale", pcscaleEvtHandle);
 	CallBackFunc pcxupdateHandle = std::bind(&lmGraphView::xupdate, this, std::placeholders::_1);
@@ -33,7 +33,6 @@ lmGraphView::lmGraphView(QWidget *parent)
 	imagegroup.setTransformationMode(Qt::FastTransformation);
 	msence.addItem(&imagegroup);
 	setScene(&msence);
-	setAcceptDrops(false);
 	setCursor(Qt::CrossCursor);
 	//
 	curScale = 1;
@@ -50,13 +49,13 @@ lmGraphView::~lmGraphView()
 {
 }
 
-bool lmGraphView::setimage(longmanEvt & upimage)
-{
-	imageWidth = upimage.getParam("width").toInt();
-	imageHeight = upimage.getParam("height").toInt();
-	int formattyp = upimage.getParam("format").toInt();
-	return true;
-}
+// bool lmGraphView::setimage(longmanEvt & upimage)
+// {
+// 	imageWidth = upimage.getParam("width").toInt();
+// 	imageHeight = upimage.getParam("height").toInt();
+// 	int formattyp = upimage.getParam("format").toInt();
+// 	return true;
+// }
 
 bool lmGraphView::scaleimage(longmanEvt & sacleEvt)
 {
@@ -68,11 +67,7 @@ bool lmGraphView::scaleimage(longmanEvt & sacleEvt)
 
 void lmGraphView::xscale(double pscalce)
 {
-	longmanEvt testmsg(EvtTYPE1);
-	testmsg.setParam("CommandName", "show_message");
-	testmsg.setParam("MsgType", 1);
-	testmsg.setParam("info", QStringLiteral("功能尚未完善！"));
-	testmsg.dispatch();
+	qWarning() << QStringLiteral("功能尚未完善！");
 }
 
 bool lmGraphView::xupdate(longmanEvt & rEvt)
@@ -81,7 +76,14 @@ bool lmGraphView::xupdate(longmanEvt & rEvt)
 	 	//int iImgY = imagegroup.scenePos().y();
 	QVariant vValue = rEvt.getParam("Image");
 	QPixmap *mcImage = (QPixmap*)vValue.value<void *>();
+	imageWidth=mcImage->width();
+	imageHeight = mcImage->height();
 	imagegroup.setPixmap(*mcImage);
+	//保存当前场景;
+	longmanEvt saveImage(EvtTYPE1);
+	saveImage.setParam("CommandName", "save_curImage_mainwindow");
+	saveImage.setParam("image_to_save", QVariant::fromValue((void*)(mcImage)));
+	saveImage.dispatch();
 	m_controlMouse = true;
 	return true;
 }
@@ -130,12 +132,20 @@ void lmGraphView::mousePressEvent(QMouseEvent * event)
 		bool strain2 = mouseInImageY >= 0 && mouseInImageY < imageHeight;
 		if (strain2&&strain1)
 		{
-		longmanEvt showdata(EvtTYPE2);
-		showdata.setParam("CommandName", "show_yuvdata");
-		showdata.setParam("clickedByGraphView", true);
-		showdata.setParam("x", mouseInImageX);
-		showdata.setParam("y", mouseInImageY);
-		showdata.dispatch();
+			//通知绘制模块;
+			longmanEvt showdata(EvtTYPE2);
+			showdata.setParam("CommandName", "draw");
+			showdata.setParam("from_picture_clicked", true);
+			showdata.setParam("yuvdata_xmouse", mouseInImageX);
+			showdata.setParam("yuvdata_ymouse", mouseInImageY);
+			showdata.setParam("do_draw", true);
+			showdata.dispatch();
+			//通知像素显示窗口;
+			longmanEvt dataview(EvtTYPE1);
+			dataview.setParam("CommandName", "update_dataview");
+			dataview.setParam("xIn16", mouseInImageX);
+			dataview.setParam("yIn16", mouseInImageY);
+			dataview.dispatch();
 		}
 }
 

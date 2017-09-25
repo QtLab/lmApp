@@ -1,6 +1,5 @@
 #include "lmData.h"
 #include "xyuv2rgb.h"
-#include <time.h>
 ChromaFormat formatmap[] = {
 	ChromaFormat::CHROMA_400,
 	ChromaFormat::CHROMA_420,
@@ -35,10 +34,10 @@ lmData::~lmData()
 //读取yuv文件，获取yuv信息，返回读取状态;
 int lmData::openyuv_r(const std::string &fileName, Bool bWriteMode, int formatType, int pwidth, int pheight)
 {
-// 	if (formatType==0)
-// 	{
-// 		return 1;
-// 	}
+	if (formatType < 0 && formatType>2)
+	{
+		return -6;
+	}
 	closeandclear();
 	mwidth = pwidth; mheight = pheight; mformattype = formatType;
 	int m_aiPad[2] = { 0 };
@@ -170,7 +169,6 @@ void lmData::xAllocaBuffer()
 void lmData::xyuv2rgb(Pel* src0, Pel* src1, Pel* src2, unsigned char * rgbI)
 {
 	Double dResult;
-	clock_t lBefore = clock();
 	int uWidth = mwidth + mMargin;
 	int uHeight = mheight + mMargin;
 	int mframesizeInPel = uWidth*uHeight;
@@ -208,15 +206,12 @@ void lmData::xyuv2rgb(Pel* src0, Pel* src1, Pel* src2, unsigned char * rgbI)
 			*(iCurRgbPixelOffset + 2) = tempB;
 		}
 	}
-	dResult = (Double)(clock() - lBefore) / CLOCKS_PER_SEC;
-	std::cout << "RGB转换处理时间：" << dResult << "s" << std::endl;
 }
 
 void lmData::xyuv2rgb(Pel* src0, Pel* src1, Pel* src2, unsigned char * rgbI, bool fast, int formarType)
 {
 	//用整数运算替代浮点运算，播放1920*1080能够达到50Hz.
 	Double dResult;
-	clock_t lBefore = clock();
 	int uWidth = mwidth + mMargin;
 	int uHeight = mheight + mMargin;
 	int mframesizeInPel = uWidth*uHeight;
@@ -262,9 +257,6 @@ void lmData::xyuv2rgb(Pel* src0, Pel* src1, Pel* src2, unsigned char * rgbI, boo
 			*(iCurRgbPixelOffset + 2) = tempB;
 		}
 	}
-	dResult = (Double)(clock() - lBefore) / CLOCKS_PER_SEC;
-	std::cout << "RGB转换处理时间：" << dResult << "s" << std::endl;
-
 }
 
 void lmData::xint2uchar(Pel* src, unsigned char * &dst)
